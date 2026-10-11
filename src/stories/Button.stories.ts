@@ -48,7 +48,7 @@ export const Large: Story = {
 
 export const Medium: Story = {
   args: {
-    siez: 'medium',
+    size: 'medium',
     label: 'Button'
   }
 }
@@ -57,5 +57,21 @@ export const Small: Story = {
   args: {
     size: 'small',
     label: 'Button',
+  },
+};
+
+export const Disabled: Story = {
+  args: {
+    primary: true,
+    label: 'Button',
+    disabled: true,
+  },
+};
+
+export const FullWidth: Story = {
+  args: {
+    primary: true,
+    label: 'Button',
+    fullWidth: true,
   },
 };

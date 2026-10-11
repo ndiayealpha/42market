@@ -1,0 +1,131 @@
+// Design tokens — single source of truth for color.
+//
+// Spacing, radius, shadows, font sizes and breakpoints are intentionally
+// NOT redefined here: Tailwind v4's default scale already covers them
+// (p-4, rounded-full, shadow-sm, gap-6, sm:/md:/lg: ...). Adding a parallel
+// token system for those would duplicate what Tailwind already provides.
+//
+// Tokens are plain CSS custom properties (not Sass $variables) so they can
+// be re-exposed to Tailwind's `@theme` in globals.scss and consumed as
+// utility classes (bg-surface, text-muted-foreground, border-border, ...).
+
+:root {
+  // Brand surfaces
+  --background: #fff8f6;
+  --surface: #ffffff;
+  --foreground: #39211f;
+  --foreground-strong: #210d0b;
+
+  // Text
+  --muted-foreground: #8a726d;
+
+  // Borders
+  --border: #efe2dd;
+
+  // Semantic / status
+  --success: #16a34a;
+  --success-subtle: #dcfce7;
+  --warning: #f59e0b;
+  --danger: #ef4444;
+  --info: #3b82f6;
+  --favorite: #ec4899;
+  --basket: #f97316;
+
+  // Footer (dark bottom bar)
+  --footer-background: #39211f;
+  --footer-foreground: #fff8f6;
+
+  // Pale pink secondary surface — mobile header/nav/footer pills, chips
+  // and card backgrounds. Global (not auth-scoped): used across header,
+  // bottom nav and footer, none of which are auth screens. Also doubles
+  // as the promo section's "surface-soft" (#FAF2F0 in that spec — a
+  // 3-unit-per-channel rounding of the same measured color).
+  --surface-subtle: #fdf1ee;
+
+  // Promo carousel ("Offres en cours & Arrivages"): the handful of
+  // chrome colors shared by every card regardless of theme (dots, hint
+  // text, sticker fills). Per-theme colors (bgFrom/title/accent/...)
+  // are NOT here — see PromoCard.themes.ts — because they're set as
+  // inline CSS custom properties per card instance, not global theme
+  // colors every component can reach for.
+  --ink-muted: #6b5e5d;
+  --dot-idle: #d4c3c1;
+  --promo-red: #ff3b30;
+  --promo-orange: #ff9500;
+
+  // Auth screens (login + signup) — scoped tokens for the onboarding
+  // maquettes. Kept separate from the tokens above so refining these
+  // pages' palette can't shift color anywhere else in the app.
+  //
+  // The page background and the left panel are shared across both
+  // screens ("même panneau gauche") and happen to already match the
+  // brand's global --background/--foreground/--foreground-strong
+  // exactly, measured independently from each mockup — so auth
+  // components use those global tokens directly instead of duplicating
+  // them here. Everything below is either login-only or signup-only.
+  --auth-ink: #2a1715; // login body text/headings
+  --auth-ink-muted: #6b5552; // login + signup secondary text (~#6b5e5d in the signup mockup — same color)
+  --auth-placeholder: #e3c8c2; // login input placeholder
+  --auth-accent: #c9a69d; // login hero panel accent line
+  --auth-tab-bg: #f3e8e5; // login tabs container + signup tabs/gauge track (~#f4ecea — same color)
+  --auth-divider: #eadcd8; // login "OU AVEC VOTRE E-MAIL" separator
+  --auth-input-border: #f6ece9; // login input border
+  --auth-card-tint: #f8edea; // login neutral InfoCard
+  --auth-card-cream: #fff8ec; // login accent InfoCard
+
+  --auth-placeholder-muted: #827472; // signup input placeholder
+  --auth-input-tint: #faf2f0; // signup input + social button background
+  --auth-divider-strong: #d4c3c1; // signup separator (used at 60% opacity)
+  --auth-success: #2d4b2a; // signup password strength "Fort"
+  --auth-card-merchant: #fff7d6; // signup merchant CTA card (used at 30% opacity)
+  --auth-hero-text: #e5bdb9; // signup hero panel paragraph
+
+  // Home catalog ("Épiceries près de vous" / "Épiceries de la ville" /
+  // "Précommandes groupées"). `ink`/`muted`/`surface-soft`/`cta`/`star`
+  // from that spec are exact hex matches to --foreground-strong,
+  // --ink-muted, --surface-subtle, --foreground and --warning above —
+  // reused directly, not duplicated. Everything below is new, even
+  // where a hex happens to coincide with an auth-/promo-scoped token
+  // (e.g. --catalog-line-strong == --dot-idle == --auth-divider-strong):
+  // kept separate so this feature's palette can't shift under an
+  // unrelated one, same reasoning as the auth tokens above.
+  --catalog-faint: #7e7271; // "84% réservé", struck price
+  --catalog-chip: #f4ecea; // header buttons, rating pill, progress track
+  --catalog-chip-hover: #ede2df;
+  --catalog-promo: #ffe4de; // preorders panel background
+  --catalog-cta-hover: #2a1715;
+  --catalog-line: #f2edec; // preorder card border + internal divider
+  --catalog-line-strong: #d4c3c1; // PickupBar's vertical divider
+  --catalog-line-promo: #f2dad5; // rule under the preorders panel header
+  --catalog-thumb-border: #dedcdc; // logo-type thumbnails
+  --catalog-success: #2d4b2a; // "Ouvert", accent eyebrow, green badges
+  --catalog-danger: #9e2a2b; // "Fermé", low stock, urgent, red badges
+  --catalog-badge-pink: #f7b9d0; // ink text
+  --catalog-badge-gold: #d2b023; // ink text
+  --catalog-badge-cream: #fff7d6; // ink text
+  --catalog-badge-orange: #ff9500; // white text
+  --catalog-badge-wine: #551028; // white text
+  --catalog-shadow-card: 0 1px 2px 0 rgb(0 0 0 / 0.05); // store card, preorders panel, CTA button
+
+  // "Les recettes du terroir" rail. No existing token is close enough to
+  // #504443 to reuse (the closest, --catalog-faint, is a visibly
+  // lighter #7e7271) — recipe card description + "Panier dès" label.
+  --catalog-text-secondary: #504443;
+  // The card's own border (--catalog-line) one shade lighter, for its
+  // internal footer divider — no exact value was given ("un ton plus
+  // clair"), this is a plausible approximation.
+  --catalog-line-light: #f6f2f1;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --surface: #171717;
+    --foreground: #ededed;
+    --foreground-strong: #ffffff;
+    --muted-foreground: #a8a8a8;
+    --border: #2a2a2a;
+    --footer-background: #000000;
+    --footer-foreground: #ededed;
+  }
+}

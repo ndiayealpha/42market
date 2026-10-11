@@ -1,22 +1,63 @@
+@use "./variables";
 @import "tailwindcss";
-
-:root {
-  --background: #FFF8F6;
-  --foreground: #39211F;
-}
 
 @theme inline {
   --color-background: var(--background);
+  --color-surface: var(--surface);
   --color-foreground: var(--foreground);
+  --color-foreground-strong: var(--foreground-strong);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-success: var(--success);
+  --color-success-subtle: var(--success-subtle);
+  --color-warning: var(--warning);
+  --color-danger: var(--danger);
+  --color-info: var(--info);
+  --color-favorite: var(--favorite);
+  --color-basket: var(--basket);
+  --color-footer: var(--footer-background);
+  --color-footer-foreground: var(--footer-foreground);
+  --color-surface-subtle: var(--surface-subtle);
+  --color-auth-ink: var(--auth-ink);
+  --color-auth-ink-muted: var(--auth-ink-muted);
+  --color-auth-placeholder: var(--auth-placeholder);
+  --color-auth-accent: var(--auth-accent);
+  --color-auth-tab-bg: var(--auth-tab-bg);
+  --color-auth-divider: var(--auth-divider);
+  --color-auth-input-border: var(--auth-input-border);
+  --color-auth-card-tint: var(--auth-card-tint);
+  --color-auth-card-cream: var(--auth-card-cream);
+  --color-auth-placeholder-muted: var(--auth-placeholder-muted);
+  --color-auth-input-tint: var(--auth-input-tint);
+  --color-auth-divider-strong: var(--auth-divider-strong);
+  --color-auth-success: var(--auth-success);
+  --color-auth-card-merchant: var(--auth-card-merchant);
+  --color-auth-hero-text: var(--auth-hero-text);
+  --color-ink-muted: var(--ink-muted);
+  --color-dot-idle: var(--dot-idle);
+  --color-promo-red: var(--promo-red);
+  --color-promo-orange: var(--promo-orange);
+  --color-catalog-faint: var(--catalog-faint);
+  --color-catalog-chip: var(--catalog-chip);
+  --color-catalog-chip-hover: var(--catalog-chip-hover);
+  --color-catalog-promo: var(--catalog-promo);
+  --color-catalog-cta-hover: var(--catalog-cta-hover);
+  --color-catalog-line: var(--catalog-line);
+  --color-catalog-line-strong: var(--catalog-line-strong);
+  --color-catalog-line-promo: var(--catalog-line-promo);
+  --color-catalog-thumb-border: var(--catalog-thumb-border);
+  --color-catalog-success: var(--catalog-success);
+  --color-catalog-danger: var(--catalog-danger);
+  --color-catalog-badge-pink: var(--catalog-badge-pink);
+  --color-catalog-badge-gold: var(--catalog-badge-gold);
+  --color-catalog-badge-cream: var(--catalog-badge-cream);
+  --color-catalog-badge-orange: var(--catalog-badge-orange);
+  --color-catalog-badge-wine: var(--catalog-badge-wine);
+  --color-catalog-text-secondary: var(--catalog-text-secondary);
+  --color-catalog-line-light: var(--catalog-line-light);
+  --shadow-card: var(--catalog-shadow-card);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
 }
 
 body {
