@@ -38,6 +38,7 @@ export function HeaderTop({ location, actions, user, onLocationClick, onSearch }
             href={action.href}
             count={action.count}
             badgeColor={action.badgeColor}
+            isActive={action.isActive}
           />
         ))}
 

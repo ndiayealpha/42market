@@ -55,6 +55,8 @@
   --color-catalog-badge-wine: var(--catalog-badge-wine);
   --color-catalog-text-secondary: var(--catalog-text-secondary);
   --color-catalog-line-light: var(--catalog-line-light);
+  --color-store-promo-forest: var(--store-promo-forest);
+  --color-store-accent-gold: var(--store-accent-gold);
   --shadow-card: var(--catalog-shadow-card);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
@@ -64,4 +66,35 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+// Native <button> (and the custom radio/tab/switch widgets built on it)
+// render with `cursor: default` in this browser/reset, not `pointer` —
+// confirmed empirically, nothing in this codebase sets it globally, which
+// is why a handful of components had to add `cursor-pointer` one at a
+// time (Checkbox, ProductInfoAccordions, ...). This is the one place that
+// fixes every clickable control at once, instead of a class added
+// file-by-file; disabled controls keep the browser's own cursor.
+button:not(:disabled),
+[role="button"]:not([aria-disabled="true"]),
+[role="radio"]:not([aria-disabled="true"]),
+[role="tab"]:not([aria-disabled="true"]),
+[role="switch"]:not([aria-disabled="true"]),
+select:not(:disabled),
+summary,
+label {
+  cursor: pointer;
+}
+
+// Page S's "Imprimer le reçu" (window.print()) — scoped by element, not a
+// page-specific class, since nothing else in the app prints yet. Keeps the
+// QR code, order lines and totals readable; everything chrome-like (nav,
+// controls) disappears.
+@media print {
+  header,
+  footer,
+  nav,
+  button {
+    display: none !important;
+  }
 }

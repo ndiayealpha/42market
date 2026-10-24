@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <!--
+    GENERATED FILE — do not edit by hand.
+    Exported from icomoon.io ("Generate SVG & More" → SVG Sprite), with
+    "Class prefix" left empty so each <symbol id> matches the icon's name
+    exactly. Replace this file with your own export; see icomoon/README.md.
+    "demo-plus" below is a placeholder proving the pipeline works end to
+    end — delete it once you've added your real icons.
+  -->
+  <symbol id="demo-plus" viewBox="0 0 1024 1024">
+    <path d="M416 64H608V416H960V608H608V960H416V608H64V416H416V64Z"></path>
+  </symbol>
+</svg>

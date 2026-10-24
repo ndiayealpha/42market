@@ -9,6 +9,20 @@ describe("routes", () => {
     expect(isProtectedRoute(routes.auth.login)).toBe(false);
   });
 
+  it("carves out the global Bons Plans and search pages as public despite being nested under /main", () => {
+    expect(isProtectedRoute(routes.main.bonsPlans)).toBe(false);
+    expect(isProtectedRoute(routes.main.search)).toBe(false);
+    expect(isProtectedRoute(routes.main.notifications)).toBe(true);
+    expect(isProtectedRoute(routes.main.favorites)).toBe(true);
+  });
+
+  it("carves out Page P (fiche produit) as public despite its dynamic segments", () => {
+    expect(isProtectedRoute(routes.main.epicerieProduit("loirivoire", "riz-region-mediterraneenne"))).toBe(false);
+    // Sibling routes under the same store keep requiring a session.
+    expect(isProtectedRoute(routes.main.epicerieDetail("loirivoire"))).toBe(true);
+    expect(isProtectedRoute(routes.main.epicerieRayon("loirivoire", "feculents"))).toBe(true);
+  });
+
   it("identifies public routes", () => {
     expect(isPublicRoute(routes.auth.login)).toBe(true);
     expect(isPublicRoute(routes.home)).toBe(true);

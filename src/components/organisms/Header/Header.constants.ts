@@ -17,9 +17,9 @@ export const DEFAULT_NAVIGATION_ITEMS: NavigationItemConfig[] = [
 ];
 
 export const DEFAULT_HEADER_ACTIONS: HeaderActionConfig[] = [
-  { key: "favorites", icon: "heart", label: "Favoris", href: "/main/favoris", badgeColor: "favorite" },
-  { key: "notifications", icon: "bell", label: "Notifications", href: "/main/notifications", badgeColor: "danger" },
-  { key: "basket", icon: "basket", label: "Cabas", href: "/main/cabas", badgeColor: "basket" },
+  { key: "favorites", icon: "heart", label: "Favoris", href: routes.main.favorites, badgeColor: "favorite" },
+  { key: "notifications", icon: "bell", label: "Notifications", href: routes.main.notifications, badgeColor: "danger" },
+  { key: "basket", icon: "basket", label: "Cabas", href: routes.main.cart, badgeColor: "basket" },
 ];
 
 export const DEFAULT_LOCATION: HeaderLocation = {

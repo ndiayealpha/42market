@@ -14,6 +14,7 @@ import { RecipesSection } from "@/src/features/recipes/RecipesSection";
 import { useNearbyStores } from "@/src/hooks/useNearbyStores";
 import { useCityStores } from "@/src/hooks/useCityStores";
 import { usePreorderCampaigns } from "@/src/hooks/usePreorderCampaigns";
+import { routes } from "@/src/lib/routing/routes";
 
 export interface DashboardViewProps {
   user: SessionUser;
@@ -66,7 +67,7 @@ export function DashboardView({ user }: DashboardViewProps) {
           eyebrow={<Eyebrow>Catalogue complet</Eyebrow>}
           title="Épiceries de la ville"
           action={
-            <ButtonLink href="/main/epiceries" variant="soft" icon={<Icon name="arrow-right" size={16} />}>
+            <ButtonLink href={routes.main.epiceries} variant="soft" icon={<Icon name="arrow-right" size={16} />}>
               Voir tout (15+)
             </ButtonLink>
           }

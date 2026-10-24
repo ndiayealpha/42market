@@ -6,6 +6,7 @@ import { fn } from 'storybook/test'
 import { AuthApiProvider, SessionProvider, type SessionUser } from '../src/features/auth'
 import { mockAuthApiSuccess } from '../src/features/auth/api/auth.api.mock'
 import { onboardingStoreApi } from '../src/features/auth/store/onboarding.store'
+import { ToastProvider } from '../src/providers/toast-provider'
 
 // Fixture user + a mock AuthClient injected into every story via the
 // `SessionProvider`'s `authClient` prop, so no story ever touches the
@@ -82,9 +83,11 @@ const preview: Preview = {
 
       return (
         <QueryClientProvider client={queryClient}>
-          <AuthApiProvider api={mockAuthApiSuccess}>
-            <Story />
-          </AuthApiProvider>
+          <ToastProvider>
+            <AuthApiProvider api={mockAuthApiSuccess}>
+              <Story />
+            </AuthApiProvider>
+          </ToastProvider>
         </QueryClientProvider>
       )
     },

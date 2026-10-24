@@ -1,4 +1,5 @@
 import type { Store } from "@/src/domain/store";
+import { routes } from "@/src/lib/routing/routes";
 
 /**
  * No sourced photos exist for these fictional stores, so thumbnails reuse
@@ -11,7 +12,7 @@ import type { Store } from "@/src/domain/store";
 export const NEARBY_STORES: Store[] = [
   {
     id: "loirivoire",
-    href: "/main/epiceries/loirivoire",
+    href: routes.main.epicerieDetail("loirivoire"),
     name: "LoirIvoire",
     image: { src: "/login-info-thumbnail.jpg", alt: "LoirIvoire", fit: "cover" },
     rating: 4.9,
@@ -23,7 +24,7 @@ export const NEARBY_STORES: Store[] = [
   },
   {
     id: "nimba-market",
-    href: "/main/epiceries/nimba-market",
+    href: routes.main.epicerieDetail("nimba-market"),
     name: "Nimba Market",
     image: { src: "/logo-mark.svg", alt: "Nimba Market", fit: "contain" },
     rating: 4.8,
@@ -35,7 +36,7 @@ export const NEARBY_STORES: Store[] = [
   },
   {
     id: "abidjan-market",
-    href: "/main/epiceries/abidjan-market",
+    href: routes.main.epicerieDetail("abidjan-market"),
     name: "Abidjan market",
     image: { src: "/login-visual.jpg", alt: "Abidjan market", fit: "cover" },
     rating: 4.6,
@@ -51,7 +52,7 @@ export const NEARBY_STORES: Store[] = [
 export const CITY_STORES: Store[] = [
   {
     id: "souk-des-saveurs",
-    href: "/main/epiceries/souk-des-saveurs",
+    href: routes.main.epicerieDetail("souk-des-saveurs"),
     name: "Souk des saveurs",
     image: { src: "/souk-des-saveurs.jpg", alt: "Souk des saveurs", fit: "cover" },
     rating: 4.9,
@@ -63,7 +64,7 @@ export const CITY_STORES: Store[] = [
   },
   {
     id: "saveurs-dafrique",
-    href: "/main/epiceries/saveurs-dafrique",
+    href: routes.main.epicerieDetail("saveurs-dafrique"),
     name: "Saveurs d'Afrique",
     image: { src: "/login-visual.jpg", alt: "Saveurs d'Afrique", fit: "cover" },
     rating: 4.8,
@@ -75,7 +76,7 @@ export const CITY_STORES: Store[] = [
   },
   {
     id: "elikya-market",
-    href: "/main/epiceries/elikya-market",
+    href: routes.main.epicerieDetail("elikya-market"),
     name: "Elikya Market",
     image: { src: "/login-info-thumbnail.jpg", alt: "Elikya Market", fit: "cover" },
     rating: 4.7,
@@ -87,7 +88,7 @@ export const CITY_STORES: Store[] = [
   },
   {
     id: "naija-markets",
-    href: "/main/epiceries/naija-markets",
+    href: routes.main.epicerieDetail("naija-markets"),
     name: "Naija Markets",
     image: { src: "/login-info-thumbnail.jpg", alt: "Naija Markets", fit: "cover" },
     rating: 4.9,
@@ -99,7 +100,7 @@ export const CITY_STORES: Store[] = [
   },
   {
     id: "marche-gouro",
-    href: "/main/epiceries/marche-gouro",
+    href: routes.main.epicerieDetail("marche-gouro"),
     name: "Marché Gouro",
     image: { src: "/login-info-thumbnail.jpg", alt: "Marché Gouro", fit: "cover" },
     rating: 4.8,
@@ -111,7 +112,7 @@ export const CITY_STORES: Store[] = [
   },
   {
     id: "epicerie-du-monde",
-    href: "/main/epiceries/epicerie-du-monde",
+    href: routes.main.epicerieDetail("epicerie-du-monde"),
     name: "Épicerie du Monde",
     image: { src: "/login-info-thumbnail.jpg", alt: "Épicerie du Monde", fit: "cover" },
     rating: 4.9,

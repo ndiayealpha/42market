@@ -5,6 +5,7 @@ import "../src/styles/globals.scss";
 import { AuthApiProvider, SessionProvider } from "@/src/features/auth";
 import { defaultAuthClient, getCurrentUser } from "@/src/features/auth/server";
 import { QueryProvider } from "@/src/providers/query-provider";
+import { ToastProvider } from "@/src/providers/toast-provider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,11 +32,13 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
     >
       <body className="min-h-screen flex flex-col">
         <QueryProvider>
-          <AuthApiProvider>
-            <SessionProvider initialUser={user} authClient={defaultAuthClient}>
-              {children}
-            </SessionProvider>
-          </AuthApiProvider>
+          <ToastProvider>
+            <AuthApiProvider>
+              <SessionProvider initialUser={user} authClient={defaultAuthClient}>
+                {children}
+              </SessionProvider>
+            </AuthApiProvider>
+          </ToastProvider>
         </QueryProvider>
       </body>
     </html>

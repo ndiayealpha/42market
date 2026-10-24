@@ -3,6 +3,7 @@
 import { Icon } from "@/src/components/atoms/Icon/Icon";
 import { IconButton } from "@/src/components/atoms/IconButton/IconButton";
 import { TextLink } from "@/src/components/atoms/Link/Link";
+import { Skeleton } from "@/src/components/atoms/Skeleton/Skeleton";
 import { SectionHeader } from "@/src/components/molecules/SectionHeader/SectionHeader";
 
 import { Carousel } from "../Carousel/Carousel";
@@ -91,10 +92,7 @@ export function PromoSection({
         {loading ? (
           <div className="flex gap-2" aria-hidden>
             {Array.from({ length: 3 }).map((_, index) => (
-              <div
-                key={index}
-                className="h-[230px] w-[85vw] max-w-[400px] shrink-0 animate-pulse rounded-[24px] bg-border md:w-[480px]"
-              />
+              <Skeleton key={index} height={230} radius="2xl" className="w-[85vw] max-w-[400px] shrink-0 md:w-[480px]" />
             ))}
           </div>
         ) : (

@@ -12,6 +12,16 @@ const dirname =
 
 // More info at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon
 export default defineConfig({
+  // Mirrors tsconfig.json's "@/*": ["./*"] — the "storybook" project gets
+  // this for free from @storybook/nextjs-vite, but the plain "unit"
+  // project doesn't resolve "@/..." at all without it (only type-checking
+  // did, via tsc's own "paths"; any domain file with a real runtime "@/"
+  // import would fail here otherwise).
+  resolve: {
+    alias: {
+      '@': dirname,
+    },
+  },
   test: {
     projects: [
       {

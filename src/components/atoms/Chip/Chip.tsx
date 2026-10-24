@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 
-export type ChipTone = "pink" | "gold" | "cream" | "orange" | "wine" | "danger" | "success";
+export type ChipTone = "pink" | "gold" | "cream" | "orange" | "wine" | "danger" | "success" | "dark";
 
 const TONE_CLASSES: Record<ChipTone, string> = {
   pink: "bg-catalog-badge-pink text-foreground-strong",
@@ -10,6 +10,8 @@ const TONE_CLASSES: Record<ChipTone, string> = {
   wine: "bg-catalog-badge-wine text-white",
   danger: "bg-catalog-danger text-white",
   success: "bg-catalog-success text-white",
+  // "Click & Collect 42" / "Programme fidélité" solid dark pill — new tone, no existing one is a near-black fill.
+  dark: "bg-foreground-strong text-white",
 };
 
 const SIZE_CLASSES: Record<"sm" | "xs", string> = {

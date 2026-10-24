@@ -9,15 +9,21 @@ export interface HeaderActionProps {
   href: string;
   count?: number;
   badgeColor?: BadgeColor;
+  /** Current route matches `href`. Defaults to `false` — every existing usage is unaffected. */
+  isActive?: boolean;
 }
 
 /**
  * One icon action in the header's action group (Favoris / Notifications /
  * Cabas). Generic on purpose — each usage only differs by its data.
  */
-export function HeaderAction({ icon, label, href, count, badgeColor = "info" }: HeaderActionProps) {
+export function HeaderAction({ icon, label, href, count, badgeColor = "info", isActive = false }: HeaderActionProps) {
   return (
-    <Link href={href} className="group flex flex-col items-center gap-1 text-foreground">
+    <Link
+      href={href}
+      aria-current={isActive ? "page" : undefined}
+      className={`group flex flex-col items-center gap-1 ${isActive ? "text-foreground-strong" : "text-foreground"}`}
+    >
       <span className="relative inline-flex">
         <Icon name={icon} size={22} decorative />
         {typeof count === "number" && count > 0 && (
@@ -28,7 +34,9 @@ export function HeaderAction({ icon, label, href, count, badgeColor = "info" }: 
           </span>
         )}
       </span>
-      <span className="text-xs font-medium text-muted-foreground group-hover:text-foreground">{label}</span>
+      <span className={`text-xs font-medium group-hover:text-foreground ${isActive ? "font-semibold text-foreground-strong" : "text-muted-foreground"}`}>
+        {label}
+      </span>
     </Link>
   );
 }

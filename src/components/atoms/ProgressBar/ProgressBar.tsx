@@ -8,10 +8,20 @@ export interface ProgressBarProps {
   value: number;
   tone: "success" | "danger";
   "aria-valuetext"?: string;
+  /** Required accessible name — every `role="progressbar"` needs one (axe: aria-progressbar-name). */
+  "aria-label"?: string;
+  "aria-labelledby"?: string;
   className?: string;
 }
 
-export function ProgressBar({ value, tone, "aria-valuetext": valueText, className = "" }: ProgressBarProps) {
+export function ProgressBar({
+  value,
+  tone,
+  "aria-valuetext": valueText,
+  "aria-label": ariaLabel,
+  "aria-labelledby": ariaLabelledby,
+  className = "",
+}: ProgressBarProps) {
   const clamped = Math.min(100, Math.max(0, value));
 
   return (
@@ -21,6 +31,8 @@ export function ProgressBar({ value, tone, "aria-valuetext": valueText, classNam
       aria-valuemin={0}
       aria-valuemax={100}
       aria-valuetext={valueText}
+      aria-label={ariaLabel}
+      aria-labelledby={ariaLabelledby}
       className={`h-1.5 w-full overflow-hidden rounded-full bg-catalog-chip ${className}`}
     >
       <div className={`h-full rounded-full transition-[width] duration-150 ease-out motion-reduce:transition-none ${TONE_CLASSES[tone]}`} style={{ width: `${clamped}%` }} />

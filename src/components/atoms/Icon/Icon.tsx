@@ -45,7 +45,24 @@ export type IconName =
   | "gps"
   | "star"
   | "archive"
-  | "calendar";
+  | "calendar"
+  | "plus"
+  | "phone"
+  | "credit-card"
+  | "help-circle"
+  | "log-out"
+  | "trash"
+  | "check-circle"
+  | "qr-code"
+  | "sliders"
+  | "tag"
+  | "sort"
+  | "refresh"
+  | "minus"
+  | "printer"
+  | "truck"
+  | "package"
+  | "headset";
 
 const PATHS: Record<IconName, React.ReactNode> = {
   search: (
@@ -401,6 +418,168 @@ const PATHS: Record<IconName, React.ReactNode> = {
       <rect x="3" y="5" width="18" height="16" rx="2.5" stroke="currentColor" strokeWidth="1.8" fill="none" />
       <path d="M3 9.5h18M8 3v3.5M16 3v3.5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
       <circle cx="12" cy="15" r="1.4" fill="currentColor" />
+    </>
+  ),
+  plus: <path d="M12 5v14M5 12h14" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />,
+  phone: (
+    <path
+      d="M5.5 4h3l1.5 4-2 1.5a12 12 0 0 0 5.5 5.5l1.5-2 4 1.5v3a1.5 1.5 0 0 1-1.6 1.5A16 16 0 0 1 4 6.1 1.5 1.5 0 0 1 5.5 4z"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      fill="none"
+      strokeLinejoin="round"
+    />
+  ),
+  "credit-card": (
+    <>
+      <rect x="2.5" y="5.5" width="19" height="13" rx="2" stroke="currentColor" strokeWidth="1.8" fill="none" />
+      <path d="M2.5 9.5h19" stroke="currentColor" strokeWidth="1.8" />
+      <path d="M6 15h4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+    </>
+  ),
+  "help-circle": (
+    <>
+      <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.8" fill="none" />
+      <path
+        d="M9.5 9.2a2.5 2.5 0 1 1 3.7 2.2c-.8.5-1.2.9-1.2 1.8"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        fill="none"
+        strokeLinecap="round"
+      />
+      <circle cx="12" cy="16.5" r="1" fill="currentColor" />
+    </>
+  ),
+  "log-out": (
+    <>
+      <path
+        d="M9 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h4"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        fill="none"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M14 17l5-5-5-5M19 12H7"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        fill="none"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </>
+  ),
+  trash: (
+    <>
+      <path d="M4 7h16" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+      <path d="M9 7V4.5h6V7" stroke="currentColor" strokeWidth="1.8" fill="none" strokeLinejoin="round" />
+      <path
+        d="M6 7l1 13a1.5 1.5 0 0 0 1.5 1.5h7a1.5 1.5 0 0 0 1.5-1.5L18 7"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        fill="none"
+        strokeLinejoin="round"
+      />
+      <path d="M10 11v6M14 11v6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+    </>
+  ),
+  "check-circle": (
+    <>
+      <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.8" fill="none" />
+      <path d="M8 12.5l2.5 2.5L16 9.5" stroke="currentColor" strokeWidth="1.8" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+    </>
+  ),
+  "qr-code": (
+    <>
+      <rect x="3" y="3" width="7" height="7" rx="1" stroke="currentColor" strokeWidth="1.8" fill="none" />
+      <rect x="14" y="3" width="7" height="7" rx="1" stroke="currentColor" strokeWidth="1.8" fill="none" />
+      <rect x="3" y="14" width="7" height="7" rx="1" stroke="currentColor" strokeWidth="1.8" fill="none" />
+      <path d="M14 14h3v3h-3zM19 14h2v2h-2zM14 19h2v2h-2zM18 18h3v3h-3z" fill="currentColor" />
+    </>
+  ),
+  sliders: (
+    <>
+      <path d="M4 6h10M18 6h2M4 18h2M10 18h10" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+      <path d="M4 12h5M13 12h7" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+      <circle cx="16" cy="6" r="2.2" stroke="currentColor" strokeWidth="1.8" fill="var(--color-surface, #fff)" />
+      <circle cx="8" cy="18" r="2.2" stroke="currentColor" strokeWidth="1.8" fill="var(--color-surface, #fff)" />
+      <circle cx="11" cy="12" r="2.2" stroke="currentColor" strokeWidth="1.8" fill="var(--color-surface, #fff)" />
+    </>
+  ),
+  tag: (
+    <>
+      <path
+        d="M11.5 3.5H5a1.5 1.5 0 0 0-1.5 1.5v6.5a1.5 1.5 0 0 0 .44 1.06l8 8a1.5 1.5 0 0 0 2.12 0l6.5-6.5a1.5 1.5 0 0 0 0-2.12l-8-8a1.5 1.5 0 0 0-1.06-.44z"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        fill="none"
+        strokeLinejoin="round"
+      />
+      <circle cx="8" cy="8" r="1.4" fill="currentColor" />
+    </>
+  ),
+  sort: (
+    <path
+      d="M7 4v16M7 20l-3-3M7 20l3-3M17 20V4M17 4l-3 3M17 4l3 3"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      fill="none"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  ),
+  refresh: (
+    <>
+      <path
+        d="M4 12a8 8 0 0 1 13.66-5.66L20 8.5"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        fill="none"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path d="M20 4v4.5h-4.5" stroke="currentColor" strokeWidth="1.8" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+      <path
+        d="M20 12a8 8 0 0 1-13.66 5.66L4 15.5"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        fill="none"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path d="M4 20v-4.5h4.5" stroke="currentColor" strokeWidth="1.8" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+    </>
+  ),
+  minus: <path d="M5 12h14" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />,
+  printer: (
+    <>
+      <path d="M6 9V3h12v6" stroke="currentColor" strokeWidth="1.8" fill="none" strokeLinejoin="round" />
+      <rect x="3" y="9" width="18" height="8" rx="1.5" stroke="currentColor" strokeWidth="1.8" fill="none" />
+      <rect x="6" y="14" width="12" height="7" stroke="currentColor" strokeWidth="1.8" fill="none" strokeLinejoin="round" />
+    </>
+  ),
+  truck: (
+    <>
+      <rect x="2" y="7" width="13" height="10" rx="1" stroke="currentColor" strokeWidth="1.8" fill="none" />
+      <path d="M15 10h4l3 3v4h-7v-7z" stroke="currentColor" strokeWidth="1.8" fill="none" strokeLinejoin="round" />
+      <circle cx="7" cy="19" r="1.6" stroke="currentColor" strokeWidth="1.6" fill="none" />
+      <circle cx="18" cy="19" r="1.6" stroke="currentColor" strokeWidth="1.6" fill="none" />
+    </>
+  ),
+  package: (
+    <>
+      <path d="M12 3l9 4.8V16L12 21l-9-5V7.8L12 3z" stroke="currentColor" strokeWidth="1.8" fill="none" strokeLinejoin="round" />
+      <path d="M3.3 7.6L12 12l8.7-4.4M12 12v9" stroke="currentColor" strokeWidth="1.8" fill="none" strokeLinejoin="round" />
+    </>
+  ),
+  // Added for Page K's HelpCard ("Une question sur votre panier ?") — no existing glyph fit a support/headset contact point.
+  headset: (
+    <>
+      <path d="M4 13v-1a8 8 0 1 1 16 0v1" stroke="currentColor" strokeWidth="1.8" fill="none" strokeLinecap="round" />
+      <rect x="2.5" y="13" width="5" height="7" rx="2" stroke="currentColor" strokeWidth="1.8" fill="none" />
+      <rect x="16.5" y="13" width="5" height="7" rx="2" stroke="currentColor" strokeWidth="1.8" fill="none" />
+      <path d="M19 20v.5a3 3 0 0 1-3 3h-3" stroke="currentColor" strokeWidth="1.8" fill="none" strokeLinecap="round" />
     </>
   ),
 };

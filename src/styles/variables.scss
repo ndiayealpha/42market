@@ -115,6 +115,21 @@
   // internal footer divider — no exact value was given ("un ton plus
   // clair"), this is a plausible approximation.
   --catalog-line-light: #f6f2f1;
+
+  // Store detail page ("Fiche épicerie"). Measured by sampling Main.png
+  // pixels directly (PIL): the dark-forest promo banner has no existing
+  // equivalent (closest, --catalog-success, is a visibly brighter/more
+  // saturated green). Everything else this page needs (brick red
+  // #9E2A2B, dark-brown #39211F, salmon panel #FFE4DE, pale-green
+  // success badges) matched an existing token exactly and is reused,
+  // not duplicated here.
+  --store-promo-forest: #1c331e;
+  // Pale gold accent — the "ENVOI DE COLIS" title, its accented date,
+  // the "N°X DES VENTES" badges and "Urgence Fraîcheur" all share this
+  // one color (measured #FDE68A). Not close enough to the existing
+  // --catalog-badge-gold (#D2B023, markedly more saturated/dark) or
+  // --catalog-badge-cream (#FFF7D6, markedly paler) to reuse either.
+  --store-accent-gold: #fde68a;
 }
 
 @media (prefers-color-scheme: dark) {

@@ -1,6 +1,6 @@
 import { Icon } from "@/src/components/atoms/Icon/Icon";
 
-/** Placeholder: see search-view.tsx's note — same pattern, for the "Recettes" tab. */
+/** Placeholder — same pattern as the former search placeholder (now replaced by the real Page R), for the "Recettes" tab. */
 export function RecipesView() {
   return (
     <section className="flex flex-col items-center gap-3 p-10 text-center">

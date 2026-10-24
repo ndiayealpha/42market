@@ -15,6 +15,8 @@ export interface HeaderActionConfig {
   href: string;
   count?: number;
   badgeColor?: BadgeColor;
+  /** Current route matches this action's `href` — rendered with `aria-current="page"` and a stronger label color. */
+  isActive?: boolean;
 }
 
 export interface HeaderUser {

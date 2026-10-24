@@ -13,6 +13,8 @@ export interface IconButtonProps {
   href?: string;
   onClick?: MouseEventHandler;
   disabled?: boolean;
+  /** For toggle buttons (e.g. a favorite heart) — omitted entirely for non-toggle uses (CTAs, carousel arrows). */
+  "aria-pressed"?: boolean;
   className?: string;
 }
 
@@ -26,7 +28,18 @@ const SIZE_CLASSES: Record<IconButtonProps["size"], string> = {
  * carousel's prev/next arrows (md) — same shape, same disabled
  * treatment, just a size and a color away from each other.
  */
-export function IconButton({ icon, size, bg, fg, ariaLabel, href, onClick, disabled, className = "" }: IconButtonProps) {
+export function IconButton({
+  icon,
+  size,
+  bg,
+  fg,
+  ariaLabel,
+  href,
+  onClick,
+  disabled,
+  "aria-pressed": ariaPressed,
+  className = "",
+}: IconButtonProps) {
   const classes = `inline-flex items-center justify-center rounded-full transition-transform duration-200 ${SIZE_CLASSES[size]} ${
     disabled ? "pointer-events-none" : ""
   } ${className}`;
@@ -42,7 +55,15 @@ export function IconButton({ icon, size, bg, fg, ariaLabel, href, onClick, disab
   }
 
   return (
-    <button type="button" aria-label={ariaLabel} onClick={onClick} disabled={disabled} className={classes} style={style}>
+    <button
+      type="button"
+      aria-label={ariaLabel}
+      aria-pressed={ariaPressed}
+      onClick={onClick}
+      disabled={disabled}
+      className={classes}
+      style={style}
+    >
       <Icon name={icon} size={iconSize} decorative />
     </button>
   );
