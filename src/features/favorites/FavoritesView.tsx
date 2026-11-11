@@ -6,6 +6,7 @@ import { useState } from "react";
 import {
   computeBulkSelection,
   filterFavoriteProducts,
+  filterFavoriteRecipesByTerroir,
   sortFavoriteProducts,
   type FavoritesSortOption,
   type FavoritesTab,
@@ -45,6 +46,7 @@ export function FavoritesView({ cityName, activeTab, sort, terroirRegion, inStoc
   const router = useRouter();
   const [isSelectionMode, setSelectionMode] = useState(false);
   const [manualSelectedIds, setManualSelectedIds] = useState<Set<string> | null>(null);
+  const [recipePage, setRecipePage] = useState(1);
 
   const { counts } = useFavoriteCounts();
   const productsQuery = useFavoriteProducts(activeTab === "produits");
@@ -89,10 +91,11 @@ export function FavoritesView({ cityName, activeTab, sort, terroirRegion, inStoc
     ([slug, name]) => ({ slug, name })
   );
 
+  const filteredRecipes = filterFavoriteRecipesByTerroir(recipesQuery.recipes, terroirRegion);
+
   return (
     <FavoritesTemplate
       cityName={cityName}
-      availableCount={counts.products}
       activeTab={activeTab}
       getTabHref={(tab) => buildHref({ onglet: tab })}
       counts={counts}
@@ -132,10 +135,15 @@ export function FavoritesView({ cityName, activeTab, sort, terroirRegion, inStoc
       isStoresLoading={storesQuery.isLoading}
       isStoresError={storesQuery.isError}
       onRetryStores={storesQuery.refetch}
-      favoriteRecipes={recipesQuery.recipes}
+      favoriteRecipes={filteredRecipes}
+      recipeCount={recipesQuery.recipes.length}
       isRecipesLoading={recipesQuery.isLoading}
       isRecipesError={recipesQuery.isError}
       onRetryRecipes={recipesQuery.refetch}
+      recipeTerroirRegion={terroirRegion}
+      getRecipeTerroirHref={(region) => buildHref({ terroir: region })}
+      recipePage={recipePage}
+      onLoadMoreRecipes={() => setRecipePage((page) => page + 1)}
     />
   );
 }

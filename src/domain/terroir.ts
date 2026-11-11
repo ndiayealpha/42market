@@ -1,12 +1,13 @@
 import type { Media } from "@/src/domain/store-merchandising";
 
-/** The one region taxonomy shared by "Mes terroirs de cœur" (Profil) and the Favoris terroir filter chips — a single source, never duplicated. */
-export type TerroirRegionSlug = "afrique-ouest" | "caraibes-ocean-indien" | "maghreb";
+/** The one region taxonomy shared by "Mes terroirs de cœur" (Profil) and the Favoris terroir filter chips — a single source, never duplicated. `asie` added for the Favoris "Recettes" tab's terroir chips. */
+export type TerroirRegionSlug = "afrique-ouest" | "caraibes-ocean-indien" | "maghreb" | "asie";
 
 export const TERROIR_REGION_CONFIG: Record<TerroirRegionSlug, { label: string }> = {
   "afrique-ouest": { label: "Afrique de l'Ouest" },
   "caraibes-ocean-indien": { label: "Caraïbes & Océan Indien" },
   maghreb: { label: "Maghreb" },
+  asie: { label: "Asie" },
 };
 
 export interface Terroir {

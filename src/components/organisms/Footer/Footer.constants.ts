@@ -24,8 +24,8 @@ export const DISCOVER_LINKS: FooterLinkGroupConfig = {
   links: [
     { label: "À propos de 42 markets", href: "/main/about" },
     { label: "Comment ça marche", href: "/main/how-it-works" },
-    { label: "Nouveautés", href: "/main/nouvel-arrivage", tag: "Frais" },
-    { label: "Promotions", href: "/main/bonnes-affaires" },
+    { label: "Nouveautés", href: routes.main.newArrivals, tag: "Frais" },
+    { label: "Promotions", href: routes.main.bonsPlans },
   ],
 };
 

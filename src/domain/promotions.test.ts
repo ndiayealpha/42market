@@ -2,7 +2,38 @@ import { describe, expect, it } from "vitest";
 
 import { formatPrice } from "@/src/lib/format";
 
-import { formatFlashDeadline, formatPromoBadge, formatScopeLabel, matchesPromoFilter, parsePromoFilterType, type PromoProduct } from "./promotions";
+import {
+  buildStorePromoDirectionsUrl,
+  formatFlashDeadline,
+  formatPromoBadge,
+  formatScopeLabel,
+  getDeliveryBadgeLabel,
+  getStorePromoOpeningStatus,
+  matchesPromoFilter,
+  parsePromoFilterType,
+  type PromoProduct,
+  type StorePromoSummary,
+} from "./promotions";
+
+const BASE_STORE: StorePromoSummary = {
+  slug: "loirivoire",
+  name: "LoirIvoire",
+  address: "32 rue des docteurs Charcot, 42000 Saint-Étienne",
+  storeKindLabel: "Épicerie & Primeur exotique",
+  rating: { average: 4.8, reviewCount: 124 },
+  image: { src: "/store-header-tomatoes.jpg", alt: "LoirIvoire" },
+  pickupMinutes: 15,
+  discountLabel: "Jusqu'à -40%",
+  itemsOnPromoCount: 45,
+  productTags: [],
+  distanceMeters: 650,
+  description: "Primeur et épicerie exotique.",
+  openingHours: { mon: { open: "08:00", close: "20:00" } },
+  trustLabel: "Partenaire contrôlé 42 Markets",
+  deliversToHome: true,
+  deliveryMinutes: 40,
+  topProducts: [],
+};
 
 const BASE_PRODUCT: PromoProduct = {
   id: "p1",
@@ -92,5 +123,39 @@ describe("formatFlashDeadline", () => {
 
   it("formats a further-out deadline as a short date", () => {
     expect(formatFlashDeadline("2026-11-12T19:00:00Z", now)).toBe("le 12 nov. 20H");
+  });
+});
+
+describe("getStorePromoOpeningStatus", () => {
+  it("is open during the day's opening window", () => {
+    expect(getStorePromoOpeningStatus(BASE_STORE, new Date("2026-11-09T10:00:00Z")).isOpen).toBe(true);
+  });
+
+  it("is closed outside the day's opening window", () => {
+    expect(getStorePromoOpeningStatus(BASE_STORE, new Date("2026-11-09T22:00:00Z")).isOpen).toBe(false);
+  });
+
+  it("is closed on a day with no configured hours", () => {
+    // 2026-11-10 is a Tuesday — BASE_STORE only configures "mon".
+    expect(getStorePromoOpeningStatus(BASE_STORE, new Date("2026-11-10T10:00:00Z"))).toEqual({ isOpen: false, label: "Fermé" });
+  });
+});
+
+describe("getDeliveryBadgeLabel", () => {
+  it("returns null when the global homeDelivery flag is off, even if the store delivers", () => {
+    // FEATURE_FLAGS.homeDelivery is false in this app today — the badge must stay hidden everywhere.
+    expect(getDeliveryBadgeLabel(BASE_STORE)).toBeNull();
+  });
+
+  it("returns null when the store itself doesn't deliver", () => {
+    expect(getDeliveryBadgeLabel({ ...BASE_STORE, deliversToHome: false })).toBeNull();
+  });
+});
+
+describe("buildStorePromoDirectionsUrl", () => {
+  it("builds a Google Maps directions URL from the store's address", () => {
+    expect(buildStorePromoDirectionsUrl("32 rue des docteurs Charcot, 42000 Saint-Étienne")).toBe(
+      "https://www.google.com/maps/dir/?api=1&destination=32%20rue%20des%20docteurs%20Charcot%2C%2042000%20Saint-%C3%89tienne"
+    );
   });
 });

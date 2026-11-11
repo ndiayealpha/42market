@@ -19,6 +19,8 @@ export interface Store {
   description: string;
   pickupMinutes: number;
   promo?: Promo;
+  /** Saint-Étienne neighborhood — a coarse filter tag for the "Toutes les épiceries" listing, not a claimed postal address (see `StoreDetail.address`, which stays unset rather than invented). */
+  neighborhood: string;
 }
 
 /** "Ouvert" / "Fermé (Ouvre à {opensAt})" / "Fermé". */

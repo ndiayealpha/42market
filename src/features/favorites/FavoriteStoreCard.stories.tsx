@@ -10,7 +10,7 @@ const meta = {
   tags: ["autodocs"],
   parameters: { layout: "padded" },
   decorators: [(Story) => <div style={{ width: 320 }}><Story /></div>],
-  args: { store: STORE_PROMOS[0] },
+  args: { store: STORE_PROMOS[0], now: new Date("2026-11-09T10:00:00Z") },
 } satisfies Meta<typeof FavoriteStoreCard>;
 
 export default meta;

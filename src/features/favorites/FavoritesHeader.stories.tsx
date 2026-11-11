@@ -7,7 +7,7 @@ const meta = {
   component: FavoritesHeader,
   tags: ["autodocs"],
   parameters: { layout: "padded" },
-  args: { cityName: "Saint-Étienne", availableCount: 12 },
+  args: { cityName: "Saint-Étienne", activeTab: "produits", counts: { products: 12, stores: 3, recipes: 3 } },
 } satisfies Meta<typeof FavoritesHeader>;
 
 export default meta;

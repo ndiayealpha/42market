@@ -4,14 +4,16 @@ import type { HeaderActionConfig, HeaderLocation, NavigationItemConfig } from ".
 
 /**
  * Config-driven navigation/actions — the only place these change. Most
- * of these routes (bonnes-affaires, precommandes, ...) don't exist yet;
- * this config is what future pages will plug into, not a claim they do.
+ * of these routes (precommandes, ...) don't exist yet; this config is
+ * what future pages will plug into, not a claim they do. "Bon plans" and
+ * "Nouvel arrivage" are wired to their real, already-built pages (both
+ * were previously hardcoded to different, nonexistent paths).
  */
 export const DEFAULT_NAVIGATION_ITEMS: NavigationItemConfig[] = [
   { label: "Maison", href: routes.main.home },
-  { label: "Bonnes Affaires", href: "/main/bonnes-affaires", suffix: "fire" },
-  { label: "Précommandes", href: "/main/precommandes" },
-  { label: "Nouvel arrivage", href: "/main/nouvel-arrivage", suffix: "new" },
+  { label: "Bon plans", href: routes.main.bonsPlans, suffix: "fire" },
+  { label: "Précommandes", href: routes.main.preorders },
+  { label: "Nouvel arrivage", href: routes.main.newArrivals, suffix: "new" },
   { label: "Carnet du terroir", href: "/main/carnet-du-terroir", suffix: "chevron" },
   { label: "Aide et contacts", href: "/main/aide-et-contacts" },
 ];

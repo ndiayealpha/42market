@@ -16,7 +16,6 @@ const meta = {
   parameters: { layout: "fullscreen" },
   args: {
     cityName: "Saint-Étienne",
-    availableCount: 12,
     activeTab: "produits",
     getTabHref: (tab: string) => `/main/favoris?onglet=${tab}`,
     counts: { products: 12, stores: 3, recipes: 3 },
@@ -61,9 +60,14 @@ const meta = {
     isStoresError: false,
     onRetryStores: fn(),
     favoriteRecipes: FAVORITE_RECIPES,
+    recipeCount: FAVORITE_RECIPES.length,
     isRecipesLoading: false,
     isRecipesError: false,
     onRetryRecipes: fn(),
+    recipeTerroirRegion: "all",
+    getRecipeTerroirHref: (region: string) => `/main/favoris?terroir=${region}`,
+    recipePage: 1,
+    onLoadMoreRecipes: fn(),
   },
 } satisfies Meta<typeof FavoritesTemplate>;
 

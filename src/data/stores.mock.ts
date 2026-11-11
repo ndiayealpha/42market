@@ -21,6 +21,7 @@ export const NEARBY_STORES: Store[] = [
     description: "Spécialités Côte d'Ivoire & Afrique de l'Ouest",
     pickupMinutes: 10,
     promo: { label: "-10% sur les en-cas", icon: "🎫", tone: "pink" },
+    neighborhood: "Bellevue",
   },
   {
     id: "nimba-market",
@@ -33,6 +34,7 @@ export const NEARBY_STORES: Store[] = [
     description: "Épicerie guinéenne, farines, poissons séchés",
     pickupMinutes: 10,
     promo: { label: "-20% surgelés", icon: "🎫", tone: "gold" },
+    neighborhood: "Centre-Ville",
   },
   {
     id: "abidjan-market",
@@ -45,6 +47,7 @@ export const NEARBY_STORES: Store[] = [
     description: "Étal de fruits exotiques et tubercules frais",
     pickupMinutes: 15,
     promo: { label: "-50% les feuilles fraiches", icon: "🎫", tone: "danger" },
+    neighborhood: "Montreynaud",
   },
 ];
 
@@ -61,6 +64,7 @@ export const CITY_STORES: Store[] = [
     description: "Épices en vrac, olives & fruits confits",
     pickupMinutes: 20,
     promo: { label: "50 Articles en promo -20%", icon: "🔥", tone: "danger" },
+    neighborhood: "Carnot",
   },
   {
     id: "saveurs-dafrique",
@@ -73,6 +77,7 @@ export const CITY_STORES: Store[] = [
     description: "Poissons fumés, saka-saka & riz jasmin",
     pickupMinutes: 10,
     promo: { label: "Offre du jour", icon: "✨", tone: "cream" },
+    neighborhood: "Carnot",
   },
   {
     id: "elikya-market",
@@ -85,6 +90,7 @@ export const CITY_STORES: Store[] = [
     description: "Kwanga authentique, pondu frais & manioc",
     pickupMinutes: 15,
     promo: { label: "Livraison offerte", icon: "🚚", tone: "success" },
+    neighborhood: "Terrasse",
   },
   {
     id: "naija-markets",
@@ -97,6 +103,7 @@ export const CITY_STORES: Store[] = [
     description: "Huile rouge, gari blanc, épices suya & yam",
     pickupMinutes: 10,
     promo: { label: "Dernières heures", icon: "✨", tone: "orange" },
+    neighborhood: "Châteaucreux",
   },
   {
     id: "marche-gouro",
@@ -109,6 +116,7 @@ export const CITY_STORES: Store[] = [
     description: "Attiéké traditionnel, piments frais & gombos",
     pickupMinutes: 15,
     promo: { label: "40 articles en promo", icon: "🎫", tone: "wine" },
+    neighborhood: "Châteaucreux",
   },
   {
     id: "epicerie-du-monde",
@@ -121,5 +129,6 @@ export const CITY_STORES: Store[] = [
     description: "Produits d'Asie, Caraïbes & Amérique Latine",
     pickupMinutes: 20,
     promo: { label: "-20%", icon: "🔥", tone: "danger" },
+    neighborhood: "Valbenoite",
   },
 ];

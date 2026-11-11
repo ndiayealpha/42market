@@ -7,6 +7,8 @@ import { PREORDER_CAMPAIGNS } from "@/src/data/preorders.mock";
 export interface CatalogRepository {
   getNearbyStores(): Promise<Store[]>;
   getCityStores(): Promise<Store[]>;
+  /** The deduplicated union of every known store — the "Toutes les épiceries" listing filters/sorts this single list rather than the two separate home-page sections above. */
+  getAllStores(): Promise<Store[]>;
   getPreorderCampaigns(): Promise<PreorderCampaign[]>;
 }
 
@@ -16,6 +18,10 @@ export const mockCatalogRepository: CatalogRepository = {
   },
   async getCityStores() {
     return CITY_STORES;
+  },
+  async getAllStores() {
+    const byId = new Map([...NEARBY_STORES, ...CITY_STORES].map((store) => [store.id, store]));
+    return Array.from(byId.values());
   },
   async getPreorderCampaigns() {
     return PREORDER_CAMPAIGNS;

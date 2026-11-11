@@ -1,5 +1,8 @@
 import type { Media } from "@/src/domain/store-merchandising";
 import type { Product } from "@/src/domain/catalog";
+import type { OpeningStatus, StoreDetail } from "@/src/domain/store-detail";
+import { getOpeningStatus } from "@/src/domain/store-detail";
+import { FEATURE_FLAGS } from "@/src/config/feature-flags";
 import { formatPrice } from "@/src/lib/format";
 
 /** Discriminated union, not a free-text string — `formatPromoBadge`'s exhaustive switch is what guarantees every kind renders correctly. */
@@ -114,6 +117,14 @@ export interface PromoCategorySectionData {
   products: PromoProduct[];
 }
 
+export interface StoreTopProduct {
+  id: string;
+  slug: string;
+  name: string;
+  price: number;
+  image: Media;
+}
+
 export interface StorePromoSummary {
   slug: string;
   name: string;
@@ -125,6 +136,33 @@ export interface StorePromoSummary {
   discountLabel: string;
   itemsOnPromoCount: number;
   productTags: string[];
+  /** The fields below back the Favoris "Épiceries" tab's richer card — unused by `StorePromoCard` (Bons Plans listing). */
+  distanceMeters: number;
+  description: string;
+  openingHours: StoreDetail["openingHours"];
+  /** Data-driven, per store — never a single hardcoded string across every card. */
+  trustLabel: string;
+  deliversToHome: boolean;
+  /** Only meaningful when `deliversToHome` is true; the badge itself also requires `FEATURE_FLAGS.homeDelivery` (see `getDeliveryBadgeLabel`). */
+  deliveryMinutes?: number;
+  /** Max 3 — enforced by the fixture, not re-sliced at render time. */
+  topProducts: StoreTopProduct[];
+}
+
+/** "● Ouvert" / "Fermé" — the one place a store's open/closed state is computed, reusing the fiche-boutique's own `getOpeningStatus`. */
+export function getStorePromoOpeningStatus(store: StorePromoSummary, now: Date): OpeningStatus {
+  return getOpeningStatus(store.openingHours, now);
+}
+
+/** `null` unless both the store carries delivery AND the global flag is on — the FAQ's "Bientôt disponible" promise stays true everywhere else in the app. */
+export function getDeliveryBadgeLabel(store: StorePromoSummary): string | null {
+  if (!FEATURE_FLAGS.homeDelivery || !store.deliversToHome || store.deliveryMinutes === undefined) return null;
+  return `Livraison ${store.deliveryMinutes} min`;
+}
+
+/** Same Google Maps deep-link convention as `buildDirectionsUrl` (store-detail.ts), adapted for `StorePromoSummary.address`'s single free-text string instead of a `{street, city}` shape. */
+export function buildStorePromoDirectionsUrl(address: string): string {
+  return `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(address)}`;
 }
 
 export interface PromoScopeOption {

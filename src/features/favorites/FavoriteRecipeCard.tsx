@@ -1,45 +1,68 @@
 import Link from "next/link";
 
+import { ButtonLink } from "@/src/components/atoms/Button/ButtonLink";
+import { Chip } from "@/src/components/atoms/Chip/Chip";
 import { FavoriteButton } from "@/src/components/atoms/FavoriteButton/FavoriteButton";
+import { Icon } from "@/src/components/atoms/Icon/Icon";
 import { ProductImage } from "@/src/components/atoms/ProductImage/ProductImage";
-import type { FavoriteRecipe } from "@/src/domain/favorites";
+import { RECIPE_DIFFICULTY_CONFIG, type FavoriteRecipe } from "@/src/domain/favorites";
 import { useFavorites } from "@/src/hooks/useFavorites";
-import { formatPrice } from "@/src/lib/format";
+import { formatDuration, formatPrice } from "@/src/lib/format";
+import { routes } from "@/src/lib/routing/routes";
 
 export interface FavoriteRecipeCardProps {
   recipe: FavoriteRecipe;
 }
 
-/** F6 (minimal, unmaquetted) — a compact recipe card; `RecipeKitCard` (Page A) is built around an ingredient checklist, not a fit for "a recipe I favorited", so this is a new, smaller card (rule 5/12: derive from tokens, flagged). */
+/** F6 (minimal, unmaquetted at first, now matching the Recettes-tab maquette) — a compact recipe card; `RecipeKitCard` (Page A) is built around an ingredient checklist, not a fit for "a recipe I favorited", so this stays its own card. */
 export function FavoriteRecipeCard({ recipe }: FavoriteRecipeCardProps) {
   const { favoriteIds } = useFavorites("recipe");
   const isFavorite = favoriteIds.has(recipe.id);
 
   return (
-    <div className="relative flex h-full flex-col overflow-hidden rounded-2xl bg-surface shadow-card">
+    <div className="flex h-full flex-col overflow-hidden rounded-2xl bg-surface shadow-card">
       <ProductImage
         src={recipe.image.src}
         alt={recipe.image.alt}
         aspectRatio="4/3"
-        sizes="(min-width: 1024px) 33vw, 100vw"
+        sizes="(min-width: 1024px) 25vw, 50vw"
         topRight={
           <FavoriteButton
             itemId={recipe.id}
             isFavorite={isFavorite}
             label={isFavorite ? `Retirer ${recipe.name} des favoris` : `Ajouter ${recipe.name} aux favoris`}
             kind="recipe"
-            className="relative z-10"
+            tone="surface"
           />
         }
       />
-      <div className="flex flex-1 flex-col p-4">
-        <p className="text-base font-bold text-foreground-strong">
-          <Link href={recipe.href} className="after:absolute after:inset-0">
-            {recipe.name}
+      <div className="flex flex-1 flex-col gap-2 p-4">
+        <p className="line-clamp-2 text-base font-bold text-foreground-strong">{recipe.name}</p>
+
+        <div className="flex items-center gap-2">
+          <Link href={routes.main.epicerieDetail(recipe.storeSlug)} className="relative z-10">
+            <Chip tone="cream" size="xs">
+              {recipe.storeName}
+            </Chip>
           </Link>
-        </p>
-        <p className="mt-1 text-xs text-muted-foreground">{recipe.servings} pers.</p>
-        <p className="mt-auto pt-3 text-sm font-bold text-foreground-strong">Panier dès {formatPrice(recipe.totalPrice)}</p>
+          <span className="text-xs font-bold text-foreground-strong">Dès {formatPrice(recipe.totalPrice)}</span>
+        </div>
+
+        <div className="flex items-center gap-3 text-xs text-muted-foreground">
+          <span className="flex items-center gap-1">
+            <Icon name="clock" size={14} decorative />
+            {formatDuration(recipe.durationMinutes)}
+          </span>
+          <span className="flex items-center gap-1">
+            <Icon name="user" size={14} decorative />
+            {recipe.servings} pers.
+          </span>
+          <span>{RECIPE_DIFFICULTY_CONFIG[recipe.difficulty].label}</span>
+        </div>
+
+        <ButtonLink href={recipe.href} variant="soft" className="relative z-10 mt-auto w-full justify-center border border-catalog-line">
+          Voir la recette
+        </ButtonLink>
       </div>
     </div>
   );

@@ -2,9 +2,11 @@ import { CardGrid } from "@/src/components/layout/CardGrid/CardGrid";
 import { EmptyState } from "@/src/components/molecules/EmptyState/EmptyState";
 import { ButtonLink } from "@/src/components/atoms/Button/ButtonLink";
 import { Skeleton } from "@/src/components/atoms/Skeleton/Skeleton";
+import { StoreAvatar } from "@/src/components/atoms/StoreAvatar/StoreAvatar";
 import { AsyncSection } from "@/src/components/layout/AsyncSection/AsyncSection";
+import { Section } from "@/src/components/layout/Section/Section";
 import { ProductCard } from "@/src/features/catalog/ProductCard";
-import type { FavoriteProduct } from "@/src/domain/favorites";
+import { groupFavoriteProductsByStore, type FavoriteProduct } from "@/src/domain/favorites";
 import { routes } from "@/src/lib/routing/routes";
 
 export interface FavoriteProductGridProps {
@@ -69,19 +71,30 @@ export function FavoriteProductGrid({
           />
         )
       ) : (
-        <CardGrid columns={5}>
-          {products.map((product) => (
-            <li key={product.id}>
-              <ProductCard
-                variant="favorite"
-                product={product}
-                selectable={isSelectionMode}
-                isSelected={selectedIds.has(product.id)}
-                onToggleSelect={onToggleSelect}
-              />
-            </li>
+        <div className="flex flex-col gap-8">
+          {groupFavoriteProductsByStore(products).map((group) => (
+            <Section
+              key={group.storeSlug}
+              id={`favoris-produits-${group.storeSlug}`}
+              leading={<StoreAvatar name={group.storeName} slug={group.storeSlug} size={36} />}
+              title={group.storeName}
+            >
+              <CardGrid columns={5}>
+                {group.products.map((product) => (
+                  <li key={product.id}>
+                    <ProductCard
+                      variant="favorite"
+                      product={product}
+                      selectable={isSelectionMode}
+                      isSelected={selectedIds.has(product.id)}
+                      onToggleSelect={onToggleSelect}
+                    />
+                  </li>
+                ))}
+              </CardGrid>
+            </Section>
           ))}
-        </CardGrid>
+        </div>
       )}
     </AsyncSection>
   );

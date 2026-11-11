@@ -1,9 +1,11 @@
 import { PRODUCTS } from "@/src/data/catalog.mock";
 import { FAVORITE_PRODUCTS } from "@/src/data/favorites.mock";
+import { NEW_ARRIVAL_SECTIONS } from "@/src/data/new-arrivals.mock";
 import { PRODUCT_DETAIL_FIXTURES } from "@/src/data/product-detail.mock";
 import { FEATURED_PROMO_PRODUCTS, PROMO_CATEGORY_SECTIONS } from "@/src/data/promotions.mock";
 import { STORE_DEALS } from "@/src/data/store-deals.mock";
 import type { FavoriteProduct } from "@/src/domain/favorites";
+import type { NewArrivalProduct } from "@/src/domain/new-arrival";
 import { fromBaseProduct, type ProductDetail } from "@/src/domain/product-detail";
 
 export interface ProductDetailRepository {
@@ -25,15 +27,30 @@ function favoriteToBaseProduct(favorite: FavoriteProduct) {
   };
 }
 
+/** `NewArrivalProduct` has no `storeName`/`packagingLabel`/`isOutOfStock` of its own — adapted from its section's `stores` list and its `unit` string, same spirit as `favoriteToBaseProduct`. */
+function newArrivalToBaseProduct(product: NewArrivalProduct, storeName: string) {
+  return {
+    id: product.id,
+    slug: product.productSlug,
+    name: product.name,
+    packagingLabel: product.unit.replace(/^\/\s*/, ""),
+    price: product.price,
+    image: product.image,
+    storeSlug: product.storeSlug,
+    storeName,
+    isOutOfStock: false,
+  };
+}
+
 /**
  * Resolution order (see Page P compte-rendu):
  *  (a) a rich reference fixture keyed by `${storeSlug}/${productSlug}`
  *      (`PRODUCT_DETAIL_FIXTURES`);
  *  (b) a minimal-but-real `ProductDetail` synthesized via `fromBaseProduct`
- *      from any pre-existing catalog/promo/deal/favorite fixture that
- *      matches the same pair — so every `ProductCard` link built for the
- *      other pages (Page A, Page B, Favoris, Bons plans) resolves to a
- *      real page instead of a 404;
+ *      from any pre-existing catalog/promo/deal/favorite/new-arrival
+ *      fixture that matches the same pair — so every `ProductCard` link
+ *      built for the other pages (Page A, Page B, Favoris, Bons plans,
+ *      Nouveaux arrivages) resolves to a real page instead of a 404;
  *  (c) `null`, which the route handler turns into `notFound()`.
  */
 export const mockProductDetailRepository: ProductDetailRepository = {
@@ -55,6 +72,14 @@ export const mockProductDetailRepository: ProductDetailRepository = {
 
     const favoriteMatch = FAVORITE_PRODUCTS.find((product) => product.storeSlug === storeSlug && product.slug === productSlug);
     if (favoriteMatch) return fromBaseProduct(favoriteToBaseProduct(favoriteMatch));
+
+    for (const section of NEW_ARRIVAL_SECTIONS) {
+      const newArrivalMatch = section.products.find((product) => product.storeSlug === storeSlug && product.productSlug === productSlug);
+      if (newArrivalMatch) {
+        const storeName = section.stores.find((store) => store.slug === storeSlug)?.name ?? newArrivalMatch.storeSlug;
+        return fromBaseProduct(newArrivalToBaseProduct(newArrivalMatch, storeName));
+      }
+    }
 
     return null;
   },

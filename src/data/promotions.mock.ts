@@ -1,5 +1,17 @@
 import type { FlashSale, PromoCategorySectionData, PromoProduct, PromoScopeOption, StorePromoSummary } from "@/src/domain/promotions";
+import type { StoreDetail } from "@/src/domain/store-detail";
 import type { TrustItemConfig } from "@/src/components/organisms/Footer/Footer.types";
+
+/** Same "one generous identical daily schedule, not a fabricated weekly rhythm" rule as `buildStaticStoreDetail` (store-detail.ts). */
+const GENERIC_OPENING_HOURS: StoreDetail["openingHours"] = {
+  mon: { open: "08:00", close: "20:00" },
+  tue: { open: "08:00", close: "20:00" },
+  wed: { open: "08:00", close: "20:00" },
+  thu: { open: "08:00", close: "20:00" },
+  fri: { open: "08:00", close: "20:00" },
+  sat: { open: "08:00", close: "20:00" },
+  sun: { open: "09:00", close: "13:00" },
+};
 
 export const FLASH_SALE: FlashSale = { endsAtIso: "2026-11-10T20:00:00+01:00" };
 
@@ -119,6 +131,18 @@ export const STORE_PROMOS: StorePromoSummary[] = [
     itemsOnPromoCount: 45,
     productTags: ["Bananes Plantain", "Tubercules", "Bissap"],
     image: { src: "/store-header-tomatoes.jpg", alt: "LoirIvoire" },
+    distanceMeters: 650,
+    description:
+      "Primeur et épicerie exotique de référence à Saint-Étienne : tubercules, bananes plantains et épices rares réceptionnés plusieurs fois par semaine.",
+    openingHours: GENERIC_OPENING_HOURS,
+    trustLabel: "Partenaire contrôlé 42 Markets",
+    deliversToHome: true,
+    deliveryMinutes: 40,
+    topProducts: [
+      { id: "promo-igname-blanc-pona", slug: "igname-blanc-pona", name: "Igname Blanc Pona", price: 2.8, image: { src: "/offer-riz-royal-lion.jpg", alt: "Igname Blanc Pona" } },
+      { id: "promo-poivre-blanc-penja", slug: "poivre-blanc-penja", name: "Poivre Blanc de Penja IGP", price: 5.4, image: { src: "/souk-des-saveurs.jpg", alt: "Poivre Blanc de Penja IGP" } },
+      { id: "promo-attieke-frais-abidjan", slug: "attieke-frais-abidjan", name: "Attiéké Frais d'Abidjan", price: 1.45, image: { src: "/offer-attieke-frais.jpg", alt: "Attiéké Frais d'Abidjan" } },
+    ],
   },
   {
     slug: "abidjan-market",
@@ -131,6 +155,17 @@ export const STORE_PROMOS: StorePromoSummary[] = [
     itemsOnPromoCount: 38,
     productTags: ["Poivre Penja", "Baobab", "Attiéké"],
     image: { src: "/login-visual.jpg", alt: "Abidjan Market" },
+    distanceMeters: 1150,
+    description:
+      "Spécialiste des condiments et poivres rares d'Afrique de l'Ouest, sélectionnés directement auprès de coopératives certifiées à Bellevue.",
+    openingHours: GENERIC_OPENING_HOURS,
+    trustLabel: "Click & Collect prioritaire",
+    deliversToHome: false,
+    topProducts: [
+      { id: "promo-piment-habanero-antilles", slug: "piment-habanero-antilles", name: "Piment Habanero Rouge des Antilles", price: 1.5, image: { src: "/offer-attieke-frais.jpg", alt: "Piment Habanero Rouge des Antilles" } },
+      { id: "promo-pate-piment-shito", slug: "pate-piment-shito", name: "Pâte de Piment Shito", price: 2.3, image: { src: "/offer-riz-royal-lion.jpg", alt: "Pâte de Piment Shito" } },
+      { id: "promo-malta-guinness-pack6", slug: "malta-guinness-pack6", name: "Malta Guinness (Pack x6)", price: 5.5, image: { src: "/offer-riz-royal-lion.jpg", alt: "Malta Guinness (Pack x6)" } },
+    ],
   },
   {
     slug: "nimba-market",
@@ -143,6 +178,17 @@ export const STORE_PROMOS: StorePromoSummary[] = [
     itemsOnPromoCount: 29,
     productTags: ["Riz Parfumé", "Fonio", "Farine Manioc"],
     image: { src: "/promo-banner-market.jpg", alt: "Nimba Market" },
+    distanceMeters: 350,
+    description: "Céréales, riz parfumés et farines en gros conditionnement à prix direct, pour les familles qui cuisinent en grande quantité.",
+    openingHours: GENERIC_OPENING_HOURS,
+    trustLabel: "Origine certifiée et traçabilité labellisée",
+    deliversToHome: true,
+    deliveryMinutes: 35,
+    topProducts: [
+      { id: "promo-sac-riz-parfume-5kg", slug: "sac-riz-parfume-5kg", name: "Sac de Riz Parfumé Brisé 5kg", price: 7.9, image: { src: "/offer-riz-royal-lion.jpg", alt: "Sac de Riz Parfumé Brisé 5kg" } },
+      { id: "promo-patates-douces-rouges", slug: "patates-douces-rouges", name: "Patates Douces Rouges", price: 1.95, image: { src: "/offer-attieke-frais.jpg", alt: "Patates Douces Rouges" } },
+      { id: "promo-gari-jaune-superieur", slug: "gari-jaune-superieur", name: "Gari Jaune Supérieur", price: 2.2, image: { src: "/promo-banner-market.jpg", alt: "Gari Jaune Supérieur" } },
+    ],
   },
 ];
 

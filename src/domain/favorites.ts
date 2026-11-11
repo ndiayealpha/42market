@@ -52,13 +52,41 @@ export function formatFavoriteUnitPrice(price: number, unitBasis?: FavoriteProdu
   return `${formatPrice(perLiterPrice)}/L`;
 }
 
+export type RecipeDifficulty = "facile" | "moyen" | "difficile";
+
+export const RECIPE_DIFFICULTY_CONFIG: Record<RecipeDifficulty, { label: string }> = {
+  facile: { label: "Facile" },
+  moyen: { label: "Moyen" },
+  difficile: { label: "Difficile" },
+};
+
 export interface FavoriteRecipe {
   id: string;
   name: string;
   servings: number;
   totalPrice: number;
   image: Media;
+  /** No recipe detail route exists yet (only the `/main/recettes` list) — TODO route détail recette à créer; every fixture points at the list for now. */
   href: string;
+  storeSlug: string;
+  storeName: string;
+  durationMinutes: number;
+  difficulty: RecipeDifficulty;
+  terroirRegion: TerroirRegionSlug;
+}
+
+const FAVORITE_RECIPES_PAGE_SIZE = 24;
+
+/** `null` = "Tous les terroirs". */
+export function filterFavoriteRecipesByTerroir(recipes: FavoriteRecipe[], terroirRegion: TerroirRegionSlug | "all"): FavoriteRecipe[] {
+  if (terroirRegion === "all") return recipes;
+  return recipes.filter((recipe) => recipe.terroirRegion === terroirRegion);
+}
+
+/** First `page` pages (1-indexed) worth of recipes — backs "Charger plus" once the list exceeds one page, rather than a true cursor/offset API that doesn't exist for this mock data. */
+export function paginateFavoriteRecipes(recipes: FavoriteRecipe[], page: number): { items: FavoriteRecipe[]; hasMore: boolean } {
+  const end = page * FAVORITE_RECIPES_PAGE_SIZE;
+  return { items: recipes.slice(0, end), hasMore: recipes.length > end };
 }
 
 export type FavoritesSortOption = "recent" | "price-asc" | "price-desc" | "name-asc";
@@ -102,7 +130,7 @@ export function parseFavoritesTab(value: string | undefined): FavoritesTab {
 }
 
 export function parseTerroirRegionFilter(value: string | undefined): TerroirRegionSlug | "all" {
-  if (value === "afrique-ouest" || value === "caraibes-ocean-indien" || value === "maghreb") return value;
+  if (value === "afrique-ouest" || value === "caraibes-ocean-indien" || value === "maghreb" || value === "asie") return value;
   return "all";
 }
 
@@ -147,6 +175,32 @@ export function computeBulkSelection(products: FavoriteProduct[], selectedIds: S
   };
 }
 
+export interface FavoriteProductStoreGroup {
+  storeSlug: string;
+  storeName: string;
+  products: FavoriteProduct[];
+}
+
+/**
+ * Groups the already-filtered/sorted product list by store, preserving the
+ * incoming order within each group (so the active sort still applies inside
+ * every store section) — backs the "un panier = une épicerie" grouping on
+ * the Favoris Produits tab, the same rule `BulkAddBar` already enforces at
+ * checkout time.
+ */
+export function groupFavoriteProductsByStore(products: FavoriteProduct[]): FavoriteProductStoreGroup[] {
+  const groups = new Map<string, FavoriteProductStoreGroup>();
+  for (const product of products) {
+    const existing = groups.get(product.storeSlug);
+    if (existing) {
+      existing.products.push(product);
+    } else {
+      groups.set(product.storeSlug, { storeSlug: product.storeSlug, storeName: product.storeName, products: [product] });
+    }
+  }
+  return Array.from(groups.values());
+}
+
 export interface FavoriteProductFilters {
   terroirRegion: TerroirRegionSlug | "all";
   inStockOnly: boolean;
@@ -170,4 +224,42 @@ export interface FavoritesCounts {
   products: number;
   stores: number;
   recipes: number;
+}
+
+/** "Mes produits favoris" / "Mes épiceries favorites" / "Mes recettes favorites" — the per-tab intro copy. */
+export function getFavoritesTabIntro(tab: FavoritesTab): string {
+  switch (tab) {
+    case "produits":
+      return "Retrouvez vos produits sauvegardés et réassortissez-les en un clic pour votre prochaine commande Click & Collect dans vos épiceries de quartier.";
+    case "epiceries":
+      return "Retrouvez vos articles sauvegardés et terroirs d'ailleurs pour préparer votre commande Click & Collect en 2h auprès de vos épiceries indépendantes de Saint-Étienne.";
+    case "recettes":
+      return "Retrouvez vos recettes du terroir sauvegardées et cuisinez les saveurs authentiques du monde avec les ingrédients frais disponibles en Click & Collect dans vos épiceries de quartier.";
+    default: {
+      const exhaustive: never = tab;
+      throw new Error(`Unhandled favorites tab: ${JSON.stringify(exhaustive)}`);
+    }
+  }
+}
+
+/**
+ * The header's right-side insert — always derived from the SAME `counts`
+ * object that feeds the tab badges, so the two numbers can never diverge
+ * (rule: the maquette itself shows "Épiceries 3" next to "5 épiceries" /
+ * "24 recettes" next to a badge of 3 — both are bugs this function can't
+ * reproduce, by construction).
+ */
+export function formatFavoritesHeaderInsight(tab: FavoritesTab, counts: FavoritesCounts, cityName: string): string {
+  switch (tab) {
+    case "produits":
+      return counts.products <= 1 ? `${counts.products} produit sauvegardé` : `${counts.products} produits sauvegardés`;
+    case "epiceries":
+      return counts.stores <= 1 ? `${counts.stores} épicerie sauvegardée à ${cityName}` : `${counts.stores} épiceries sauvegardées à ${cityName}`;
+    case "recettes":
+      return counts.recipes <= 1 ? `${counts.recipes} recette sauvegardée` : `${counts.recipes} recettes sauvegardées`;
+    default: {
+      const exhaustive: never = tab;
+      throw new Error(`Unhandled favorites tab: ${JSON.stringify(exhaustive)}`);
+    }
+  }
 }

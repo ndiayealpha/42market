@@ -2,7 +2,22 @@ import { describe, expect, it } from "vitest";
 
 import { formatPrice } from "@/src/lib/format";
 
-import { computeBulkSelection, filterFavoriteProducts, formatFavoriteUnitPrice, parseFavoritesSort, parseFavoritesTab, parseTerroirRegionFilter, sortFavoriteProducts, type FavoriteProduct } from "./favorites";
+import {
+  computeBulkSelection,
+  filterFavoriteProducts,
+  filterFavoriteRecipesByTerroir,
+  formatFavoriteUnitPrice,
+  formatFavoritesHeaderInsight,
+  getFavoritesTabIntro,
+  groupFavoriteProductsByStore,
+  paginateFavoriteRecipes,
+  parseFavoritesSort,
+  parseFavoritesTab,
+  parseTerroirRegionFilter,
+  sortFavoriteProducts,
+  type FavoriteProduct,
+  type FavoriteRecipe,
+} from "./favorites";
 
 const PRODUCT_A: FavoriteProduct = {
   id: "a",
@@ -106,5 +121,92 @@ describe("computeBulkSelection", () => {
     const summary = computeBulkSelection([PRODUCT_A, PRODUCT_B], new Set(["a"]));
     expect(summary.totalPrice).toBe(PRODUCT_A.price);
     expect(formatPrice(summary.totalPrice)).toBe(formatPrice(PRODUCT_A.price));
+  });
+});
+
+const BASE_RECIPE: FavoriteRecipe = {
+  id: "r1",
+  name: "Thiéboudienne",
+  servings: 6,
+  totalPrice: 24.9,
+  image: { src: "/x.jpg", alt: "Thiéboudienne" },
+  href: "/main/recettes",
+  storeSlug: "loirivoire",
+  storeName: "LoirIvoire",
+  durationMinutes: 60,
+  difficulty: "moyen",
+  terroirRegion: "afrique-ouest",
+};
+
+describe("parseTerroirRegionFilter", () => {
+  it("accepts the 4 known regions, including 'asie'", () => {
+    expect(parseTerroirRegionFilter("asie")).toBe("asie");
+    expect(parseTerroirRegionFilter("maghreb")).toBe("maghreb");
+  });
+
+  it("falls back to 'all' for an unknown value", () => {
+    expect(parseTerroirRegionFilter("inconnu")).toBe("all");
+  });
+});
+
+describe("filterFavoriteRecipesByTerroir", () => {
+  const recipes: FavoriteRecipe[] = [BASE_RECIPE, { ...BASE_RECIPE, id: "r2", terroirRegion: "asie" }];
+
+  it("returns every recipe for 'all'", () => {
+    expect(filterFavoriteRecipesByTerroir(recipes, "all")).toHaveLength(2);
+  });
+
+  it("filters to the matching region", () => {
+    expect(filterFavoriteRecipesByTerroir(recipes, "asie").map((r) => r.id)).toEqual(["r2"]);
+  });
+});
+
+describe("paginateFavoriteRecipes", () => {
+  const recipes: FavoriteRecipe[] = Array.from({ length: 30 }, (_, i) => ({ ...BASE_RECIPE, id: `r${i}` }));
+
+  it("returns the first page and signals more remain", () => {
+    const { items, hasMore } = paginateFavoriteRecipes(recipes, 1);
+    expect(items).toHaveLength(24);
+    expect(hasMore).toBe(true);
+  });
+
+  it("returns everything once the page covers the full list", () => {
+    const { items, hasMore } = paginateFavoriteRecipes(recipes, 2);
+    expect(items).toHaveLength(30);
+    expect(hasMore).toBe(false);
+  });
+});
+
+describe("getFavoritesTabIntro", () => {
+  it("returns distinct copy for each tab", () => {
+    const intros = new Set(["produits", "epiceries", "recettes"].map((tab) => getFavoritesTabIntro(tab as never)));
+    expect(intros.size).toBe(3);
+  });
+});
+
+describe("formatFavoritesHeaderInsight", () => {
+  const counts = { products: 1, stores: 5, recipes: 3 };
+
+  it("matches the tab badge count exactly, singular/plural aware", () => {
+    expect(formatFavoritesHeaderInsight("produits", counts, "Saint-Étienne")).toBe("1 produit sauvegardé");
+    expect(formatFavoritesHeaderInsight("epiceries", counts, "Saint-Étienne")).toBe("5 épiceries sauvegardées à Saint-Étienne");
+    expect(formatFavoritesHeaderInsight("recettes", counts, "Saint-Étienne")).toBe("3 recettes sauvegardées");
+  });
+});
+
+describe("groupFavoriteProductsByStore", () => {
+  it("groups by store, preserving the incoming order within each group", () => {
+    const products: FavoriteProduct[] = [
+      { id: "p1", slug: "p1", name: "B", packagingLabel: "", price: 1, storeSlug: "s1", storeName: "Store 1", stockStatus: "in-stock", terroirRegion: "afrique-ouest", image: { src: "", alt: "" } },
+      { id: "p2", slug: "p2", name: "A", packagingLabel: "", price: 1, storeSlug: "s2", storeName: "Store 2", stockStatus: "in-stock", terroirRegion: "afrique-ouest", image: { src: "", alt: "" } },
+      { id: "p3", slug: "p3", name: "C", packagingLabel: "", price: 1, storeSlug: "s1", storeName: "Store 1", stockStatus: "in-stock", terroirRegion: "afrique-ouest", image: { src: "", alt: "" } },
+    ];
+    const groups = groupFavoriteProductsByStore(products);
+    expect(groups.map((g) => g.storeSlug)).toEqual(["s1", "s2"]);
+    expect(groups[0].products.map((p) => p.id)).toEqual(["p1", "p3"]);
+  });
+
+  it("returns an empty array for an empty list", () => {
+    expect(groupFavoriteProductsByStore([])).toEqual([]);
   });
 });

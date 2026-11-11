@@ -1,16 +1,21 @@
+import { Button } from "@/src/components/atoms/Button/Button";
+import { ButtonLink } from "@/src/components/atoms/Button/ButtonLink";
 import { Container } from "@/src/components/layout/Container/Container";
 import { CardGrid } from "@/src/components/layout/CardGrid/CardGrid";
 import { AsyncSection } from "@/src/components/layout/AsyncSection/AsyncSection";
 import { EmptyState } from "@/src/components/molecules/EmptyState/EmptyState";
 import { Skeleton } from "@/src/components/atoms/Skeleton/Skeleton";
+import { paginateFavoriteRecipes } from "@/src/domain/favorites";
 import type { BulkSelectionSummary, FavoriteProduct, FavoritesCounts, FavoritesSortOption, FavoritesTab } from "@/src/domain/favorites";
 import type { FavoriteRecipe } from "@/src/domain/favorites";
 import type { StorePromoSummary } from "@/src/domain/promotions";
 import type { TerroirRegionSlug } from "@/src/domain/terroir";
+import { routes } from "@/src/lib/routing/routes";
 
 import { BulkAddBar } from "./BulkAddBar";
 import { FavoriteProductGrid } from "./FavoriteProductGrid";
 import { FavoriteRecipeCard } from "./FavoriteRecipeCard";
+import { FavoriteRecipeFilters } from "./FavoriteRecipeFilters";
 import { FavoriteStoreCard } from "./FavoriteStoreCard";
 import { FavoritesHeader } from "./FavoritesHeader";
 import { FavoritesTabs } from "./FavoritesTabs";
@@ -18,7 +23,6 @@ import { FavoritesToolbar } from "./FavoritesToolbar";
 
 export interface FavoritesTemplateProps {
   cityName: string;
-  availableCount: number;
   activeTab: FavoritesTab;
   getTabHref: (tab: FavoritesTab) => string;
   counts: FavoritesCounts;
@@ -57,9 +61,14 @@ export interface FavoritesTemplateProps {
 
   // Recettes tab
   favoriteRecipes: FavoriteRecipe[];
+  recipeCount: number;
   isRecipesLoading: boolean;
   isRecipesError: boolean;
   onRetryRecipes: () => void;
+  recipeTerroirRegion: TerroirRegionSlug | "all";
+  getRecipeTerroirHref: (region: TerroirRegionSlug | "all") => string;
+  recipePage: number;
+  onLoadMoreRecipes: () => void;
 }
 
 function StoreGridSkeleton() {
@@ -78,7 +87,7 @@ export function FavoritesTemplate(props: FavoritesTemplateProps) {
 
   return (
     <Container className="flex flex-col gap-6 py-6">
-      <FavoritesHeader cityName={props.cityName} availableCount={props.availableCount} />
+      <FavoritesHeader cityName={props.cityName} activeTab={activeTab} counts={props.counts} />
 
       <FavoritesTabs active={activeTab} counts={props.counts} getTabHref={props.getTabHref} lastSyncedAtIso={props.lastSyncedAtIso} now={props.now} />
 
@@ -129,33 +138,73 @@ export function FavoritesTemplate(props: FavoritesTemplateProps) {
       {activeTab === "epiceries" && (
         <AsyncSection isLoading={props.isStoresLoading} isError={props.isStoresError} onRetry={props.onRetryStores} skeleton={<StoreGridSkeleton />}>
           {props.favoriteStores.length === 0 ? (
-            <EmptyState icon="store" title="Aucune épicerie favorite pour le moment." />
+            <EmptyState
+              icon="store"
+              title="Aucune épicerie favorite pour le moment."
+              description="Parcourez les épiceries indépendantes de votre quartier et ajoutez vos préférées en un cœur."
+              action={
+                <ButtonLink href={routes.main.epiceries} variant="soft">
+                  Découvrir les épiceries
+                </ButtonLink>
+              }
+            />
           ) : (
-            <CardGrid columns={3}>
+            <div className="flex flex-col gap-4">
               {props.favoriteStores.map((store) => (
-                <li key={store.slug}>
-                  <FavoriteStoreCard store={store} />
-                </li>
+                <FavoriteStoreCard key={store.slug} store={store} now={props.now} />
               ))}
-            </CardGrid>
+            </div>
           )}
         </AsyncSection>
       )}
 
       {activeTab === "recettes" && (
-        <AsyncSection isLoading={props.isRecipesLoading} isError={props.isRecipesError} onRetry={props.onRetryRecipes} skeleton={<StoreGridSkeleton />}>
-          {props.favoriteRecipes.length === 0 ? (
-            <EmptyState icon="cooking" title="Aucune recette favorite pour le moment." />
-          ) : (
-            <CardGrid columns={3}>
-              {props.favoriteRecipes.map((recipe) => (
-                <li key={recipe.id}>
-                  <FavoriteRecipeCard recipe={recipe} />
-                </li>
-              ))}
-            </CardGrid>
-          )}
-        </AsyncSection>
+        <>
+          <FavoriteRecipeFilters terroirRegion={props.recipeTerroirRegion} getTerroirHref={props.getRecipeTerroirHref} />
+
+          <AsyncSection isLoading={props.isRecipesLoading} isError={props.isRecipesError} onRetry={props.onRetryRecipes} skeleton={<StoreGridSkeleton />}>
+            {props.favoriteRecipes.length === 0 ? (
+              props.recipeCount === 0 ? (
+                <EmptyState
+                  icon="cooking"
+                  title="Aucune recette favorite pour le moment."
+                  description="Parcourez le carnet du terroir et sauvegardez vos recettes préférées en un cœur."
+                  action={
+                    <ButtonLink href={routes.main.recipes} variant="soft">
+                      Découvrir les recettes
+                    </ButtonLink>
+                  }
+                />
+              ) : (
+                <EmptyState icon="search" title="Aucune recette favorite dans ce terroir." />
+              )
+            ) : (
+              <>
+                {(() => {
+                  const { items, hasMore } = paginateFavoriteRecipes(props.favoriteRecipes, props.recipePage);
+                  return (
+                    <>
+                      <CardGrid columns={4}>
+                        {items.map((recipe) => (
+                          <li key={recipe.id}>
+                            <FavoriteRecipeCard recipe={recipe} />
+                          </li>
+                        ))}
+                      </CardGrid>
+                      {hasMore && (
+                        <div className="flex justify-center">
+                          <Button onClick={props.onLoadMoreRecipes} variant="soft">
+                            Charger plus
+                          </Button>
+                        </div>
+                      )}
+                    </>
+                  );
+                })()}
+              </>
+            )}
+          </AsyncSection>
+        </>
       )}
     </Container>
   );

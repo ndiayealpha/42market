@@ -38,8 +38,14 @@ export const routes = {
     /** Product detail (Page P) — nested under its store, matching the `epicerieRayon*` family. */
     epicerieProduit: (slug: string, produitSlug: string) => `/main/epiceries/${slug}/produits/${produitSlug}`,
     notifications: "/main/notifications",
+    /** Protected, same as `epiceries` — no public-discovery exception needed unless asked for one. */
+    newArrivals: "/main/nouveaux-arrivages",
     /** Global, cross-store promotions page — distinct from `epicerieBonsPlans`, which is scoped to one store. */
     bonsPlans: "/main/bons-plans",
+    /** Marketing/onboarding content — public like `bonsPlans`, same reasoning (helps convert anonymous visitors). */
+    howItWorks: "/main/comment-ca-marche",
+    /** Support content, crawlable — public for the same reason as `howItWorks`. */
+    faq: "/main/faq",
     /** Click & Collect checkout (Page K) — the step between the cart and order confirmation. */
     checkout: "/main/panier/retrait",
     /** Order confirmation + live tracking (Page S) — one route for both, the status varies. */
@@ -74,7 +80,7 @@ const PROTECTED_PREFIXES: string[] = [routes.main.root];
  * to login before the page ever renders, and both pages are public by
  * design.
  */
-const PROTECTED_EXCEPTIONS: string[] = [routes.main.bonsPlans, routes.main.search];
+const PROTECTED_EXCEPTIONS: string[] = [routes.main.bonsPlans, routes.main.search, routes.main.howItWorks, routes.main.faq];
 
 /**
  * Pattern-based exceptions, for routes with dynamic segments that are
