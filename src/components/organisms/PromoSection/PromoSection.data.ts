@@ -8,6 +8,19 @@ export interface PromoItem extends PromoCardProps {
  * The 6 mockup banners. Adding a 7th is adding an entry here — nothing
  * in PromoCard/PromoSection changes.
  *
+ * `href` used to point at `/main/offres/<slug>`, a route that never
+ * existed (every card was a dead link). Each now lands on a real page of
+ * real matching products: `/main/bons-plans?remise=N` filters the global
+ * promos page to products at least N% off (`filterDealsByMinDiscount`,
+ * computed from real price/compareAtPrice — never fabricated), N being
+ * roughly half the banner's own headline discount, since "jusqu'à X%" is
+ * a ceiling, not every product's exact cut. "directs-abidjan-dakar" goes
+ * to `/main/nouveaux-arrivages` instead — "arrivages fret express" maps
+ * onto that real page more directly than a discount filter would. The 2
+ * cards with no discount figure of their own ("fete-des-meres",
+ * "pause-fraiche-sirops") link to the plain, unfiltered bons-plans page —
+ * still real products with real promos, just not narrowed further.
+ *
  * Placeholder notes (no sourced photos for these — see delivery notes):
  * - items 1 and 3 reuse the existing app photo (login-info-thumbnail.jpg)
  *   as a stand-in, not real mockup photography. login-visual.png /
@@ -32,7 +45,7 @@ export const PROMO_ITEMS: PromoItem[] = [
     highlight: "-50%",
     description: "Arrivages frais & Épicerie du monde",
     tag: "Click & Collect 10 min",
-    href: "/main/offres/reduction-50",
+    href: "/main/bons-plans?remise=25",
     ctaLabel: "Voir l'offre : Réduction jusqu'à -50%",
     media: { src: "/login-info-thumbnail.jpg", alt: "Étal de fruits et légumes frais", ratio: "4/3" },
     stickers: [
@@ -49,7 +62,7 @@ export const PROMO_ITEMS: PromoItem[] = [
     title: "Fête des Mères",
     subtitle: "Comblez vos proches d'amour & de douceurs",
     tag: "Paniers dès 14,90 €",
-    href: "/main/offres/fete-des-meres",
+    href: "/main/bons-plans",
     ctaLabel: "Voir l'offre : Fête des Mères",
     media: { src: "/souk-des-saveurs.jpg", alt: "Devanture de l'épicerie Le Souk des Saveurs" },
   },
@@ -62,7 +75,7 @@ export const PROMO_ITEMS: PromoItem[] = [
     title: "Grande Fête des Saveurs",
     subtitle: "Semoules, riz parfumés & sauces",
     tag: "Dès 2 paniers achetés",
-    href: "/main/offres/fete-des-saveurs",
+    href: "/main/bons-plans?remise=20",
     ctaLabel: "Voir l'offre : Grande Fête des Saveurs",
     media: { src: "/login-info-thumbnail.jpg", alt: "Devanture de l'épicerie Saveurs d'Afrique", ratio: "1/1" },
     stickers: [
@@ -80,7 +93,7 @@ export const PROMO_ITEMS: PromoItem[] = [
     title: "Directs Abidjan & Dakar",
     description: "Attiéké frais de Grand-Lahou, safous & mangues Kent.",
     tag: "Stock limité",
-    href: "/main/offres/directs-abidjan-dakar",
+    href: "/main/nouveaux-arrivages",
     ctaLabel: "Voir l'offre : Directs Abidjan & Dakar",
     price: { prefix: "Lot", amount: 7.9, oldAmount: 12.5 },
   },
@@ -92,7 +105,7 @@ export const PROMO_ITEMS: PromoItem[] = [
     title: "Pause Fraîche & Sirops",
     subtitle: "Jus de Bissap exotiques",
     tag: "100% Artisanal",
-    href: "/main/offres/pause-fraiche-sirops",
+    href: "/main/bons-plans",
     ctaLabel: "Voir l'offre : Pause Fraîche & Sirops",
     media: { src: "/login-info-thumbnail.jpg", alt: "Boissons fraîches et sirops artisanaux", ratio: "4/3" },
   },
@@ -104,7 +117,7 @@ export const PROMO_ITEMS: PromoItem[] = [
     title: "Ventes Flash Courtes",
     description: "Sauvez de savoureux invendus avant la fermeture de vos commerçants.",
     tag: "-60% MAX",
-    href: "/main/offres/ventes-flash",
+    href: "/main/bons-plans?remise=30",
     ctaLabel: "Voir l'offre : Ventes Flash Courtes",
   },
 ];
@@ -112,7 +125,7 @@ export const PROMO_ITEMS: PromoItem[] = [
 export const PROMO_SECTION_CONTENT = {
   kicker: "Bons plans du quartier & Arrivages",
   title: "Offres en cours & Arrivages",
-  seeAll: { label: "Voir tout", href: "/main/offres" },
+  seeAll: { label: "Voir tout", href: "/main/bons-plans" },
   hint: "Glissez horizontalement pour parcourir les bannières promotionnelles",
   totalCount: 20,
 };

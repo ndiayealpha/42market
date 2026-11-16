@@ -20,13 +20,20 @@ export function SearchResultsHeader({ query, totalResults, totalStoresWithResult
   return (
     <div className="flex flex-col gap-2">
       <Breadcrumb
-        items={[
-          { label: "Accueil", href: routes.main.home },
-          { label: "Recherche", href: routes.main.search },
-          { label: `« ${truncateForBreadcrumb(query)} »` },
-        ]}
+        items={
+          query
+            ? [
+                { label: "Accueil", href: routes.main.home },
+                { label: "Recherche", href: routes.main.search },
+                { label: `« ${truncateForBreadcrumb(query)} »` },
+              ]
+            : [
+                { label: "Accueil", href: routes.main.home },
+                { label: "Recherche" },
+              ]
+        }
       />
-      <h1 className="sr-only">Résultats pour « {query} »</h1>
+      <h1 className="sr-only">{query ? `Résultats pour « ${query} »` : "Recherche"}</h1>
       <p className="flex items-center gap-2 text-sm text-ink-muted">
         <span aria-hidden className="h-2 w-2 shrink-0 rounded-full bg-success" />
         {formatSearchResultsSummary(totalResults, totalStoresWithResults, cityLabel)}

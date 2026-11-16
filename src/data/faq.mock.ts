@@ -1,4 +1,5 @@
 import type { FaqItem } from "@/src/domain/faq";
+import { routes } from "@/src/lib/routing/routes";
 
 export const FAQ_ITEMS: FaqItem[] = [
   {
@@ -19,6 +20,7 @@ export const FAQ_ITEMS: FaqItem[] = [
     // TODO contenu à valider — réponse plausible, aucune source maquette.
     answer:
       "Quand un ingrédient d'une recette (pâte d'arachide, feuilles de ndolé, poisson fumé...) est en rupture chez votre épicerie la plus proche, 42 Markets vous propose automatiquement l'équivalent le plus proche disponible chez le même commerçant — même variété ou variété voisine, au même rayon — avant de valider votre panier recette.",
+    relatedLink: { label: "Voir une fiche recette avec substitution", href: routes.main.recipeDetail("thieboudienne") },
   },
   {
     id: "faq-3",
@@ -39,6 +41,7 @@ export const FAQ_ITEMS: FaqItem[] = [
     // TODO contenu à valider — réponse plausible, aucune source maquette.
     answer:
       "Cela dépend de chaque épicerie : plusieurs de nos commerçants partenaires proposent déjà les transferts d'argent et l'envoi de colis pays en plus de leur rayon épicerie. Le service, quand il existe, est indiqué sur la fiche de l'épicerie — sinon, votre épicier saura vous orienter vers le point relais le plus proche.",
+    relatedLink: { label: "Voir les épiceries partenaires", href: routes.main.epiceries },
   },
   {
     id: "faq-5",

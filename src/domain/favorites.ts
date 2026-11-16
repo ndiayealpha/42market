@@ -1,3 +1,4 @@
+import type { RecipeDifficulty } from "@/src/domain/recipe";
 import type { Media } from "@/src/domain/store-merchandising";
 import type { TerroirRegionSlug } from "@/src/domain/terroir";
 import { computeUnitPricePerKg, formatPrice, formatUnitPrice } from "@/src/lib/format";
@@ -52,21 +53,12 @@ export function formatFavoriteUnitPrice(price: number, unitBasis?: FavoriteProdu
   return `${formatPrice(perLiterPrice)}/L`;
 }
 
-export type RecipeDifficulty = "facile" | "moyen" | "difficile";
-
-export const RECIPE_DIFFICULTY_CONFIG: Record<RecipeDifficulty, { label: string }> = {
-  facile: { label: "Facile" },
-  moyen: { label: "Moyen" },
-  difficile: { label: "Difficile" },
-};
-
 export interface FavoriteRecipe {
   id: string;
   name: string;
   servings: number;
   totalPrice: number;
   image: Media;
-  /** No recipe detail route exists yet (only the `/main/recettes` list) — TODO route détail recette à créer; every fixture points at the list for now. */
   href: string;
   storeSlug: string;
   storeName: string;

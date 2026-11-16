@@ -27,7 +27,7 @@ export function Header({
   location = DEFAULT_LOCATION,
   navigationItems = DEFAULT_NAVIGATION_ITEMS,
   actions = DEFAULT_HEADER_ACTIONS,
-  registrationHref = routes.auth.createAccount,
+  registrationHref = routes.main.merchantOnboarding,
   onLocationClick,
   onSearch,
 }: HeaderProps) {

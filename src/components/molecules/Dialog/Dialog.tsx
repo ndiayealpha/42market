@@ -1,8 +1,10 @@
 "use client";
 
-import { useEffect, useRef, type ReactNode } from "react";
+import { useRef, type ReactNode } from "react";
 
 import { Icon } from "@/src/components/atoms/Icon/Icon";
+
+import { useFocusTrap } from "./useFocusTrap";
 
 export interface DialogProps {
   open: boolean;
@@ -12,51 +14,18 @@ export interface DialogProps {
   className?: string;
 }
 
-const FOCUSABLE_SELECTOR =
-  'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
-
 /**
  * Nothing like this existed before (Phase 0 audit) — new primitive.
  * Focus trap + Escape-to-close + backdrop click, built with no new
- * dependency. Used by the delete-account confirmation and the order
- * tracking / QR dialog.
+ * dependency (the focus-trap behavior itself now lives in `useFocusTrap`,
+ * shared with `ProductGalleryLightbox`). Used by the delete-account
+ * confirmation and the order tracking / QR dialog.
  */
 export function Dialog({ open, onClose, title, children, className = "" }: DialogProps) {
   const dialogRef = useRef<HTMLDivElement>(null);
   const titleId = "dialog-title";
 
-  useEffect(() => {
-    if (!open) return;
-
-    const dialogNode = dialogRef.current;
-    const previouslyFocused = document.activeElement as HTMLElement | null;
-    const focusable = dialogNode?.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR);
-    focusable?.[0]?.focus();
-
-    function handleKeyDown(event: KeyboardEvent) {
-      if (event.key === "Escape") {
-        onClose();
-        return;
-      }
-      if (event.key !== "Tab" || !focusable || focusable.length === 0) return;
-
-      const first = focusable[0];
-      const last = focusable[focusable.length - 1];
-      if (event.shiftKey && document.activeElement === first) {
-        event.preventDefault();
-        last.focus();
-      } else if (!event.shiftKey && document.activeElement === last) {
-        event.preventDefault();
-        first.focus();
-      }
-    }
-
-    document.addEventListener("keydown", handleKeyDown);
-    return () => {
-      document.removeEventListener("keydown", handleKeyDown);
-      previouslyFocused?.focus();
-    };
-  }, [open, onClose]);
+  useFocusTrap(open, onClose, dialogRef);
 
   if (!open) return null;
 

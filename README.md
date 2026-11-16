@@ -20,6 +20,10 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
+## Conventions
+
+- **Aucun conteneur de liste ne scrolle verticalement.** Le scroll vertical appartient à la page. Un rail/carrousel horizontal (`Carousel`, `ProductRail`) peut scroller en X, jamais en Y — `rowHeights` y est une hauteur *minimale* (`minmax(Hpx, auto)`), jamais une hauteur fixe : `overflow-x-auto` force `overflow-y` à `auto` (règle CSS, pas de moyen d'isoler un seul axe), donc toute hauteur figée sur un conteneur qui défile horizontalement finit par couper du contenu en silence (scrollbar masquée). Voir `getCarouselRowTemplate` dans `src/components/organisms/Carousel/Carousel.tsx` et son test. Un vrai scroll interne reste acceptable pour une modale, un menu déroulant ou un drawer (ex. le panier), pas pour une liste de cartes/produits.
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:

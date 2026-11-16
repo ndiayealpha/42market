@@ -6,6 +6,8 @@ export interface FaqItem {
   answer: string;
   category: string;
   order: number;
+  /** Contextual CTA rendered under the answer (e.g. "substitution intelligente" → fiche recette) — kept separate from `answer` so `buildFaqJsonLd`'s plain-text `Answer.text` stays untouched. */
+  relatedLink?: { label: string; href: string };
 }
 
 /** Stable question order, independent of fixture insertion order. */

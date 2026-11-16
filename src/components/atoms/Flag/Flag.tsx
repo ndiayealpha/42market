@@ -4,7 +4,7 @@
  * country by adding a `FlagCode` + a `FLAG_SHAPES` entry, same pattern
  * as the `Icon` registry.
  */
-export type FlagCode = "sn" | "ml" | "ng" | "gh" | "ci";
+export type FlagCode = "sn" | "ml" | "ng" | "gh" | "ci" | "ma" | "fr";
 
 const FLAG_SHAPES: Record<FlagCode, React.ReactNode> = {
   sn: (
@@ -42,6 +42,20 @@ const FLAG_SHAPES: Record<FlagCode, React.ReactNode> = {
       <rect width="1" height="2" fill="#F77F00" />
       <rect x="1" width="1" height="2" fill="#FFFFFF" />
       <rect x="2" width="1" height="2" fill="#009E60" />
+    </>
+  ),
+  ma: (
+    <>
+      <rect width="3" height="2" fill="#C1272D" />
+      <path d="M1.5 0.75l0.12 0.28 0.3 0 -0.24 0.18 0.09 0.29 -0.27-0.19-0.27 0.19 0.09-0.29-0.24-0.18 0.3 0z" fill="none" stroke="#006233" strokeWidth="0.05" />
+    </>
+  ),
+  /** France — used for the Réunion/Antilles overseas-territory recipes, which fly the French flag. */
+  fr: (
+    <>
+      <rect width="1" height="2" fill="#0055A4" />
+      <rect x="1" width="1" height="2" fill="#FFFFFF" />
+      <rect x="2" width="1" height="2" fill="#EF4135" />
     </>
   ),
 };

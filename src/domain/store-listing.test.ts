@@ -5,6 +5,7 @@ import type { Store } from "@/src/domain/store";
 import {
   DEFAULT_STORE_LISTING_FILTERS,
   filterStores,
+  filterStoresByRadius,
   formatStoreCountLabel,
   getStoreNeighborhoods,
   parseStoreListingNeighborhood,
@@ -129,6 +130,26 @@ describe("sortStores", () => {
     const original = [...stores];
     sortStores(stores, "rating");
     expect(stores).toEqual(original);
+  });
+});
+
+describe("filterStoresByRadius", () => {
+  const stores = [
+    makeStore({ id: "close", distanceMeters: 900 }),
+    makeStore({ id: "edge", distanceMeters: 3000 }),
+    makeStore({ id: "far", distanceMeters: 3400 }),
+  ];
+
+  it("keeps stores at or under the radius, in meters", () => {
+    expect(filterStoresByRadius(stores, 3).map((s) => s.id)).toEqual(["close", "edge"]);
+  });
+
+  it("widening the radius includes more stores", () => {
+    expect(filterStoresByRadius(stores, 5).map((s) => s.id)).toEqual(["close", "edge", "far"]);
+  });
+
+  it("a tight radius can exclude everything", () => {
+    expect(filterStoresByRadius(stores, 0.5)).toHaveLength(0);
   });
 });
 

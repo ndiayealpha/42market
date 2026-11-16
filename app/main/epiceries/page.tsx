@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 
 import { getStoreNeighborhoods, parseStoreListingNeighborhood, parseStoreListingSort, parseStoreListingToggle } from "@/src/domain/store-listing";
-import { verifySession } from "@/src/features/auth/server";
 import { EpiceriesListingView } from "@/src/features/stores/EpiceriesListingView";
 import { routes } from "@/src/lib/routing/routes";
 import { mockCatalogRepository } from "@/src/services/catalog.repository";
@@ -16,9 +15,8 @@ interface PageProps {
   searchParams: Promise<{ quartier?: string; ouvert?: string; retrait?: string; promos?: string; tri?: string; vue?: string }>;
 }
 
+/** PUBLIC — the discovery funnel's CTAs need an anonymous visitor to reach this page, same reasoning as `epicerieDetail`. */
 export default async function EpiceriesPage({ searchParams }: PageProps) {
-  await verifySession(routes.main.epiceries);
-
   const { quartier, ouvert, retrait, promos, tri, vue } = await searchParams;
   const stores = await mockCatalogRepository.getAllStores();
   const neighborhoods = getStoreNeighborhoods(stores);

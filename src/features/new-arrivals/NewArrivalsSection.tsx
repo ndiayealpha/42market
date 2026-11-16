@@ -1,7 +1,7 @@
 import { TextLink } from "@/src/components/atoms/Link/Link";
 import { PickupTimeChip } from "@/src/components/atoms/PickupTimeChip/PickupTimeChip";
-import { StoreAvatar } from "@/src/components/atoms/StoreAvatar/StoreAvatar";
 import { Section } from "@/src/components/layout/Section/Section";
+import { StoreAvatarGroup } from "@/src/components/molecules/StoreAvatarGroup/StoreAvatarGroup";
 import { formatNewArrivalCountLabel, getNewArrivalsAnchorId, type NewArrivalSection as NewArrivalSectionData } from "@/src/domain/new-arrival";
 import { routes } from "@/src/lib/routing/routes";
 
@@ -21,13 +21,7 @@ export function NewArrivalsSection({ section }: NewArrivalsSectionProps) {
     <Section
       id={anchorId}
       className="scroll-mt-20"
-      leading={
-        <span className="flex -space-x-2">
-          {section.stores.map((store) => (
-            <StoreAvatar key={store.slug} name={store.name} slug={store.slug} size={36} className="ring-2 ring-surface" />
-          ))}
-        </span>
-      }
+      leading={<StoreAvatarGroup stores={section.stores} size={36} />}
       title={
         <span className="flex flex-wrap items-center gap-2">
           {title}

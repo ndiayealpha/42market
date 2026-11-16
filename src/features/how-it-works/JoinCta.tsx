@@ -25,7 +25,7 @@ export function JoinCta() {
         <ButtonLink variant="accent" href={`${routes.main.epiceries}?tri=distance`} icon={<Icon name="search" size={16} />}>
           Trouver une épicerie près de chez moi
         </ButtonLink>
-        <BannerCta href={routes.auth.createAccount} icon={<Icon name="store" size={16} />}>
+        <BannerCta href={routes.main.merchantOnboarding} icon={<Icon name="store" size={16} />}>
           Vous êtes commerçant ? Rejoignez-nous
         </BannerCta>
       </div>

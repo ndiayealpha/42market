@@ -1,3 +1,4 @@
+import { LegalCard } from "@/src/components/molecules/LegalCard/LegalCard";
 import type { NewsletterFormProps } from "@/src/components/molecules/NewsletterForm/NewsletterForm";
 
 import { DISCOVER_LINKS, FOOTER_BRAND, LEGAL_LINKS, MERCHANT_LINKS, SUPPORT_LINKS, TRUST_ITEMS } from "./Footer.constants";
@@ -25,6 +26,9 @@ export function Footer({ onSubscribe, year = new Date().getFullYear() }: FooterP
         <FooterTrustBar items={TRUST_ITEMS} />
         <FooterMain brand={FOOTER_BRAND} linkGroups={[DISCOVER_LINKS, SUPPORT_LINKS, MERCHANT_LINKS]} />
         <FooterCommunity onSubscribe={onSubscribe} />
+        <div className="mx-auto max-w-6xl px-4 pb-10 sm:px-6">
+          <LegalCard />
+        </div>
         <FooterBottom year={year} legalLinks={LEGAL_LINKS} />
       </div>
       <div className="md:hidden">

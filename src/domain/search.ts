@@ -81,6 +81,11 @@ export function normalizeSearchQuery(raw: string): string {
   return raw.trim().replace(/\s+/g, " ").slice(0, 80);
 }
 
+export interface SearchCrossLink {
+  label: string;
+  href: string;
+}
+
 export interface SearchResultsSummary {
   query: string;
   totalResults: number;
@@ -88,6 +93,8 @@ export interface SearchResultsSummary {
   cityLabel: string;
   campaign?: SearchCampaign;
   groups: SearchStoreGroup[];
+  /** "Voir aussi dans le Carnet / Recettes" — populated when the query also matches a recipe or article title, independent of whether any product matched. */
+  crossLinks: SearchCrossLink[];
 }
 
 /** Pure sort over already-filtered groups — unknown option never reached thanks to `parseSearchSort`. */

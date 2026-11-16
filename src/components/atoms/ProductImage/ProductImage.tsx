@@ -20,6 +20,10 @@ export interface ProductImageProps {
   bottomLeft?: ReactNode;
   bottomRight?: ReactNode;
   className?: string;
+  /** Fires once the real image has actually painted — lets a caller (e.g. `ProductGallery`) show its own loading skeleton until then, without this atom taking an opinion on how that skeleton looks. */
+  onLoad?: () => void;
+  /** Fires when the image fails to load, in addition to (not instead of) this atom's own internal fallback — a caller showing a loading skeleton needs to know loading is over even when it ends in failure, not just on success. */
+  onError?: () => void;
 }
 
 /** `next/image` + a neutral fallback (missing or broken `src`) + 4 overlay slots — the one image primitive for every product/store photo on this page. */
@@ -35,6 +39,8 @@ export function ProductImage({
   bottomLeft,
   bottomRight,
   className = "",
+  onLoad,
+  onError,
 }: ProductImageProps) {
   const [failed, setFailed] = useState(false);
   const showFallback = !src || failed;
@@ -53,7 +59,11 @@ export function ProductImage({
           sizes={sizes}
           priority={priority}
           className={fit === "contain" ? "object-contain p-3" : "object-cover"}
-          onError={() => setFailed(true)}
+          onError={() => {
+            setFailed(true);
+            onError?.();
+          }}
+          onLoad={onLoad}
         />
       )}
       {topLeft && <div className="absolute top-2 left-2">{topLeft}</div>}

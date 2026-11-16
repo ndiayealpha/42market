@@ -9,6 +9,7 @@ import { FormField } from "@/src/components/molecules/FormField/FormField";
 import { PasswordField } from "@/src/components/molecules/PasswordField/PasswordField";
 import { PasswordStrengthMeter } from "@/src/components/molecules/PasswordStrengthMeter/PasswordStrengthMeter";
 import { PhoneField } from "@/src/components/molecules/PhoneField/PhoneField";
+import { routes } from "@/src/lib/routing/routes";
 import { Button } from "@/src/stories/Button";
 
 import { useCountriesQuery } from "../../queries/useCountriesQuery";
@@ -105,8 +106,14 @@ export function SignupForm() {
               error={errors.acceptTerms?.message}
               label={
                 <>
-                  J&apos;accepte les <TextLink href="#">conditions générales</TextLink> et la{" "}
-                  <TextLink href="#">politique de confidentialité</TextLink>
+                  J&apos;accepte les{" "}
+                  <TextLink href={routes.main.termsOfSale} target="_blank" rel="noopener noreferrer">
+                    conditions générales
+                  </TextLink>{" "}
+                  et la{" "}
+                  <TextLink href={routes.main.privacyPolicy} target="_blank" rel="noopener noreferrer">
+                    politique de confidentialité
+                  </TextLink>
                 </>
               }
             />

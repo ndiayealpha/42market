@@ -1,14 +1,18 @@
 "use client";
 
+import { useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 
+import { formatLocationLabel, formatRadiusLabel } from "@/src/domain/user-location";
 import { useFavorites } from "@/src/hooks/useFavorites";
 import { useUnreadNotificationsCount } from "@/src/hooks/useNotificationCounts";
 import { useCartItemCount } from "@/src/lib/cart/cart.store";
+import { useUserLocationActions, useUserLocationState } from "@/src/lib/location/location.store";
 import { routes } from "@/src/lib/routing/routes";
 
 import { DEFAULT_HEADER_ACTIONS } from "./Header.constants";
 import { Header, type HeaderProps } from "./Header";
+import { LocationPickerDialog } from "./LocationPickerDialog";
 
 /**
  * Wraps `Header` with the live counts/active-state its 3 action badges need
@@ -29,6 +33,9 @@ export function HeaderLive(props: Omit<HeaderProps, "actions">) {
   const { favoriteIds } = useFavorites("product");
   const unreadNotificationsCount = useUnreadNotificationsCount();
   const cartCount = useCartItemCount();
+  const { postalCode, radiusKm } = useUserLocationState();
+  const { setLocation } = useUserLocationActions();
+  const [isPickerOpen, setPickerOpen] = useState(false);
 
   const counts: Record<string, number> = {
     favorites: favoriteIds.size,
@@ -46,5 +53,23 @@ export function HeaderLive(props: Omit<HeaderProps, "actions">) {
     router.push(`${routes.main.search}?q=${encodeURIComponent(query)}`);
   }
 
-  return <Header {...props} actions={actions} onSearch={props.onSearch ?? handleSearch} />;
+  return (
+    <>
+      <Header
+        {...props}
+        actions={actions}
+        location={props.location ?? { location: formatLocationLabel(postalCode), radiusLabel: formatRadiusLabel(radiusKm) }}
+        onLocationClick={props.onLocationClick ?? (() => setPickerOpen(true))}
+        onSearch={props.onSearch ?? handleSearch}
+      />
+      <LocationPickerDialog
+        key={isPickerOpen ? "open" : "closed"}
+        open={isPickerOpen}
+        onClose={() => setPickerOpen(false)}
+        postalCode={postalCode}
+        radiusKm={radiusKm}
+        onApply={setLocation}
+      />
+    </>
+  );
 }

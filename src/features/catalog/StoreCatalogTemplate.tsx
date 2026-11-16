@@ -142,7 +142,7 @@ export function StoreCatalogTemplate({
         />
       )}
 
-      {!isRecipeKitLoading && recipeKit && <RecipeKitCard recipeKit={recipeKit} />}
+      {!isRecipeKitLoading && recipeKit && <RecipeKitCard recipeKit={recipeKit} storeSlug={store.id} storeName={store.name} />}
 
       {/*
         Rule 4.1 C4 asks for this inline band "juste au-dessus du Footer".

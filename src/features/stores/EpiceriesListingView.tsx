@@ -10,9 +10,17 @@ import { Container } from "@/src/components/layout/Container/Container";
 import { EmptyState } from "@/src/components/molecules/EmptyState/EmptyState";
 import { StoreMap } from "@/src/components/molecules/StoreMap/StoreMap";
 import { ReassuranceBand } from "@/src/components/organisms/ReassuranceBand/ReassuranceBand";
-import { filterStores, formatStoreCountLabel, sortStores, type StoreListingFilters as StoreListingFiltersValue, type StoreListingSort } from "@/src/domain/store-listing";
+import {
+  filterStores,
+  filterStoresByRadius,
+  formatStoreCountLabel,
+  sortStores,
+  type StoreListingFilters as StoreListingFiltersValue,
+  type StoreListingSort,
+} from "@/src/domain/store-listing";
 import { useAllStores } from "@/src/hooks/useAllStores";
 import { useCatalogReassuranceCards } from "@/src/hooks/useCatalogReassuranceCards";
+import { useUserLocationState } from "@/src/lib/location/location.store";
 import { routes } from "@/src/lib/routing/routes";
 
 import { FindStoreCta } from "./FindStoreCta";
@@ -43,8 +51,9 @@ export function EpiceriesListingView({ neighborhoods, filters, sort, view }: Epi
   const router = useRouter();
   const { stores: allStores, isLoading, isError, refetch } = useAllStores();
   const reassurance = useCatalogReassuranceCards();
+  const { radiusKm } = useUserLocationState();
 
-  const visibleStores = sortStores(filterStores(allStores, filters), sort);
+  const visibleStores = sortStores(filterStoresByRadius(filterStores(allStores, filters), radiusKm), sort);
 
   function navigate(nextFilters: StoreListingFiltersValue, nextSort: StoreListingSort, nextView: StoreListingViewMode) {
     const search = new URLSearchParams();

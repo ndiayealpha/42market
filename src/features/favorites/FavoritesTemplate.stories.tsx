@@ -1,13 +1,56 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import { fn } from "storybook/test";
 
-import { FAVORITE_PRODUCTS, FAVORITE_RECIPES } from "@/src/data/favorites.mock";
+import { FAVORITE_PRODUCTS } from "@/src/data/favorites.mock";
+import type { FavoriteRecipe } from "@/src/domain/favorites";
 import { STORE_PROMOS } from "@/src/data/promotions.mock";
 import { routes } from "@/src/lib/routing/routes";
 
 import { FavoritesTemplate } from "./FavoritesTemplate";
 
 const NOW = new Date("2026-11-10T12:15:00Z");
+
+const FAVORITE_RECIPES: FavoriteRecipe[] = [
+  {
+    id: "thieboudienne",
+    name: "Thiéboudienne Rouge (Ceebu Jën)",
+    servings: 4,
+    totalPrice: 23,
+    image: { src: "/login-visual.jpg", alt: "Thiéboudienne traditionnel" },
+    href: "/main/recettes/thieboudienne-rouge-ceebu-jen",
+    storeSlug: "loirivoire",
+    storeName: "LoirIvoire",
+    durationMinutes: 75,
+    difficulty: "moyen",
+    terroirRegion: "afrique-ouest",
+  },
+  {
+    id: "mafe-boeuf",
+    name: "Mafé Onctueux au Bœuf & Pâte d'Arachide",
+    servings: 6,
+    totalPrice: 15.75,
+    image: { src: "/login-visual.jpg", alt: "Mafé au bœuf" },
+    href: "/main/recettes/mafe-onctueux-boeuf-pate-arachide",
+    storeSlug: "saveurs-dafrique",
+    storeName: "Saveurs d'Afrique",
+    durationMinutes: 50,
+    difficulty: "facile",
+    terroirRegion: "afrique-ouest",
+  },
+  {
+    id: "attieke-grand-lahou",
+    name: "Attiéké de Grand-Lahou",
+    servings: 4,
+    totalPrice: 10.1,
+    image: { src: "/login-visual.jpg", alt: "Attiéké de Grand-Lahou" },
+    href: "/main/recettes/attieke-grand-lahou-poisson-braise",
+    storeSlug: "marche-gouro",
+    storeName: "Marché Gouro",
+    durationMinutes: 35,
+    difficulty: "facile",
+    terroirRegion: "afrique-ouest",
+  },
+];
 
 const meta = {
   title: "Favorites/FavoritesTemplate",

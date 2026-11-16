@@ -1,8 +1,22 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 
-import { FAVORITE_RECIPES } from "@/src/data/favorites.mock";
+import type { FavoriteRecipe } from "@/src/domain/favorites";
 
 import { FavoriteRecipeCard } from "./FavoriteRecipeCard";
+
+const SAMPLE_RECIPE: FavoriteRecipe = {
+  id: "thieboudienne",
+  name: "Thiéboudienne Rouge (Ceebu Jën)",
+  servings: 4,
+  totalPrice: 23,
+  image: { src: "/login-visual.jpg", alt: "Thiéboudienne traditionnel" },
+  href: "/main/recettes/thieboudienne-rouge-ceebu-jen",
+  storeSlug: "loirivoire",
+  storeName: "LoirIvoire",
+  durationMinutes: 75,
+  difficulty: "moyen",
+  terroirRegion: "afrique-ouest",
+};
 
 const meta = {
   title: "Favorites/FavoriteRecipeCard",
@@ -10,7 +24,7 @@ const meta = {
   tags: ["autodocs"],
   parameters: { layout: "padded" },
   decorators: [(Story) => <div style={{ width: 280 }}><Story /></div>],
-  args: { recipe: FAVORITE_RECIPES[0] },
+  args: { recipe: SAMPLE_RECIPE },
 } satisfies Meta<typeof FavoriteRecipeCard>;
 
 export default meta;

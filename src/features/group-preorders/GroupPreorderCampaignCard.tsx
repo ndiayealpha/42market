@@ -45,14 +45,14 @@ export function GroupPreorderCampaignCard({ campaign, now }: GroupPreorderCampai
         aspectRatio="4/3"
         sizes="(min-width: 1280px) 23vw, (min-width: 640px) 46vw, 92vw"
         topLeft={
-          <div className="flex flex-col items-start gap-1.5">
-            <Chip tone="danger" size="sm" className="font-bold">
-              {getRibbonLabel(campaign)}
-            </Chip>
-            <Chip tone="cream" size="xs">
-              {campaign.originBadge}
-            </Chip>
-          </div>
+          <Chip tone="danger" size="sm" className="font-bold">
+            {getRibbonLabel(campaign)}
+          </Chip>
+        }
+        topRight={
+          <Chip tone="cream" size="xs">
+            {campaign.originBadge}
+          </Chip>
         }
         bottomRight={
           <span className="rounded-full bg-surface/95 px-2.5 py-1 text-xs font-bold text-foreground-strong shadow-card">
@@ -109,7 +109,7 @@ export function GroupPreorderCampaignCard({ campaign, now }: GroupPreorderCampai
             disabled={reserve.isPending}
             aria-label={`Précommander ${campaign.title} pour ${formatPrice(campaign.price)}`}
           >
-            Précommander ({formatPrice(campaign.price)})
+            🛍 Précommander ({formatPrice(campaign.price)})
           </Button>
         </div>
       </div>

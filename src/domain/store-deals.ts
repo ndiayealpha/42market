@@ -1,3 +1,4 @@
+import { computeDiscountPercent } from "@/src/domain/catalog";
 import type { LoyaltyTier } from "@/src/domain/profile";
 import type { PromoProduct } from "@/src/domain/promotions";
 
@@ -48,6 +49,31 @@ export function formatPromoCountLabel(count: number): string {
 /** Pure, tested: highest discount first (rule: "ordre des tuiles = ordre des sections = remise maximale décroissante"). */
 export function rankStoresByMaxDiscount(stores: StoreDealsSummary[]): StoreDealsSummary[] {
   return [...stores].sort((a, b) => b.maxDiscountPercent - a.maxDiscountPercent);
+}
+
+/**
+ * Driven by a promo banner's own `?remise=` link (`PromoItem.minDiscountPercent`
+ * in `PromoSection.data.ts`) — "diriger vers des pages de produits avec le
+ * même promo" (a card advertising "jusqu'à -50%" should land on real
+ * products that are actually deeply discounted, not just any promo). The
+ * threshold is real, computed from each product's own `price`/
+ * `compareAtPrice` — never a fabricated tag. A store with no product left
+ * is dropped entirely (same "section ET tuile absentes" rule as the
+ * unfiltered page), not shown empty.
+ */
+/** Validates the `?remise=` URL param — an absent, non-numeric, or out-of-range value means "no filter" (0), same leniency as the other listing pages' `parse*` helpers. */
+export function parseMinDiscountPercent(value: string | string[] | undefined): number {
+  const parsed = typeof value === "string" ? Number.parseInt(value, 10) : NaN;
+  return Number.isInteger(parsed) && parsed > 0 && parsed <= 100 ? parsed : 0;
+}
+
+export function filterDealsByMinDiscount(stores: StoreDealsSummary[], minDiscountPercent: number): StoreDealsSummary[] {
+  return stores
+    .map((store) => ({
+      ...store,
+      products: store.products.filter((product) => computeDiscountPercent(product.price, product.compareAtPrice ?? 0) >= minDiscountPercent),
+    }))
+    .filter((store) => store.products.length > 0);
 }
 
 export type DealsBlock = { kind: "store"; store: StoreDealsSummary } | { kind: "loyalty-banner" };

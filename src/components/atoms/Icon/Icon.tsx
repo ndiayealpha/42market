@@ -62,7 +62,11 @@ export type IconName =
   | "printer"
   | "truck"
   | "package"
-  | "headset";
+  | "headset"
+  | "share"
+  | "upload"
+  | "play"
+  | "zoom-in";
 
 const PATHS: Record<IconName, React.ReactNode> = {
   search: (
@@ -580,6 +584,31 @@ const PATHS: Record<IconName, React.ReactNode> = {
       <rect x="2.5" y="13" width="5" height="7" rx="2" stroke="currentColor" strokeWidth="1.8" fill="none" />
       <rect x="16.5" y="13" width="5" height="7" rx="2" stroke="currentColor" strokeWidth="1.8" fill="none" />
       <path d="M19 20v.5a3 3 0 0 1-3 3h-3" stroke="currentColor" strokeWidth="1.8" fill="none" strokeLinecap="round" />
+    </>
+  ),
+  // Added for the recipe fiche's "Partager" button — no existing glyph covered a share/node-link action.
+  share: (
+    <>
+      <circle cx="18" cy="5" r="2.5" stroke="currentColor" strokeWidth="1.8" fill="none" />
+      <circle cx="6" cy="12" r="2.5" stroke="currentColor" strokeWidth="1.8" fill="none" />
+      <circle cx="18" cy="19" r="2.5" stroke="currentColor" strokeWidth="1.8" fill="none" />
+      <path d="M8.2 10.7l7.6-4.4M8.2 13.3l7.6 4.4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+    </>
+  ),
+  // Added for the merchant onboarding form's Kbis dropzone — no existing glyph covered a file-upload action.
+  upload: (
+    <>
+      <path d="M12 16V4M7.5 8.5L12 4l4.5 4.5" stroke="currentColor" strokeWidth="1.8" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M4 15.5V18a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2.5" stroke="currentColor" strokeWidth="1.8" fill="none" strokeLinecap="round" />
+    </>
+  ),
+  play: <path d="M8 5.5v13l11-6.5-11-6.5z" fill="currentColor" />,
+  "zoom-in": (
+    <>
+      <circle cx="10.5" cy="10.5" r="7" stroke="currentColor" strokeWidth="1.8" fill="none" />
+      <line x1="15.8" y1="15.8" x2="21" y2="21" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+      <line x1="10.5" y1="7.5" x2="10.5" y2="13.5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+      <line x1="7.5" y1="10.5" x2="13.5" y2="10.5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
     </>
   ),
 };

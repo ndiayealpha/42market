@@ -55,6 +55,11 @@ export function filterStores(stores: Store[], filters: StoreListingFilters): Sto
     .filter((store) => !filters.activePromosOnly || Boolean(store.promo));
 }
 
+/** Driven by the header's location/radius picker (global, persisted state — not a URL param like the filters above, since it applies across every page, not just this listing). */
+export function filterStoresByRadius(stores: Store[], radiusKm: number): Store[] {
+  return stores.filter((store) => store.distanceMeters <= radiusKm * 1000);
+}
+
 export function sortStores(stores: Store[], sort: StoreListingSort): Store[] {
   const sorted = [...stores];
   switch (sort) {

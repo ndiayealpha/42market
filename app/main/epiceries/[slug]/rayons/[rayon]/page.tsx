@@ -3,7 +3,6 @@ import { notFound } from "next/navigation";
 
 import { parseCatalogSort } from "@/src/domain/catalog";
 import { StoreCatalogView } from "@/src/features/catalog/StoreCatalogView";
-import { verifySession } from "@/src/features/auth/server";
 import { routes } from "@/src/lib/routing/routes";
 import { mockStoreDetailRepository } from "@/src/services/store-detail.repository";
 
@@ -23,10 +22,10 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   };
 }
 
+/** PUBLIC and indexable, same reasoning as the parent `/rayons` route. */
 export default async function StoreCatalogAislePage({ params, searchParams }: PageProps) {
   const { slug, rayon } = await params;
   const { sort } = await searchParams;
-  await verifySession(routes.main.epicerieRayon(slug, rayon));
 
   const store = await mockStoreDetailRepository.getStore(slug);
   if (!store) {

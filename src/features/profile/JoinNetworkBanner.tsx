@@ -4,7 +4,7 @@ import { Chip } from "@/src/components/atoms/Chip/Chip";
 import { Icon } from "@/src/components/atoms/Icon/Icon";
 import { routes } from "@/src/lib/routing/routes";
 
-/** Reuses `routes.auth.createAccount` — already the merchant sign-up destination elsewhere (`StoreRegistrationButton` in the Header), not a new route. */
+/** Reuses `routes.main.merchantOnboarding` — the same destination as the Header's `StoreRegistrationButton`. */
 export function JoinNetworkBanner() {
   return (
     <BannerSurface tone="brown" className="flex flex-col gap-4 p-5">
@@ -17,7 +17,7 @@ export function JoinNetworkBanner() {
           Inscrivez votre épicerie sur 42 Markets et valorisez vos produits du terroir auprès de milliers d&apos;habitants du Forez.
         </p>
       </div>
-      <BannerCta href={routes.auth.createAccount} className="self-start">
+      <BannerCta href={routes.main.merchantOnboarding} className="self-start">
         Inscrire mon commerce sur 42 Markets
       </BannerCta>
     </BannerSurface>

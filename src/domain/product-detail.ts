@@ -6,6 +6,7 @@ import { formatPrice } from "@/src/lib/format";
 
 export type ProductMedia =
   | { kind: "photo"; src: string; alt: string }
+  | { kind: "video"; src: string; poster: string; alt: string }
   | { kind: "document"; label: string; href: string }
   | { kind: "guide"; label: string; href: string };
 
@@ -146,13 +147,29 @@ interface BaseCatalogLikeProduct {
 }
 
 /**
+ * Every product detail page shows a multi-image gallery, even products
+ * with only one real photo on file — repeating that one photo rather
+ * than falling back to a single-image gallery everywhere. `alt` gets a
+ * "(vue N)" suffix past the first repeat so each thumbnail still has its
+ * own distinct, non-empty accessible name instead of N identical ones.
+ */
+export function buildRepeatedPhotoMedia(image: Media, count = 3): ProductMedia[] {
+  if (!image.src) return [];
+  return Array.from({ length: count }, (_, i) => ({
+    kind: "photo" as const,
+    src: image.src as string,
+    alt: i === 0 ? image.alt : `${image.alt} (vue ${i + 1})`,
+  }));
+}
+
+/**
  * Synthesizes a minimal-but-real `ProductDetail` from any existing
  * catalog/promo/deal/favorite fixture that has no dedicated rich fixture of
  * its own — so every pre-existing `ProductCard` stretched link across the
  * app (Page A, Page B, Favoris, Bons plans) resolves to a real page instead
  * of a 404, per rule 7 ("tous les liens étirés pointent vers P"). Sections
- * with no underlying data (rating, media variety, characteristics,
- * allergens, similar) are simply absent — never fabricated.
+ * with no underlying data (rating, characteristics, allergens, similar)
+ * are simply absent — never fabricated.
  */
 export function fromBaseProduct(base: BaseCatalogLikeProduct): ProductDetail {
   return {
@@ -172,7 +189,7 @@ export function fromBaseProduct(base: BaseCatalogLikeProduct): ProductDetail {
     stockCapPerOrder: 10,
     isBioCertified: false,
     hasFreshnessGuarantee: false,
-    media: base.image.src ? [{ kind: "photo", src: base.image.src, alt: base.image.alt }] : [],
+    media: buildRepeatedPhotoMedia(base.image),
     description: [`${base.name}, sélectionné par ${base.storeName} pour ses clients de quartier.`],
     characteristics: {},
     allergens: {},

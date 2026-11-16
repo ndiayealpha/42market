@@ -1,11 +1,18 @@
 import type { BadgeColor } from "@/src/components/atoms/Badge/Badge";
 import type { IconName } from "@/src/components/atoms/Icon/Icon";
 
+export interface NavigationDropdownItem {
+  label: string;
+  href: string;
+}
+
 export interface NavigationItemConfig {
   label: string;
   href: string;
   /** Rendered right after the label. */
   suffix?: "fire" | "new" | "chevron";
+  /** When present (with `suffix: "chevron"`), the item opens this menu instead of navigating directly — same `UserMenu` open/outside-click/Escape pattern. */
+  dropdownItems?: NavigationDropdownItem[];
 }
 
 export interface HeaderActionConfig {

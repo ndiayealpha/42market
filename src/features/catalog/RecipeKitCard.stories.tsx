@@ -9,7 +9,7 @@ const meta = {
   title: "Catalog/RecipeKitCard",
   component: RecipeKitCard,
   tags: ["autodocs"],
-  args: { recipeKit: RECIPE_KIT },
+  args: { recipeKit: RECIPE_KIT, storeSlug: "loirivoire", storeName: "LoirIvoire" },
 } satisfies Meta<typeof RecipeKitCard>;
 
 export default meta;

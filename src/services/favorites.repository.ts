@@ -31,7 +31,8 @@ const favoriteIdsByKind: Record<FavoriteKind, Set<string>> = {
   ]),
   // The store itself starts favorited, matching the existing fiche-boutique fixture. Slugs must exist in `STORE_PROMOS` (promotions.mock.ts) — the Favoris "Épiceries" tab joins against that list.
   store: new Set<string>(["loirivoire", "abidjan-market", "nimba-market"]),
-  recipe: new Set<string>(["recette-thieboudienne", "recette-mafe-poulet", "recette-alloco-poisson"]),
+  // Slugs must exist in `RECIPES` (recipes.mock.ts) — the Favoris "Recettes" tab joins against that list.
+  recipe: new Set<string>(["thieboudienne", "mafe-boeuf", "attieke-grand-lahou"]),
 };
 
 export const mockFavoritesRepository: FavoritesRepository = {

@@ -8,17 +8,26 @@ import { Icon } from "@/src/components/atoms/Icon/Icon";
 import { Button } from "@/src/components/atoms/Button/Button";
 import type { RecipeKit } from "@/src/domain/recipe-kit";
 import { computeRecipeTotal } from "@/src/domain/recipe-kit";
-import { useAddToCart } from "@/src/hooks/useAddToCart";
+import { useAddRecipeToCart } from "@/src/hooks/useAddRecipeToCart";
 import { formatPrice } from "@/src/lib/format";
 
 export interface RecipeKitCardProps {
   recipeKit: RecipeKit;
+  storeSlug: string;
+  storeName: string;
 }
 
-/** The one client island on Page A besides favorite/cart buttons — everything else is a Server Component. */
-export function RecipeKitCard({ recipeKit }: RecipeKitCardProps) {
+/**
+ * The one client island on Page A besides favorite/cart buttons — everything
+ * else is a Server Component. Uses `useAddRecipeToCart` (same hook as the
+ * recipe fiche's "Ajouter au panier") so checked ingredients become real
+ * cart lines — this used to call the aggregate-only `useAddToCart`, which
+ * bumped the header badge without the cabas/checkout ever receiving the
+ * items (see that hook's own comment on the known gap).
+ */
+export function RecipeKitCard({ recipeKit, storeSlug, storeName }: RecipeKitCardProps) {
   const [checkedIds, setCheckedIds] = useState<Set<string>>(() => new Set(recipeKit.ingredients.map((ingredient) => ingredient.id)));
-  const { addToCart } = useAddToCart();
+  const { addRecipeToCart, dialog } = useAddRecipeToCart();
   const total = computeRecipeTotal(recipeKit.ingredients, checkedIds);
 
   function toggleIngredient(id: string) {
@@ -31,7 +40,17 @@ export function RecipeKitCard({ recipeKit }: RecipeKitCardProps) {
   }
 
   function handleAddToCart() {
-    addToCart(`${total.checkedCount} ingrédients de "${recipeKit.title}"`, total.checkedCount);
+    const items = recipeKit.ingredients
+      .filter((ingredient) => checkedIds.has(ingredient.id))
+      .map((ingredient) => ({
+        id: ingredient.id,
+        name: ingredient.label,
+        // No per-ingredient packaging/image exists on `RecipeKitIngredient` — the kit's own image is the only real asset available, reused rather than fabricating one.
+        packagingLabel: "Ingrédient du kit",
+        price: ingredient.price,
+        image: recipeKit.image,
+      }));
+    addRecipeToCart({ storeSlug, storeName, items });
   }
 
   return (
@@ -103,6 +122,7 @@ export function RecipeKitCard({ recipeKit }: RecipeKitCardProps) {
           </Button>
         </div>
       </div>
+      {dialog}
     </div>
   );
 }

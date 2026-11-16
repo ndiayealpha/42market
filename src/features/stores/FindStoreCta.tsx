@@ -2,12 +2,10 @@ import { ButtonLink } from "@/src/components/atoms/Button/ButtonLink";
 import { routes } from "@/src/lib/routing/routes";
 
 /**
- * "Vous êtes épicier ? Rejoindre le réseau" reuses the merchant signup flow
- * already linked from the footer (`routes.auth.createAccount`) — same
- * destination, not a new dead route. "Recommander une épicerie" has no
- * dedicated form yet, so it points at the same placeholder support route
- * already used by 3 other "contact us" CTAs across the app (`HelpCard`,
- * `ZeroSpamCard`, `SupportBar`) rather than inventing a new dead link.
+ * "Vous êtes épicier ? Rejoindre le réseau" → the real merchant onboarding
+ * page. "Recommander une épicerie" → `routes.main.support`, now an alias
+ * for the real Contact page (see `routes.ts`), same as several other
+ * "contact us" CTAs across the app (`HelpCard`, `ZeroSpamCard`, `SupportBar`).
  */
 export function FindStoreCta() {
   return (
@@ -23,7 +21,7 @@ export function FindStoreCta() {
         <ButtonLink href={routes.main.support} variant="soft">
           Recommander une épicerie
         </ButtonLink>
-        <ButtonLink href={routes.auth.createAccount} variant="primary-md">
+        <ButtonLink href={routes.main.merchantOnboarding} variant="primary-md">
           Vous êtes épicier ? Rejoindre le réseau
         </ButtonLink>
       </div>

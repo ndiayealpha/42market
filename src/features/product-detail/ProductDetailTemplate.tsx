@@ -42,6 +42,7 @@ export function ProductDetailTemplate({ viewModel }: ProductDetailTemplateProps)
             isBioCertified={product.isBioCertified}
             bioCertificationCode={product.bioCertificationCode}
             discountPercent={discountPercent}
+            isOutOfStock={product.stockCount <= 0}
           />
           <ProductFactsStrip facts={facts} />
         </div>

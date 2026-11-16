@@ -52,3 +52,21 @@ export const TwoRows: Story = {};
 export const OneRow: Story = {
   args: { rows: 1, rowHeights: [180, 180] },
 };
+
+/**
+ * Visual demo: `rowHeights` is a minimum, not a hard cap — this item is
+ * deliberately taller than its configured row height, and the row grows
+ * to fit it instead of clipping it (see `getCarouselRowTemplate` and its
+ * unit test in `Carousel.test.ts` for the actual regression guard; a
+ * real browser layout assertion isn't viable here since this project's
+ * Storybook/Vitest test environment doesn't load Tailwind's compiled CSS).
+ */
+export const NoVerticalClipping: Story = {
+  args: {
+    rows: 1,
+    rowHeights: [100, 100],
+    renderItem: () => (
+      <div style={{ width: 220, height: 260, background: "#A5D7EF" }}>Contenu plus haut que rowHeights</div>
+    ),
+  },
+};

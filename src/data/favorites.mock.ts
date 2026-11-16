@@ -1,5 +1,4 @@
-import type { FavoriteProduct, FavoriteRecipe } from "@/src/domain/favorites";
-import { routes } from "@/src/lib/routing/routes";
+import type { FavoriteProduct } from "@/src/domain/favorites";
 
 /**
  * The 12 UNIQUE favorited products (exact names/prices/packaging from the
@@ -29,44 +28,3 @@ export const FAVORITE_PRODUCT_OUT_OF_STOCK: FavoriteProduct = { ...FAVORITE_PROD
 /** Most-recently-added first — drives the "Derniers ajouts" sort (can't be derived from the products themselves). */
 export const FAVORITE_PRODUCTS_RECENT_ORDER: string[] = [...FAVORITE_PRODUCTS].reverse().map((product) => product.id);
 
-export const FAVORITE_RECIPES: FavoriteRecipe[] = [
-  {
-    id: "recette-thieboudienne",
-    name: "Thiéboudienne traditionnel",
-    servings: 6,
-    totalPrice: 24.9,
-    image: { src: "/login-visual.jpg", alt: "Thiéboudienne traditionnel" },
-    href: routes.main.recipes,
-    storeSlug: "loirivoire",
-    storeName: "LoirIvoire",
-    durationMinutes: 60,
-    difficulty: "moyen",
-    terroirRegion: "afrique-ouest",
-  },
-  {
-    id: "recette-mafe-poulet",
-    name: "Mafé au poulet fermier",
-    servings: 4,
-    totalPrice: 18.4,
-    image: { src: "/offer-riz-royal-lion.jpg", alt: "Mafé au poulet fermier" },
-    href: routes.main.recipes,
-    storeSlug: "nimba-market",
-    storeName: "Nimba Market",
-    durationMinutes: 50,
-    difficulty: "facile",
-    terroirRegion: "afrique-ouest",
-  },
-  {
-    id: "recette-alloco-poisson",
-    name: "Alloco & poisson braisé",
-    servings: 2,
-    totalPrice: 12.8,
-    image: { src: "/offer-attieke-frais.jpg", alt: "Alloco & poisson braisé" },
-    href: routes.main.recipes,
-    storeSlug: "abidjan-market",
-    storeName: "Abidjan Market",
-    durationMinutes: 40,
-    difficulty: "facile",
-    terroirRegion: "afrique-ouest",
-  },
-];

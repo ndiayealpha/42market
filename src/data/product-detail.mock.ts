@@ -1,4 +1,4 @@
-import type { ProductDetail } from "@/src/domain/product-detail";
+import { buildRepeatedPhotoMedia, type ProductDetail } from "@/src/domain/product-detail";
 
 /**
  * Rich reference fixtures for Page P (fiche produit), keyed by
@@ -35,6 +35,8 @@ export const PRODUCT_DETAIL_FIXTURES: Record<string, ProductDetail> = {
     rating: { average: 5, reviewCount: 18 },
     media: [
       { kind: "photo", src: "/offer-riz-royal-lion.jpg", alt: "Sac de riz région méditerranéenne 4 kg" },
+      { kind: "photo", src: "/terroir-senegal-market.jpg", alt: "Étiquette et ingrédients" },
+      { kind: "photo", src: "/terroir-mali-market.jpg", alt: "Riz cuisiné, servi à table" },
       { kind: "document", label: "Vue sac 4 kg", href: "#" },
       { kind: "guide", label: "Certificat Bio", href: "#" },
       { kind: "guide", label: "Guide cuisson", href: "#" },
@@ -142,7 +144,7 @@ export const PRODUCT_DETAIL_FIXTURES: Record<string, ProductDetail> = {
     isBioCertified: false,
     hasFreshnessGuarantee: true,
     rating: { average: 4.6, reviewCount: 9 },
-    media: [{ kind: "photo", src: "/terroir-senegal-market.jpg", alt: "Banane Cavendish alaisie" }],
+    media: buildRepeatedPhotoMedia({ src: "/terroir-senegal-market.jpg", alt: "Banane Cavendish alaisie" }),
     description: ["Des bananes Cavendish mûries à point, sélectionnées pour leur douceur et vendues au régime."],
     characteristics: { variety: "Cavendish", netWeight: "≈ 1000 g" },
     allergens: {},
@@ -169,7 +171,7 @@ export const PRODUCT_DETAIL_FIXTURES: Record<string, ProductDetail> = {
     bioCertificationCode: "IT-BIO-006",
     hasFreshnessGuarantee: true,
     rating: { average: 4.8, reviewCount: 22 },
-    media: [{ kind: "photo", src: "/terroir-mali-market.jpg", alt: "Avocat bio 100% Hass italien" }],
+    media: buildRepeatedPhotoMedia({ src: "/terroir-mali-market.jpg", alt: "Avocat bio 100% Hass italien" }),
     description: ["Avocats Hass issus à 100% de l'agriculture biologique italienne, récoltés à maturité."],
     characteristics: {
       variety: "Hass",
@@ -197,7 +199,7 @@ export const PRODUCT_DETAIL_FIXTURES: Record<string, ProductDetail> = {
     stockCapPerOrder: 10,
     isBioCertified: false,
     hasFreshnessGuarantee: false,
-    media: [{ kind: "photo", src: "/promo-banner-market.jpg", alt: "Gari Blanc Extra Fin du Togo" }],
+    media: buildRepeatedPhotoMedia({ src: "/promo-banner-market.jpg", alt: "Gari Blanc Extra Fin du Togo" }),
     description: ["Semoule de manioc fine, séchée et torréfiée, importée directement du Togo."],
     characteristics: { variety: "Manioc blanc", netWeight: "1000 g", packagedAt: "Lomé pour Épicerie LoirIvoire" },
     allergens: {},

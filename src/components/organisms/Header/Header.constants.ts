@@ -14,8 +14,16 @@ export const DEFAULT_NAVIGATION_ITEMS: NavigationItemConfig[] = [
   { label: "Bon plans", href: routes.main.bonsPlans, suffix: "fire" },
   { label: "Précommandes", href: routes.main.preorders },
   { label: "Nouvel arrivage", href: routes.main.newArrivals, suffix: "new" },
-  { label: "Carnet du terroir", href: "/main/carnet-du-terroir", suffix: "chevron" },
-  { label: "Aide et contacts", href: "/main/aide-et-contacts" },
+  {
+    label: "Carnet du terroir",
+    href: routes.main.carnet,
+    suffix: "chevron",
+    dropdownItems: [
+      { label: "Tous les articles", href: routes.main.carnet },
+      { label: "Recettes", href: routes.main.recipes },
+    ],
+  },
+  { label: "Aide et contacts", href: routes.main.contact },
 ];
 
 export const DEFAULT_HEADER_ACTIONS: HeaderActionConfig[] = [

@@ -3,7 +3,6 @@ import { Chip } from "@/src/components/atoms/Chip/Chip";
 import { Icon } from "@/src/components/atoms/Icon/Icon";
 import { routes } from "@/src/lib/routing/routes";
 
-/** `routes.main.recipes` is the nearest real page — no dedicated "paniers recettes" route exists yet. TODO: point at a dedicated recipe-basket route once it's built. */
 export function RecipeBasketTeaser() {
   return (
     <div className="flex flex-col items-start gap-4 rounded-2xl bg-catalog-badge-cream/40 p-6 sm:flex-row sm:items-center sm:justify-between">

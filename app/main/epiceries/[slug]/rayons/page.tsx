@@ -3,7 +3,6 @@ import { notFound } from "next/navigation";
 
 import { parseCatalogSort } from "@/src/domain/catalog";
 import { StoreCatalogView } from "@/src/features/catalog/StoreCatalogView";
-import { verifySession } from "@/src/features/auth/server";
 import { routes } from "@/src/lib/routing/routes";
 import { mockStoreDetailRepository } from "@/src/services/store-detail.repository";
 
@@ -22,10 +21,10 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   };
 }
 
+/** PUBLIC and indexable (no `verifySession`) — a shopper must be able to browse the real catalog and add to cart before creating an account, same reasoning as `epicerieProduit`. */
 export default async function StoreCatalogPage({ params, searchParams }: PageProps) {
   const { slug } = await params;
   const { sort } = await searchParams;
-  await verifySession(routes.main.epicerieRayons(slug));
 
   const store = await mockStoreDetailRepository.getStore(slug);
   if (!store) {

@@ -27,6 +27,7 @@ const meta = {
       cityLabel: SEARCH_CITY_LABEL,
       campaign: SEARCH_CAMPAIGN,
       groups: SEARCH_GROUPS,
+      crossLinks: [],
     },
   },
 } satisfies Meta<typeof SearchResultsTemplate>;
@@ -43,6 +44,20 @@ export const ErrorState: Story = { args: { isError: true, summary: undefined } }
 export const Empty: Story = {
   args: {
     query: "Caviar",
-    summary: { query: "Caviar", totalResults: 0, totalStoresWithResults: 0, cityLabel: SEARCH_CITY_LABEL, groups: [] },
+    summary: { query: "Caviar", totalResults: 0, totalStoresWithResults: 0, cityLabel: SEARCH_CITY_LABEL, groups: [], crossLinks: [] },
+  },
+};
+
+export const EmptyWithCrossLinks: Story = {
+  args: {
+    query: "Thiéboudienne",
+    summary: {
+      query: "Thiéboudienne",
+      totalResults: 0,
+      totalStoresWithResults: 0,
+      cityLabel: SEARCH_CITY_LABEL,
+      groups: [],
+      crossLinks: [{ label: "Recette : Thiéboudienne", href: "/main/recettes/thieboudienne" }],
+    },
   },
 };

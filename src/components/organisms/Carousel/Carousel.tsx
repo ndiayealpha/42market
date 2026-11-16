@@ -20,6 +20,22 @@ export interface CarouselProps<T> {
   rowHeights?: [number, number];
 }
 
+/**
+ * `rowHeights` is a MINIMUM, never a hard cap: `overflow-x-auto` forces
+ * `overflow-y` to `auto` too (CSS rule, no way to opt out per-axis), so a
+ * bare pixel `grid-template-rows` used to silently clip any item that
+ * rendered even a few px taller than it — badges/buttons cut off with
+ * the scrollbar hidden, no visual sign anything was wrong. `minmax(Hpx,
+ * auto)` lets a row grow to fit real content instead of clipping it.
+ * Exported so a regression test can assert on it directly, without
+ * needing a real browser layout pass.
+ */
+export function getCarouselRowTemplate(rows: 1 | 2, rowHeights: [number, number]): string {
+  return rows === 2
+    ? `minmax(${rowHeights[0]}px, auto) minmax(${rowHeights[1]}px, auto)`
+    : `minmax(${rowHeights[0]}px, auto)`;
+}
+
 function CarouselInner<T>(
   { items, renderItem, getKey, rows = 2, rowHeights = [230, 220] }: CarouselProps<T>,
   ref: ForwardedRef<HTMLDivElement>
@@ -81,7 +97,7 @@ function CarouselInner<T>(
       onMouseUp={endDrag}
       onMouseLeave={endDrag}
       className="grid grid-flow-col grid-rows-1 cursor-grab snap-x snap-mandatory gap-2 overflow-x-auto overscroll-x-contain scroll-smooth [-ms-overflow-style:none] [scrollbar-width:none] motion-reduce:scroll-auto focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-foreground-strong active:cursor-grabbing [&::-webkit-scrollbar]:hidden md:gap-x-2 md:gap-y-3 md:[grid-template-rows:var(--carousel-rows)]"
-      style={{ "--carousel-rows": rows === 2 ? `${rowHeights[0]}px ${rowHeights[1]}px` : `${rowHeights[0]}px` } as CSSProperties}
+      style={{ "--carousel-rows": getCarouselRowTemplate(rows, rowHeights) } as CSSProperties}
     >
       {items.map((item, index) => (
         <div key={getKey(item, index)} role="listitem" className="snap-start">

@@ -18,9 +18,26 @@ describe("routes", () => {
 
   it("carves out Page P (fiche produit) as public despite its dynamic segments", () => {
     expect(isProtectedRoute(routes.main.epicerieProduit("loirivoire", "riz-region-mediterraneenne"))).toBe(false);
-    // Sibling routes under the same store keep requiring a session.
-    expect(isProtectedRoute(routes.main.epicerieDetail("loirivoire"))).toBe(true);
-    expect(isProtectedRoute(routes.main.epicerieRayon("loirivoire", "feculents"))).toBe(true);
+  });
+
+  it("carves out the store detail page and its real catalog (rayons) as public, for the 7-page mission's discovery funnel", () => {
+    expect(isProtectedRoute(routes.main.epicerieDetail("loirivoire"))).toBe(false);
+    expect(isProtectedRoute(routes.main.epicerieRayons("loirivoire"))).toBe(false);
+    expect(isProtectedRoute(routes.main.epicerieRayon("loirivoire", "feculents"))).toBe(false);
+    // The per-store bons-plans page keeps requiring a session — no discovery need asked for it yet.
+    expect(isProtectedRoute(routes.main.epicerieBonsPlans("loirivoire"))).toBe(true);
+  });
+
+  it("carves out the new marketing/support pages (About, Contact, Commerçants, legal) as public", () => {
+    expect(isProtectedRoute(routes.main.about)).toBe(false);
+    expect(isProtectedRoute(routes.main.contact)).toBe(false);
+    expect(isProtectedRoute(routes.main.support)).toBe(false);
+    expect(isProtectedRoute(routes.main.merchantOnboarding)).toBe(false);
+    expect(isProtectedRoute(routes.main.epiceries)).toBe(false);
+    expect(isProtectedRoute(routes.main.legalNotice)).toBe(false);
+    expect(isProtectedRoute(routes.main.privacyPolicy)).toBe(false);
+    expect(isProtectedRoute(routes.main.termsOfSale)).toBe(false);
+    expect(isProtectedRoute(routes.main.cookiePolicy)).toBe(false);
   });
 
   it("identifies public routes", () => {

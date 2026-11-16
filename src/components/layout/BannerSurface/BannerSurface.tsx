@@ -11,9 +11,15 @@ export interface BannerSurfaceProps {
   tone: BannerTone;
   children: ReactNode;
   className?: string;
+  /** For anchor-scroll targets (e.g. a hero CTA scrolling to a section rendered as a banner). */
+  id?: string;
 }
 
 /** The dark background shared by the parcel banner (brown) and the promo banner (forest green). */
-export function BannerSurface({ tone, children, className = "" }: BannerSurfaceProps) {
-  return <div className={`overflow-hidden rounded-2xl ${TONE_CLASSES[tone]} ${className}`}>{children}</div>;
+export function BannerSurface({ tone, children, className = "", id }: BannerSurfaceProps) {
+  return (
+    <div id={id} className={`overflow-hidden rounded-2xl ${TONE_CLASSES[tone]} ${className}`}>
+      {children}
+    </div>
+  );
 }

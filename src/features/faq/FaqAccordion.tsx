@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 
+import { ButtonLink } from "@/src/components/atoms/Button/ButtonLink";
 import { Icon } from "@/src/components/atoms/Icon/Icon";
 import type { FaqItem } from "@/src/domain/faq";
 
@@ -43,8 +44,13 @@ export function FaqAccordion({ items }: FaqAccordionProps) {
                 <Icon name="chevron-down" size={20} className={`shrink-0 transition-transform duration-150 ${isOpen ? "rotate-180" : ""}`} />
               </button>
             </h3>
-            <div id={panelId} role="region" aria-labelledby={triggerId} hidden={!isOpen} className="px-5 pb-4 text-sm leading-relaxed text-ink-muted">
-              {item.answer}
+            <div id={panelId} role="region" aria-labelledby={triggerId} hidden={!isOpen} className="flex flex-col gap-3 px-5 pb-4 text-sm leading-relaxed text-ink-muted">
+              <p>{item.answer}</p>
+              {item.relatedLink && (
+                <ButtonLink href={item.relatedLink.href} variant="soft" className="self-start">
+                  {item.relatedLink.label} →
+                </ButtonLink>
+              )}
             </div>
           </div>
         );

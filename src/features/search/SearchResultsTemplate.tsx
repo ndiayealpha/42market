@@ -1,8 +1,9 @@
 import { Button } from "@/src/components/atoms/Button/Button";
+import { ButtonLink } from "@/src/components/atoms/Button/ButtonLink";
 import { Skeleton } from "@/src/components/atoms/Skeleton/Skeleton";
 import { Container } from "@/src/components/layout/Container/Container";
 import { EmptyState } from "@/src/components/molecules/EmptyState/EmptyState";
-import type { SearchFiltersState, SearchResultsSummary, SearchSortOption } from "@/src/domain/search";
+import type { SearchCrossLink, SearchFiltersState, SearchResultsSummary, SearchSortOption } from "@/src/domain/search";
 
 import { MultiStoreNotice } from "./MultiStoreNotice";
 import { SearchFilterBar, type SearchFilterBarOverrides } from "./SearchFilterBar";
@@ -36,6 +37,23 @@ function ResultsSkeleton() {
           </div>
         </div>
       ))}
+    </div>
+  );
+}
+
+/** "Voir aussi dans le Carnet / Recettes" — rendered whenever the query also matched a recipe/article, whether or not any product did. */
+function CrossLinksBand({ crossLinks }: { crossLinks: SearchCrossLink[] }) {
+  if (crossLinks.length === 0) return null;
+  return (
+    <div className="flex flex-col items-center gap-3 rounded-2xl bg-surface-subtle px-6 py-6 text-center">
+      <p className="text-sm font-semibold text-foreground-strong">Voir aussi dans le Carnet du terroir et les Recettes</p>
+      <div className="flex flex-wrap items-center justify-center gap-2">
+        {crossLinks.map((link) => (
+          <ButtonLink key={link.href} href={link.href} variant="soft">
+            {link.label}
+          </ButtonLink>
+        ))}
+      </div>
     </div>
   );
 }
@@ -96,11 +114,18 @@ export function SearchResultsTemplate({
           </Button>
         </div>
       ) : groups.length === 0 ? (
-        <EmptyState
-          icon="search"
-          title={`Aucun résultat pour « ${query} »`}
-          description="Vérifiez l'orthographe ou essayez un terme plus général, comme le nom d'une catégorie ou d'un commerçant."
-        />
+        <>
+          <EmptyState
+            icon="search"
+            title={query ? `Aucun résultat pour « ${query} »` : "Que recherchez-vous ?"}
+            description={
+              query
+                ? "Vérifiez l'orthographe ou essayez un terme plus général, comme le nom d'une catégorie ou d'un commerçant."
+                : "Saisissez un produit, une épice ou le nom d'une recette dans la barre de recherche ci-dessus."
+            }
+          />
+          <CrossLinksBand crossLinks={summary?.crossLinks ?? []} />
+        </>
       ) : (
         <>
           <div className="flex flex-col gap-10">
@@ -108,6 +133,7 @@ export function SearchResultsTemplate({
               <StoreResultGroup key={group.slug} group={group} />
             ))}
           </div>
+          <CrossLinksBand crossLinks={summary?.crossLinks ?? []} />
           <MultiStoreNotice />
         </>
       )}
