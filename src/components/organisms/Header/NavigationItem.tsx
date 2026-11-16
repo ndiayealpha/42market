@@ -16,15 +16,21 @@ export function NavigationItem({ item }: { item: NavigationItemConfig }) {
   const [open, setOpen] = useState(false);
   const [menuPosition, setMenuPosition] = useState<{ left: number; top: number } | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
   const hasDropdown = item.suffix === "chevron" && item.dropdownItems && item.dropdownItems.length > 0;
 
   useEffect(() => {
     if (!open) return;
 
     function handlePointerDown(event: MouseEvent) {
-      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
-        setOpen(false);
-      }
+      const target = event.target as Node;
+      // The menu is portaled to `document.body` (see below), so it's never
+      // a real DOM descendant of `containerRef` — without also checking
+      // `menuRef`, every click on a menu item reads as "outside" and
+      // closes the menu on `mousedown`, before the item's own `click`
+      // (and its navigation) ever gets to fire.
+      if (containerRef.current?.contains(target) || menuRef.current?.contains(target)) return;
+      setOpen(false);
     }
 
     function handleKeyDown(event: KeyboardEvent) {
@@ -88,6 +94,7 @@ export function NavigationItem({ item }: { item: NavigationItemConfig }) {
         menuPosition &&
         createPortal(
           <div
+            ref={menuRef}
             role="menu"
             aria-label={item.label}
             style={{ left: menuPosition.left, top: menuPosition.top }}
