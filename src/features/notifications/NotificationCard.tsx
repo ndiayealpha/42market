@@ -27,7 +27,7 @@ export interface NotificationCardProps {
   now: Date;
 }
 
-const ACCENT_CLASSES = { default: "border-l-foreground-strong", danger: "border-l-danger" };
+const ACCENT_CLASSES = { default: "border-l-foreground-strong", promo: "border-l-promo-red" };
 const ICON_TILE_TONE = { neutral: "neutral", cream: "cream", success: "success" } as const;
 
 /** N4 — the one card for all 8 notification types, config-driven (rule O: no per-type `if` here). */

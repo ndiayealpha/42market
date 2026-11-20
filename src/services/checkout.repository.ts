@@ -35,13 +35,19 @@ export interface CheckoutRepository {
  * not through this repository (rule: no MSW for this pass).
  */
 export const mockCheckoutRepository: CheckoutRepository = {
-  async placeOrder(): Promise<PlaceOrderResult> {
+  async placeOrder({ slot }): Promise<PlaceOrderResult> {
     const orderId = "cmd-4289";
     const response = await fetch("/api/checkout/claim-order", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ orderId }),
+      // M3: the server re-validates the slot itself (never trusts a
+      // client clock) — only the fields it needs to do that, not the
+      // whole cart.
+      body: JSON.stringify({ orderId, slot: slot.kind === "window" ? { kind: slot.kind, startIso: slot.startIso, endIso: slot.endIso } : { kind: slot.kind } }),
     });
+    if (response.status === 409) {
+      return { ok: false, error: { kind: "slot-unavailable" } };
+    }
     if (!response.ok) {
       return { ok: false, error: { kind: "payment-declined" } };
     }

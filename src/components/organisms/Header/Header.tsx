@@ -13,14 +13,19 @@ export interface HeaderProps {
   navigationItems?: NavigationItemConfig[];
   actions?: HeaderActionConfig[];
   registrationHref?: string;
-  onLocationClick?: () => void;
   onSearch?: (query: string) => void;
+  onLocationClick: () => void;
 }
 
 /**
  * Public marketplace header. Two rows (HeaderTop / HeaderNavigation), each
  * built from small, independently storyable atoms/molecules — nothing
  * here hardcodes copy, counts or links; all of that is config or props.
+ *
+ * Sticky on every breakpoint (A3) — both rows together, so the Cabas
+ * stays reachable while scrolling on desktop too. `sticky` (not `fixed`)
+ * keeps its height in the normal flow, so nothing else needs a
+ * compensating top padding.
  */
 export function Header({
   user,
@@ -28,22 +33,13 @@ export function Header({
   navigationItems = DEFAULT_NAVIGATION_ITEMS,
   actions = DEFAULT_HEADER_ACTIONS,
   registrationHref = routes.main.merchantOnboarding,
-  onLocationClick,
   onSearch,
+  onLocationClick,
 }: HeaderProps) {
   return (
-    // Sticky only takes effect below `md` (mobile) — `md:static` restores
-    // today's desktop behavior (not sticky) exactly, so nothing changes
-    // there.
-    <header className="sticky top-0 z-40 border-b border-border bg-surface md:static md:z-auto">
+    <header className="sticky top-0 z-40 border-b border-border bg-surface">
       <div className="hidden md:block">
-        <HeaderTop
-          location={location}
-          actions={actions}
-          user={user}
-          onLocationClick={onLocationClick}
-          onSearch={onSearch}
-        />
+        <HeaderTop location={location} actions={actions} user={user} onSearch={onSearch} onLocationClick={onLocationClick} />
         <HeaderNavigation items={navigationItems} registrationHref={registrationHref} />
       </div>
       <div className="md:hidden">

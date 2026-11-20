@@ -20,68 +20,8 @@ export const MERCHANT_SERVICE_LABELS: Record<MerchantService, string> = {
   cosmetiques: "Cosmétiques / Mèches & Soins",
 };
 
+/** F7 (2026-11-17 UAT): the pricing section (plan picker, tiers, billing toggle) is gone — every application submits this one remaining plan. */
 export type MerchantPlan = "decouverte" | "pro" | "business";
-export type MerchantBillingPeriod = "monthly" | "annual";
-
-export interface MerchantPlanOption {
-  id: MerchantPlan;
-  name: string;
-  tagline?: string;
-  monthlyPrice: number;
-  features: string[];
-}
-
-/** Annual billing is "2 mois offerts" — 10 months' worth billed over 12, not a separate fixture. */
-export const MERCHANT_PLANS: MerchantPlanOption[] = [
-  {
-    id: "decouverte",
-    name: "Découverte",
-    tagline: "Pour démarrer et tester sa visibilité digitale",
-    monthlyPrice: 0,
-    features: ["Fiche magasin vérifiée & la carte", "Catalogue jusqu'à 50 produits", "Horaires et services commerçants", "Réservations Click & Collect"],
-  },
-  {
-    id: "pro",
-    name: "Pro",
-    tagline: "Pour les grandes surfaces exotiques et commerces multi-rayons",
-    monthlyPrice: 29,
-    features: [
-      "Produits & condiments illimités",
-      "Mise en avant locale du quartier",
-      "Publication des alertes arrivages frais",
-      "Statistiques de consultations produits",
-      "Support prioritaire par WhatsApp",
-    ],
-  },
-  {
-    id: "business",
-    name: "Business",
-    tagline: "Pour les grandes surfaces exotiques et commerces multi-rayons",
-    monthlyPrice: 79,
-    features: [
-      "Priorité #1 dans les résultats de recherche",
-      "Mise en avant régionale & newsletter",
-      "Badge officiel « Partenaire Recommandé »",
-      "Accompagnement catalogue sur-mesure",
-    ],
-  },
-];
-
-export function getMerchantPlan(id: MerchantPlan): MerchantPlanOption {
-  const plan = MERCHANT_PLANS.find((candidate) => candidate.id === id);
-  if (!plan) throw new Error(`Unknown merchant plan: ${id}`);
-  return plan;
-}
-
-/** Annual price for the whole year, "2 mois offerts" (10 months billed) — 0 stays 0 for the free plan. */
-export function getMerchantAnnualPrice(plan: MerchantPlanOption): number {
-  return plan.monthlyPrice * 10;
-}
-
-export function formatMerchantPlanPrice(plan: MerchantPlanOption, period: MerchantBillingPeriod): string {
-  if (plan.monthlyPrice === 0) return "Gratuit";
-  return period === "monthly" ? `${plan.monthlyPrice} €` : `${Math.round(getMerchantAnnualPrice(plan) / 12)} €`;
-}
 
 export interface MerchantApplicationInput {
   managerName: string;

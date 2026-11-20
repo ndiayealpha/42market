@@ -110,8 +110,6 @@ export function FavoritesView({ cityName, activeTab, sort, terroirRegion, inStoc
       storeOptions={storeOptions}
       selectedStoreSlugs={storeSlugs}
       onStoreSlugsChange={(slugs) => navigate({ boutiques: slugs })}
-      query={query}
-      onQueryChange={(value) => navigate({ q: value })}
       onResetFilters={() => navigate({ tri: "recent", terroir: "all", stock: false, boutiques: [], q: "" })}
       resetFiltersHref={buildHref({ tri: "recent", terroir: "all", stock: false, boutiques: [], q: "" })}
       products={filteredProducts}

@@ -30,7 +30,6 @@ export const SUPPORT_LINKS: FooterLinkGroupConfig = {
   links: [
     { label: "FAQ clients", href: routes.main.faq },
     { label: "Contactez-nous", href: routes.main.contact },
-    { label: "Signaler un problème", href: `${routes.main.contact}?motif=probleme` },
   ],
 };
 
@@ -39,7 +38,6 @@ export const MERCHANT_LINKS: FooterLinkGroupConfig = {
   links: [
     { label: "Ouvrir une boutique", href: routes.main.merchantOnboarding },
     { label: "Charte qualité", href: `${routes.main.merchantOnboarding}#charte-qualite` },
-    { label: "Conditions vendeurs", href: `${routes.main.merchantOnboarding}#conditions-vendeurs` },
     { label: "FAQ épiciers exotiques", href: `${routes.main.merchantOnboarding}#faq` },
   ],
 };

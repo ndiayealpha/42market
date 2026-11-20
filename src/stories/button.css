@@ -5,7 +5,8 @@
   border-radius: 3em;
   font-weight: 700;
   line-height: 1;
-  font-family: 'Nunito Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  /* A1 (2026-11-17 UAT): inherit the real DM Sans body font — this scaffold component is still used in production (LoginForm, SignupForm, ...) and previously hardcoded a different font family. */
+  font-family: inherit;
 }
 .storybook-button--primary {
   background-color: #555ab9;

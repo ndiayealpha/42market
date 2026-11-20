@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 
 export type BadgeVariant = "count" | "label";
-export type BadgeColor = "danger" | "favorite" | "basket" | "info" | "success";
+export type BadgeColor = "danger" | "favorite" | "basket" | "info" | "success" | "brown";
 
 const COUNT_COLOR_CLASSES: Record<BadgeColor, string> = {
   danger: "bg-danger text-white",
@@ -9,6 +9,8 @@ const COUNT_COLOR_CLASSES: Record<BadgeColor, string> = {
   basket: "bg-basket text-white",
   info: "bg-info text-white",
   success: "bg-success text-white",
+  /** The header's Favoris/Cabas count badges (B6) — the app's existing dark-brown token, not a new color. */
+  brown: "bg-foreground-strong text-white",
 };
 
 const LABEL_COLOR_CLASSES: Record<BadgeColor, string> = {
@@ -17,6 +19,7 @@ const LABEL_COLOR_CLASSES: Record<BadgeColor, string> = {
   basket: "bg-basket/10 text-basket",
   info: "bg-info/10 text-info",
   success: "bg-success-subtle text-success",
+  brown: "bg-foreground-strong/10 text-foreground-strong",
 };
 
 export interface BadgeProps {

@@ -1,7 +1,5 @@
 import { Breadcrumb } from "@/src/components/atoms/Breadcrumb/Breadcrumb";
 import { Container } from "@/src/components/layout/Container/Container";
-import { ReassuranceBand } from "@/src/components/organisms/ReassuranceBand/ReassuranceBand";
-import { TRUST_ITEMS } from "@/src/components/organisms/Footer/Footer.constants";
 
 import type { ProductDetailViewModel } from "./productDetailViewModel";
 import { ProductFactsStrip } from "./ProductFactsStrip";
@@ -21,9 +19,10 @@ export interface ProductDetailTemplateProps {
  * `useProductDetail` hook and resolves the view model, same Template/View
  * split as `StoreCatalogTemplate`/`StoreCatalogView`). P1→P9 order: left
  * column is the gallery + facts strip, right column is header → price →
- * description → purchase box → accordions; similar products run full-width
- * below, and the global `ReassuranceBand` sits just above the Footer the
- * layout already renders.
+ * description → purchase box → accordions; similar products run
+ * full-width below. No page-level `ReassuranceBand` here (H4, 2026-11-17
+ * UAT) — it duplicated the global layout's own `FooterTrustBar`, which
+ * already sits directly above the Footer on every page.
  */
 export function ProductDetailTemplate({ viewModel }: ProductDetailTemplateProps) {
   const { product, facts, characteristicRows, savings, discountPercent, breadcrumbItems } = viewModel;
@@ -87,8 +86,6 @@ export function ProductDetailTemplate({ viewModel }: ProductDetailTemplateProps)
       </div>
 
       <SimilarProductsSection products={product.similar} />
-
-      <ReassuranceBand items={TRUST_ITEMS} variant="inline" />
     </Container>
   );
 }

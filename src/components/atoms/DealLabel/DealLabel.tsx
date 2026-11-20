@@ -4,7 +4,8 @@ const TONE_CLASSES: Record<DealLabelTone, string> = {
   neutral: "text-muted-foreground",
   success: "text-catalog-success",
   warning: "text-warning",
-  danger: "text-catalog-danger",
+  // Every `DealLabel` is on a deal/promo card by definition — the one true promo red (A2, 2026-11-17 UAT), not the generic status danger.
+  danger: "text-promo-red",
 };
 
 export interface DealLabelProps {

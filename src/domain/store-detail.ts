@@ -52,6 +52,17 @@ export function buildDirectionsUrl(address: NonNullable<StoreDetail["address"]>)
   return `https://www.google.com/maps/dir/?api=1&destination=${query}`;
 }
 
+/**
+ * N1 (2026-11-17 UAT): a real, auto-displayed map — no API key and no new
+ * mapping library needed (rule 11), just Google's classic iframe-embed
+ * endpoint geocoding the store's own real address live, the same address
+ * `buildDirectionsUrl` already uses.
+ */
+export function buildMapEmbedUrl(address: NonNullable<StoreDetail["address"]>): string {
+  const query = encodeURIComponent(`${address.street}, ${address.city}`);
+  return `https://maps.google.com/maps?q=${query}&output=embed`;
+}
+
 /** Normalizes a French phone number (spaces, dots) into a dialable `tel:` URL. */
 export function buildTelUrl(phone: string): string {
   return `tel:${phone.replace(/[\s.]/g, "")}`;

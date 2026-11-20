@@ -1,6 +1,5 @@
 "use client";
 
-import type { SessionUser } from "@/src/features/auth";
 import { Eyebrow } from "@/src/components/layout/Eyebrow/Eyebrow";
 import { Button } from "@/src/components/atoms/Button/Button";
 import { ButtonLink } from "@/src/components/atoms/Button/ButtonLink";
@@ -8,6 +7,7 @@ import { Icon } from "@/src/components/atoms/Icon/Icon";
 import { CountdownBar } from "@/src/components/organisms/CountdownBar/CountdownBar";
 import { PromoSection } from "@/src/components/organisms/PromoSection/PromoSection";
 import { PROMO_ITEMS, PROMO_SECTION_CONTENT } from "@/src/components/organisms/PromoSection/PromoSection.data";
+import { FEATURE_FLAGS } from "@/src/config/feature-flags";
 import { StoreGridSection } from "@/src/features/stores/StoreGridSection";
 import { PreordersSection } from "@/src/features/preorders/PreordersSection";
 import { RecipesSection } from "@/src/features/recipes/RecipesSection";
@@ -16,35 +16,20 @@ import { useCityStores } from "@/src/hooks/useCityStores";
 import { usePreorderCampaigns } from "@/src/hooks/usePreorderCampaigns";
 import { routes } from "@/src/lib/routing/routes";
 
-export interface DashboardViewProps {
-  user: SessionUser;
-}
-
-export function DashboardView({ user }: DashboardViewProps) {
+export function DashboardView() {
   const nearby = useNearbyStores();
   const city = useCityStores();
   const preorders = usePreorderCampaigns();
 
   return (
     <>
-      <section className="p-6">
-        <h1 className="text-2xl font-semibold">Dashboard</h1>
-        <p className="mt-2">Welcome back, {user.name}.</p>
-      </section>
+      {FEATURE_FLAGS.countdownEnabled && (
+        <div className="px-3 sm:px-4">
+          <CountdownBar className="mx-auto w-full sm:w-1/2" />
+        </div>
+      )}
 
-      <div className="px-3 sm:px-4">
-        <CountdownBar className="mx-auto w-full sm:w-1/2" />
-      </div>
-
-      <PromoSection
-        kicker={PROMO_SECTION_CONTENT.kicker}
-        meta={`Mis à jour en direct · ${PROMO_SECTION_CONTENT.totalCount} offres actives à Saint-Étienne`}
-        title={PROMO_SECTION_CONTENT.title}
-        totalCount={PROMO_SECTION_CONTENT.totalCount}
-        seeAll={PROMO_SECTION_CONTENT.seeAll}
-        hint={PROMO_SECTION_CONTENT.hint}
-        items={PROMO_ITEMS}
-      />
+      <PromoSection title={PROMO_SECTION_CONTENT.title} totalCount={PROMO_SECTION_CONTENT.totalCount} seeAll={PROMO_SECTION_CONTENT.seeAll} items={PROMO_ITEMS} />
 
       <div className="mx-auto max-w-[1280px] space-y-12 px-4 py-12 sm:px-6 xl:px-0">
         <StoreGridSection

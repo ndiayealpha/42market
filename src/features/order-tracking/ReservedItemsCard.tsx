@@ -27,7 +27,7 @@ export function ReservedItemsCard({ order }: ReservedItemsCardProps) {
 
       <div className="divide-y divide-border">
         {order.lines.map((line) => (
-          <OrderLineItem key={line.id} line={line} className="py-3 first:pt-0 last:pb-0" />
+          <OrderLineItem key={line.id} line={line} className="py-3 first:pt-0 last:pb-0" hideAccrocheLabel />
         ))}
       </div>
 

@@ -45,7 +45,7 @@ export function GroupPreorderCampaignCard({ campaign, now }: GroupPreorderCampai
         aspectRatio="4/3"
         sizes="(min-width: 1280px) 23vw, (min-width: 640px) 46vw, 92vw"
         topLeft={
-          <Chip tone="danger" size="sm" className="font-bold">
+          <Chip tone="promo" size="sm" className="font-bold">
             {getRibbonLabel(campaign)}
           </Chip>
         }

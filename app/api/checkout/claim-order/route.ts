@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 
+import { SLOT_PARAMS } from "@/src/features/checkout/slot-params";
 import { getCurrentUser } from "@/src/features/auth/server";
 import { DEMO_ORDER_OWNER_COOKIE } from "@/src/lib/constants";
 import { mockOrderTrackingRepository } from "@/src/services/order-tracking.repository";
@@ -23,15 +24,30 @@ import { mockOrderTrackingRepository } from "@/src/services/order-tracking.repos
  * it crosses that boundary where the in-memory store can't. The user is
  * read from the session here, not trusted from the request body.
  */
+/** M3: never trust a client clock — if the slot is a window, re-run the exact same "over, or starting too soon to prepare" check against the server's own `now` before the order is allowed through. */
+function isWindowSlotStillBookable(slot: { startIso: string; endIso: string }): boolean {
+  const now = Date.now();
+  const recommendedCutoff = now + SLOT_PARAMS.pickupDelayMinutes * 60_000;
+  const isPast = now >= new Date(slot.endIso).getTime();
+  const startsTooSoon = new Date(slot.startIso).getTime() < recommendedCutoff;
+  return !isPast && !startsTooSoon;
+}
+
 export async function POST(request: Request) {
   const user = await getCurrentUser();
   if (!user) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const { orderId } = (await request.json()) as { orderId?: string };
+  const { orderId, slot } = (await request.json()) as {
+    orderId?: string;
+    slot?: { kind: "window"; startIso: string; endIso: string } | { kind: "express" };
+  };
   if (!orderId) {
     return NextResponse.json({ error: "Missing orderId" }, { status: 400 });
+  }
+  if (slot?.kind === "window" && !isWindowSlotStillBookable(slot)) {
+    return NextResponse.json({ error: "Slot no longer bookable" }, { status: 409 });
   }
 
   await mockOrderTrackingRepository.claimOrder(orderId, user.id);

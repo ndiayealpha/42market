@@ -42,8 +42,8 @@ export function OffersBanner({
   const progressPercent = totalCount > 0 ? (offers.length / totalCount) * 100 : 0;
 
   return (
-    <section aria-label="Offres de l'épicerie" className="overflow-hidden rounded-[22px] shadow-card">
-      <div className="flex items-center justify-between gap-4 bg-catalog-danger px-5 py-4">
+    <section aria-label="Offres de l'épicerie" className="overflow-hidden shadow-card">
+      <div className="flex items-center justify-between gap-4 bg-promo-red px-5 py-4">
         <div className="flex items-center gap-3">
           <span className="flex h-9 w-9 items-center justify-center rounded-full bg-white/20 text-white">
             <Icon name="zap" size={18} />

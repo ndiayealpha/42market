@@ -4,7 +4,7 @@ import { StoreAvatar } from "@/src/components/atoms/StoreAvatar/StoreAvatar";
 import { StoreOpenBadge } from "@/src/components/atoms/StoreOpenBadge/StoreOpenBadge";
 import { StoreMap } from "@/src/components/molecules/StoreMap/StoreMap";
 import type { FullOrderStore } from "@/src/domain/orders";
-import { buildDirectionsUrl, buildTelUrl } from "@/src/domain/store-detail";
+import { buildDirectionsUrl, buildMapEmbedUrl, buildTelUrl } from "@/src/domain/store-detail";
 
 export interface TrackingStoreSectionProps {
   store: FullOrderStore;
@@ -19,6 +19,7 @@ export interface TrackingStoreSectionProps {
  */
 export function TrackingStoreSection({ store }: TrackingStoreSectionProps) {
   const directionsUrl = buildDirectionsUrl({ street: store.street, city: store.city });
+  const mapEmbedUrl = buildMapEmbedUrl({ street: store.street, city: store.city });
 
   return (
     <Card variant="elevated" className="space-y-4">
@@ -60,7 +61,7 @@ export function TrackingStoreSection({ store }: TrackingStoreSectionProps) {
         </div>
       </div>
 
-      <StoreMap directionsUrl={directionsUrl} caption={store.mapCaption} />
+      <StoreMap embedUrl={mapEmbedUrl} directionsUrl={directionsUrl} caption={store.mapCaption} />
     </Card>
   );
 }

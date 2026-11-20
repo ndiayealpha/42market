@@ -7,10 +7,10 @@ export function FaqHero() {
         Foire Aux Questions
       </Chip>
       <h1 className="max-w-2xl text-2xl font-extrabold tracking-[-0.02em] text-foreground-strong sm:text-[32px]">
-        FAQ Diaspora &amp; Connaissance du Marché
+        100% Click &amp; Collect en Épicerie
       </h1>
       <p className="max-w-2xl text-sm text-ink-muted sm:text-base">
-        Réponses concrètes et transparentes aux questions que notre communauté se pose tous les jours au comptoir.
+        Toutes les réponses sur la réservation, le retrait en boutique et le fonctionnement de 42 Markets.
       </p>
     </div>
   );

@@ -26,7 +26,7 @@ export function StorePromoCard({ store, bottomLeft }: StorePromoCardProps) {
         aspectRatio="4/3"
         sizes="(min-width: 1024px) 33vw, 100vw"
         topLeft={
-          <Chip tone="danger" size="sm" className="font-bold">
+          <Chip tone="promo" size="sm" className="font-bold">
             {store.discountLabel}
           </Chip>
         }

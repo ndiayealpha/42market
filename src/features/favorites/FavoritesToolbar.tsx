@@ -10,7 +10,6 @@ import { Select } from "@/src/components/atoms/Select/Select";
 import { Switch } from "@/src/components/atoms/Switch/Switch";
 import { Card } from "@/src/components/atoms/Card/Card";
 import { Dialog } from "@/src/components/molecules/Dialog/Dialog";
-import { SearchInput } from "@/src/components/molecules/SearchInput/SearchInput";
 import { FAVORITES_SORT_CONFIG, type FavoritesSortOption } from "@/src/domain/favorites";
 import { TERROIR_REGION_CONFIG, type TerroirRegionSlug } from "@/src/domain/terroir";
 
@@ -24,8 +23,6 @@ export interface FavoritesToolbarProps {
   storeOptions: { slug: string; name: string }[];
   selectedStoreSlugs: string[];
   onStoreSlugsChange: (slugs: string[]) => void;
-  query: string;
-  onQueryChange: (query: string) => void;
   onResetFilters: () => void;
 }
 
@@ -39,7 +36,7 @@ const TERROIR_OPTIONS: { value: TerroirRegionSlug | "all"; label: string }[] = [
   ...(Object.keys(TERROIR_REGION_CONFIG) as TerroirRegionSlug[]).map((value) => ({ value, label: TERROIR_REGION_CONFIG[value].label })),
 ];
 
-/** F3 — sort, advanced-filter panel (Dialog), terroir chips and a debounced search, all URL-driven. */
+/** F3 — sort, advanced-filter panel (Dialog) and terroir chips, all URL-driven. No search field (J3, 2026-11-17 UAT): the Filtrer button already covers the need. */
 export function FavoritesToolbar({
   sort,
   onSortChange,
@@ -50,8 +47,6 @@ export function FavoritesToolbar({
   storeOptions,
   selectedStoreSlugs,
   onStoreSlugsChange,
-  query,
-  onQueryChange,
   onResetFilters,
 }: FavoritesToolbarProps) {
   const [isFilterOpen, setFilterOpen] = useState(false);
@@ -79,14 +74,6 @@ export function FavoritesToolbar({
             <FilterChip key={option.value} href={getTerroirHref(option.value)} label={option.label} isActive={terroirRegion === option.value} />
           ))}
         </div>
-
-        <SearchInput
-          defaultValue={query}
-          onDebouncedChange={onQueryChange}
-          label="Filtrer parmi mes favoris"
-          placeholder="Filtrer parmi mes favoris…"
-          className="ml-auto w-full sm:w-64"
-        />
       </div>
 
       <Dialog open={isFilterOpen} onClose={() => setFilterOpen(false)} title="Filtres avancés">

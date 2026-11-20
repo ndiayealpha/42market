@@ -1,12 +1,9 @@
-import Link from "next/link";
-
 import { Chip } from "@/src/components/atoms/Chip/Chip";
 import { Icon } from "@/src/components/atoms/Icon/Icon";
 import { ProductImage } from "@/src/components/atoms/ProductImage/ProductImage";
 import { Section } from "@/src/components/layout/Section/Section";
 import { buildDirectionsUrl, getOpeningStatus, type StoreDetailWithContact } from "@/src/domain/store-detail";
 import { formatDistanceCompact } from "@/src/lib/format";
-import { routes } from "@/src/lib/routing/routes";
 
 export interface CheckoutStoreSectionProps {
   /** Checkout only ever renders the one store with a full fixture (phone/address guaranteed) — see `StoreDetailWithContact`'s own doc comment. */
@@ -18,25 +15,14 @@ export interface CheckoutStoreSectionProps {
  * K3 (`id="point-de-retrait"`) — no `PickupStoreCard` exists anywhere in
  * the repo yet (checked `src/features/profile`), so this is a new,
  * page-scoped section rather than an extension of something that doesn't
- * fit. "Changer d'épicerie" is a plain link, not a confirmation dialog:
- * switching stores from checkout fundamentally means starting over, so
- * navigating away (same destination `StoreContextBar` already uses) is
- * simplification enough — no cart-reset logic duplicated here.
+ * fit. No "Changer d'épicerie" action (M1, 2026-11-17 UAT): switching
+ * stores from checkout isn't offered here anymore.
  */
 export function CheckoutStoreSection({ store, now }: CheckoutStoreSectionProps) {
   const openingStatus = getOpeningStatus(store.openingHours, now);
 
   return (
-    <Section
-      id="point-de-retrait"
-      headingTabIndex={-1}
-      title="Épicerie de retrait sélectionnée"
-      action={
-        <Link href={routes.main.epiceries} className="text-sm font-semibold text-foreground-strong underline underline-offset-2">
-          Changer d&apos;épicerie ⇄
-        </Link>
-      }
-    >
+    <Section id="point-de-retrait" headingTabIndex={-1} title="Épicerie de retrait sélectionnée">
       <div className="flex flex-col gap-4 rounded-2xl bg-catalog-chip p-4 sm:flex-row">
         <ProductImage
           src={store.image.src}

@@ -29,11 +29,9 @@ const ANCHOR_CLASSES: Record<StickerAnchor, string> = {
  * it. `shape="pill"` carries a price (reuses `Price`); `shape="circle"`
  * carries a short value + caption (e.g. a percentage off).
  *
- * Accessibility note: at the sizes/weights actually used here, white
- * text on `--promo-orange` measures ~2.2:1 and on `--promo-red` ~3.5–3.9:1
- * — both fail WCAG AA (needs 4.5:1, or 3:1 for ≥18.66px bold). See the
- * PromoCard delivery notes for a corrected-token suggestion; the colors
- * below are left as specified, not changed unilaterally.
+ * Accessibility note: white text on `--promo-orange` still measures
+ * ~2.2:1 (fails WCAG AA). `--promo-red` was corrected to `#BA1A1A`
+ * (2026-11-19), which now measures ~6.5:1 — passes AA/AAA.
  */
 export function Sticker({ shape, bg, anchor, rotate = 0, price, value, caption, className = "" }: StickerProps) {
   const isCircle = shape === "circle";

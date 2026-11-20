@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Bricolage_Grotesque, DM_Sans, Geist_Mono } from "next/font/google";
 import "../src/styles/globals.scss";
 
 import { AuthApiProvider, SessionProvider } from "@/src/features/auth";
@@ -7,8 +7,14 @@ import { defaultAuthClient, getCurrentUser } from "@/src/features/auth/server";
 import { QueryProvider } from "@/src/providers/query-provider";
 import { ToastProvider } from "@/src/providers/toast-provider";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+// A1 (2026-11-17 UAT): DM Sans for body/buttons/inputs, Bricolage Grotesque for every h1.
+const dmSans = DM_Sans({
+  variable: "--font-dm-sans",
+  subsets: ["latin"],
+});
+
+const bricolageGrotesque = Bricolage_Grotesque({
+  variable: "--font-bricolage-grotesque",
   subsets: ["latin"],
 });
 
@@ -28,7 +34,7 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${dmSans.variable} ${bricolageGrotesque.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-screen flex flex-col">
         <QueryProvider>

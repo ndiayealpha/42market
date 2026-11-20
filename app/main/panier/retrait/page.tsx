@@ -29,13 +29,5 @@ export default async function CheckoutPage() {
   const settings = await mockAccountSettingsRepository.getSettings(user.id);
   const now = new Date();
 
-  return (
-    <CheckoutView
-      now={now}
-      store={STORE_DETAIL}
-      isPhoneVerified={settings?.isPhoneVerified ?? false}
-      supportPhone={STORE_DETAIL.phone}
-      year={now.getFullYear()}
-    />
-  );
+  return <CheckoutView now={now} store={STORE_DETAIL} isPhoneVerified={settings?.isPhoneVerified ?? false} />;
 }

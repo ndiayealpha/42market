@@ -1,4 +1,5 @@
-import { TextLink } from "@/src/components/atoms/Link/Link";
+import { ButtonLink } from "@/src/components/atoms/Button/ButtonLink";
+import { Icon } from "@/src/components/atoms/Icon/Icon";
 import { PickupTimeChip } from "@/src/components/atoms/PickupTimeChip/PickupTimeChip";
 import { StoreAvatar } from "@/src/components/atoms/StoreAvatar/StoreAvatar";
 import { Section } from "@/src/components/layout/Section/Section";
@@ -25,15 +26,15 @@ export function StoreDealsSection({ store, anchorId }: StoreDealsSectionProps) {
           <PickupTimeChip label={`Retrait ${store.pickupMinutes} min`} />
         </span>
       }
-      subtitle={store.tagline}
       action={
-        <TextLink
+        <ButtonLink
           href={routes.main.epicerieBonsPlans(store.slug)}
-          variant="default"
+          variant="soft"
+          icon={<Icon name="arrow-right" size={16} />}
           aria-label={`Voir toutes les promos de ${store.name} (${formatPromoCountLabel(store.promoCount)})`}
         >
-          Voir tout ({formatPromoCountLabel(store.promoCount)}) →
-        </TextLink>
+          Voir tout ({formatPromoCountLabel(store.promoCount)})
+        </ButtonLink>
       }
     >
       <ProductRail variant="deal" products={store.products} ariaLabel={`Promotions ${store.name}`} />

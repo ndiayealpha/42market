@@ -77,8 +77,6 @@ const meta = {
     ],
     selectedStoreSlugs: [],
     onStoreSlugsChange: fn(),
-    query: "",
-    onQueryChange: fn(),
     onResetFilters: fn(),
     resetFiltersHref: routes.main.favorites,
     products: FAVORITE_PRODUCTS,
@@ -123,7 +121,6 @@ export const Recettes: Story = { args: { activeTab: "recettes" } };
 export const SansFavori: Story = {
   args: { products: [], counts: { products: 0, stores: 0, recipes: 0 }, bulkSelection: { count: 0, totalPrice: 0, byStore: [] } },
 };
-export const RechercheSansResultat: Story = { args: { products: [], query: "zzz", bulkSelection: { count: 0, totalPrice: 0, byStore: [] } } };
 export const Loading: Story = { args: { isProductsLoading: true } };
 export const Erreur: Story = { args: { isProductsError: true } };
 export const Mobile: Story = { parameters: { viewport: { defaultViewport: "mobile1" } } };

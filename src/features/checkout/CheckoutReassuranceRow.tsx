@@ -2,7 +2,14 @@ import type { IconName } from "@/src/components/atoms/Icon/Icon";
 import { InfoTile } from "@/src/components/molecules/InfoTile/InfoTile";
 
 export interface CheckoutReassuranceRowProps {
-  /** The SMS tile only shows when the account's phone is verified — mirrors the Notifications page's own "Alertes SMS" gating (`isPhoneVerified`). */
+  /**
+   * The e-mail alert tile only shows when `isPhoneVerified` is true — kept
+   * as-is (N4 only asked to replace the SMS wording, not the gate): this
+   * flag was never really about SMS capability specifically, it mirrors
+   * whatever "verified contact info" check the Notifications page already
+   * uses. Flagged in the mission report as worth a real "has a usable
+   * e-mail" check instead, out of scope here.
+   */
   isPhoneVerified: boolean;
 }
 
@@ -12,7 +19,7 @@ interface ReassuranceTile {
   subtitle: string;
 }
 
-const SMS_TILE: ReassuranceTile = { icon: "bell", title: "Alerte SMS en direct", subtitle: "Dès que le sac est prêt" };
+const EMAIL_ALERT_TILE: ReassuranceTile = { icon: "bell", title: "Alerte e-mail en direct", subtitle: "Dès que le sac est prêt" };
 
 // "Sans engagement" has no real cancellation feature behind it anywhere in
 // the app (Phase 0 audit) — shown as a presentational reassurance promise
@@ -24,7 +31,7 @@ const ALWAYS_ON_TILES: ReassuranceTile[] = [
 
 /** K5 — 3 `InfoTile`s (`layout="tile"`) from a small local config table. */
 export function CheckoutReassuranceRow({ isPhoneVerified }: CheckoutReassuranceRowProps) {
-  const tiles = isPhoneVerified ? [SMS_TILE, ...ALWAYS_ON_TILES] : ALWAYS_ON_TILES;
+  const tiles = isPhoneVerified ? [EMAIL_ALERT_TILE, ...ALWAYS_ON_TILES] : ALWAYS_ON_TILES;
 
   return (
     <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">

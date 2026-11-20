@@ -1,18 +1,19 @@
+import { FEATURE_FLAGS } from "@/src/config/feature-flags";
 import { routes } from "@/src/lib/routing/routes";
 
 import type { HeaderActionConfig, HeaderLocation, NavigationItemConfig } from "./Header.types";
 
 /**
- * Config-driven navigation/actions — the only place these change. Most
- * of these routes (precommandes, ...) don't exist yet; this config is
- * what future pages will plug into, not a claim they do. "Bon plans" and
- * "Nouvel arrivage" are wired to their real, already-built pages (both
- * were previously hardcoded to different, nonexistent paths).
+ * Config-driven navigation/actions — the only place these change. "Bon
+ * plans" and "Nouvel arrivage" are wired to their real, already-built
+ * pages. "Précommandes" is omitted while `FEATURE_FLAGS.precommandesEnabled`
+ * is off (no real persistence/payment behind it yet) — add it back here
+ * once the flag flips, not before.
  */
 export const DEFAULT_NAVIGATION_ITEMS: NavigationItemConfig[] = [
   { label: "Maison", href: routes.main.home },
   { label: "Bon plans", href: routes.main.bonsPlans, suffix: "fire" },
-  { label: "Précommandes", href: routes.main.preorders },
+  ...(FEATURE_FLAGS.precommandesEnabled ? [{ label: "Précommandes", href: routes.main.preorders }] : []),
   { label: "Nouvel arrivage", href: routes.main.newArrivals, suffix: "new" },
   {
     label: "Carnet du terroir",
@@ -26,10 +27,11 @@ export const DEFAULT_NAVIGATION_ITEMS: NavigationItemConfig[] = [
   { label: "Aide et contacts", href: routes.main.contact },
 ];
 
+/** Favoris/Cabas = marron (le brun foncé de la marque), Notifications = rouge — B6. */
 export const DEFAULT_HEADER_ACTIONS: HeaderActionConfig[] = [
-  { key: "favorites", icon: "heart", label: "Favoris", href: routes.main.favorites, badgeColor: "favorite" },
+  { key: "favorites", icon: "heart", label: "Favoris", href: routes.main.favorites, badgeColor: "brown" },
   { key: "notifications", icon: "bell", label: "Notifications", href: routes.main.notifications, badgeColor: "danger" },
-  { key: "basket", icon: "basket", label: "Cabas", href: routes.main.cart, badgeColor: "basket" },
+  { key: "basket", icon: "basket", label: "Cabas", href: routes.main.cart, badgeColor: "brown" },
 ];
 
 export const DEFAULT_LOCATION: HeaderLocation = {

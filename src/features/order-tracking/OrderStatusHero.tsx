@@ -1,30 +1,24 @@
 "use client";
 
-import Link from "next/link";
-
 import { Card } from "@/src/components/atoms/Card/Card";
 import { Icon } from "@/src/components/atoms/Icon/Icon";
-import { ReminderToggleButton } from "@/src/components/molecules/ReminderToggleButton/ReminderToggleButton";
-import { ORDER_STATUS_HERO_CONFIG, type FullOrder } from "@/src/domain/orders";
+import { getAutomaticReminderTime, ORDER_STATUS_HERO_CONFIG, type FullOrder } from "@/src/domain/orders";
 import { formatTime } from "@/src/lib/format";
-import { routes } from "@/src/lib/routing/routes";
-
-import { useOrderReminder } from "./useOrderReminder";
 
 export interface OrderStatusHeroProps {
   order: FullOrder;
-  phoneVerified: boolean;
+  now: Date;
 }
 
 /**
  * S1 — the beige hero card: status icon/title/description, reference/time/
- * payment pastilles, and the reminder toggle. Only "preparing" is
+ * payment pastilles, and the automatic-reminder notice. Only "preparing" is
  * maquetted; the other 3 statuses derive from `ORDER_STATUS_HERO_CONFIG`'s
  * shared vocabulary (flagged in the compte-rendu).
  */
-export function OrderStatusHero({ order, phoneVerified }: OrderStatusHeroProps) {
+export function OrderStatusHero({ order, now }: OrderStatusHeroProps) {
   const heroConfig = ORDER_STATUS_HERO_CONFIG[order.status];
-  const reminder = useOrderReminder(order.id);
+  const reminderAt = getAutomaticReminderTime(order, now);
   const description = heroConfig.description(order.store.name);
   const [before, after] = description.split(order.store.name);
   const showPaymentPastille = order.payment.method === "online" && order.payment.isPaid;
@@ -58,18 +52,12 @@ export function OrderStatusHero({ order, phoneVerified }: OrderStatusHeroProps) 
             </div>
           </div>
         </div>
-        <div className="flex shrink-0 flex-col items-start gap-1.5 sm:items-end">
-          <ReminderToggleButton
-            enabled={order.reminderEnabled}
-            disabled={!phoneVerified || reminder.isPending}
-            onToggle={() => reminder.toggle(!order.reminderEnabled)}
-          />
-          {!phoneVerified && (
-            <Link href={routes.main.settings} className="text-xs font-semibold text-foreground-strong underline underline-offset-2">
-              Vérifiez votre téléphone dans Informations personnelles
-            </Link>
-          )}
-        </div>
+        {reminderAt && (
+          <div className="flex shrink-0 items-center gap-1.5 self-start rounded-full bg-surface px-3 py-1.5 text-xs font-semibold text-foreground-strong sm:self-auto">
+            <Icon name="bell" size={14} decorative />
+            Rappel automatique par e-mail à {formatTime(reminderAt.toISOString())}
+          </div>
+        )}
       </div>
     </Card>
   );

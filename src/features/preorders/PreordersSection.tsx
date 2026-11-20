@@ -1,6 +1,7 @@
 import { ButtonLink } from "@/src/components/atoms/Button/ButtonLink";
 import { Icon } from "@/src/components/atoms/Icon/Icon";
 import { Section } from "@/src/components/layout/Section/Section";
+import { FEATURE_FLAGS } from "@/src/config/feature-flags";
 import type { PreorderCampaign } from "@/src/domain/preorder";
 import { routes } from "@/src/lib/routing/routes";
 
@@ -11,7 +12,10 @@ export interface PreordersSectionProps {
   isLoading?: boolean;
 }
 
+/** K1 (2026-11-17 UAT): gated here, not at each call site — a second call site (the store page) was missing the flag check the home page already had. */
 export function PreordersSection({ campaigns, isLoading }: PreordersSectionProps) {
+  if (!FEATURE_FLAGS.precommandesEnabled) return null;
+
   return (
     <Section
       id="preorders"

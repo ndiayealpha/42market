@@ -130,7 +130,7 @@ export function PromoCard({
       href={href}
       style={cssVars}
       aria-label={[title, highlight].filter(Boolean).join(" ")}
-      className={`group relative flex h-full w-[85vw] max-w-[400px] shrink-0 flex-col overflow-hidden rounded-[24px] shadow-[0_1px_2px_rgba(0,0,0,0.05)] outline-none transition-[transform,box-shadow] duration-200 ease-out hover:-translate-y-0.5 hover:shadow-[0_8px_20px_rgba(0,0,0,0.12)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[3px] focus-visible:outline-foreground-strong motion-reduce:transition-none motion-reduce:hover:translate-y-0 md:w-full md:min-w-[var(--promo-width)] md:max-w-none ${
+      className={`group relative flex h-full w-[85vw] max-w-[400px] shrink-0 flex-col overflow-hidden shadow-[0_1px_2px_rgba(0,0,0,0.05)] outline-none transition-[transform,box-shadow] duration-200 ease-out hover:-translate-y-0.5 hover:shadow-[0_8px_20px_rgba(0,0,0,0.12)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[3px] focus-visible:outline-foreground-strong motion-reduce:transition-none motion-reduce:hover:translate-y-0 md:w-full md:min-w-[var(--promo-width)] md:max-w-none ${
         effectiveLayout === "text" ? "md:flex-col" : "md:flex-row"
       } ${className}`}
     >

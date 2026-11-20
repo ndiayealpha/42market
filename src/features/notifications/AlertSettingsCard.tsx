@@ -15,7 +15,7 @@ export interface AlertSettingsCardProps {
   isPhoneVerified: boolean;
 }
 
-/** N6 — "Alertes SMS Retrait" is the exact same preference/mutation as the Profile's "Notifications" switch (rule 7): toggling either one updates both. */
+/** N6 — "Alertes e-mail de retrait" is the exact same preference/mutation as the Profile's "Notifications" switch (rule 7): toggling either one updates both. */
 export function AlertSettingsCard({ userId, isPhoneVerified }: AlertSettingsCardProps) {
   const { preferences } = useNotificationPreferences(userId);
   const toggle = useToggleNotificationPreference(userId);
@@ -59,15 +59,15 @@ export function AlertSettingsCard({ userId, isPhoneVerified }: AlertSettingsCard
         </li>
         <li>
           <SettingsListItem
-            title="Alertes SMS Retrait"
+            title="Alertes e-mail de retrait"
             description={isPhoneVerified ? "Quand la commande est au comptoir" : "Numéro non vérifié — voir Informations personnelles"}
             trailing="switch"
           >
             <Switch
-              checked={currentPreferences.smsOnOrderReady}
-              onChange={(checked) => toggle.mutate({ ...currentPreferences, smsOnOrderReady: checked })}
+              checked={currentPreferences.emailOnOrderReady}
+              onChange={(checked) => toggle.mutate({ ...currentPreferences, emailOnOrderReady: checked })}
               disabled={!isPhoneVerified || toggle.isPending}
-              aria-label="Activer les alertes SMS de retrait"
+              aria-label="Activer les alertes e-mail de retrait"
             />
           </SettingsListItem>
         </li>

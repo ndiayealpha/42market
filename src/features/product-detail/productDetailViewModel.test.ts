@@ -34,13 +34,18 @@ const BASE_PRODUCT: ProductDetail = {
 };
 
 describe("buildProductFacts", () => {
-  it("leads with the stock fact, then bio/fraîcheur, capped at 3", () => {
+  it("leads with bio/fraîcheur then pickup, capped at 3 — no stock fact for a healthy stock level (H2)", () => {
     const facts = buildProductFacts(BASE_PRODUCT);
     expect(facts).toHaveLength(3);
-    expect(facts[0].title).toBe("En stock local");
-    expect(facts[1].title).toBe("Agriculture Biologique");
-    expect(facts[1].subtitle).toBe("FR-BIO-01");
-    expect(facts[2].title).toBe("Fraîcheur garantie");
+    expect(facts[0].title).toBe("Agriculture Biologique");
+    expect(facts[0].subtitle).toBe("FR-BIO-01");
+    expect(facts[1].title).toBe("Fraîcheur garantie");
+    expect(facts[2].title).toBe("Retrait en boutique");
+  });
+
+  it("still leads with the stock fact when stock is low or out (noteworthy, unlike the healthy default)", () => {
+    expect(buildProductFacts({ ...BASE_PRODUCT, stockCount: 2 })[0].title).toBe("Stock bas");
+    expect(buildProductFacts({ ...BASE_PRODUCT, stockCount: 0 })[0].title).toBe("Rupture de stock");
   });
 
   it("falls back to a generic bio subtitle when no certification code is given", () => {
@@ -50,7 +55,7 @@ describe("buildProductFacts", () => {
 
   it("omits bio/fraîcheur facts entirely when the product has neither, falling back to pickup", () => {
     const facts = buildProductFacts({ ...BASE_PRODUCT, isBioCertified: false, hasFreshnessGuarantee: false });
-    expect(facts.map((fact) => fact.title)).toEqual(["En stock local", "Retrait en boutique"]);
+    expect(facts.map((fact) => fact.title)).toEqual(["Retrait en boutique"]);
   });
 });
 

@@ -12,7 +12,7 @@ export const ACCOUNT_SETTINGS: AccountSettingsSummary = {
 };
 
 export const NOTIFICATION_PREFERENCES: NotificationPreferences = {
-  smsOnOrderReady: true,
+  emailOnOrderReady: true,
   webPushEnabled: true,
   terroirNewsletter: false,
 };
@@ -28,7 +28,7 @@ export const ADMIN_ACCOUNT_SETTINGS: AccountSettingsSummary = {
 };
 
 export const ADMIN_NOTIFICATION_PREFERENCES: NotificationPreferences = {
-  smsOnOrderReady: false,
+  emailOnOrderReady: false,
   webPushEnabled: false,
   terroirNewsletter: true,
 };

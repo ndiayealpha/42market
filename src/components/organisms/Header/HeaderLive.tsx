@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 
+import { FEATURE_FLAGS } from "@/src/config/feature-flags";
 import { formatLocationLabel, formatRadiusLabel } from "@/src/domain/user-location";
 import { useFavorites } from "@/src/hooks/useFavorites";
 import { useUnreadNotificationsCount } from "@/src/hooks/useNotificationCounts";
@@ -27,7 +28,7 @@ import { LocationPickerDialog } from "./LocationPickerDialog";
  * `useRouter` available) needed a default handler — a caller can still
  * override it via its own `onSearch` prop (`props.onSearch ?? handleSearch`).
  */
-export function HeaderLive(props: Omit<HeaderProps, "actions">) {
+export function HeaderLive(props: Omit<HeaderProps, "actions" | "onLocationClick">) {
   const pathname = usePathname();
   const router = useRouter();
   const { favoriteIds } = useFavorites("product");
@@ -59,17 +60,19 @@ export function HeaderLive(props: Omit<HeaderProps, "actions">) {
         {...props}
         actions={actions}
         location={props.location ?? { location: formatLocationLabel(postalCode), radiusLabel: formatRadiusLabel(radiusKm) }}
-        onLocationClick={props.onLocationClick ?? (() => setPickerOpen(true))}
         onSearch={props.onSearch ?? handleSearch}
+        onLocationClick={() => setPickerOpen(true)}
       />
-      <LocationPickerDialog
-        key={isPickerOpen ? "open" : "closed"}
-        open={isPickerOpen}
-        onClose={() => setPickerOpen(false)}
-        postalCode={postalCode}
-        radiusKm={radiusKm}
-        onApply={setLocation}
-      />
+      {FEATURE_FLAGS.locationPickerEnabled && (
+        <LocationPickerDialog
+          key={isPickerOpen ? "open" : "closed"}
+          open={isPickerOpen}
+          onClose={() => setPickerOpen(false)}
+          postalCode={postalCode}
+          radiusKm={radiusKm}
+          onApply={setLocation}
+        />
+      )}
     </>
   );
 }

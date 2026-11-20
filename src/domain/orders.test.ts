@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { getTrackingSteps, type FullOrder } from "@/src/domain/orders";
+import { getAutomaticReminderTime, getTrackingSteps, REMINDER_LEAD_MINUTES, type FullOrder } from "@/src/domain/orders";
 
 const BASE_ORDER: FullOrder = {
   id: "cmd-4289",
@@ -10,7 +10,6 @@ const BASE_ORDER: FullOrder = {
   createdAtIso: "2026-11-10T14:32:00Z",
   lastUpdatedIso: "2026-11-10T14:40:00Z",
   isExpress: true,
-  reminderEnabled: true,
   store: {
     slug: "loirivoire",
     name: "Épicerie LoirIvoire",
@@ -45,5 +44,29 @@ describe("getTrackingSteps", () => {
   it("names the preparer when provided, falls back to a generic label otherwise", () => {
     expect(getTrackingSteps({ ...BASE_ORDER, preparerFirstName: "Mamadou" })[1].title).toContain("Mamadou");
     expect(getTrackingSteps(BASE_ORDER)[1].title).toContain("l'épicier");
+  });
+});
+
+describe("getAutomaticReminderTime", () => {
+  it("schedules the reminder REMINDER_LEAD_MINUTES before the pickup window closes, for an active order", () => {
+    const now = new Date("2026-11-10T14:40:00Z");
+    const reminderAt = getAutomaticReminderTime(BASE_ORDER, now);
+    expect(reminderAt?.toISOString()).toBe(new Date(new Date(BASE_ORDER.pickupWindow.endIso).getTime() - REMINDER_LEAD_MINUTES * 60_000).toISOString());
+  });
+
+  it("returns null once the reminder moment has already passed", () => {
+    const now = new Date("2026-11-10T16:00:00Z");
+    expect(getAutomaticReminderTime(BASE_ORDER, now)).toBeNull();
+  });
+
+  it("returns null for completed or cancelled orders — nothing left to remind about", () => {
+    const now = new Date("2026-11-10T14:40:00Z");
+    expect(getAutomaticReminderTime({ ...BASE_ORDER, status: "completed" }, now)).toBeNull();
+    expect(getAutomaticReminderTime({ ...BASE_ORDER, status: "cancelled" }, now)).toBeNull();
+  });
+
+  it("still applies once the order is ready, right up until the reminder moment", () => {
+    const now = new Date("2026-11-10T14:40:00Z");
+    expect(getAutomaticReminderTime({ ...BASE_ORDER, status: "ready" }, now)).not.toBeNull();
   });
 });

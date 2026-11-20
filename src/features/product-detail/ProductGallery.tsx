@@ -100,13 +100,12 @@ function prefersReducedMotion(): boolean {
  * lightbox and video support. `"use client"`: owns gallery state and its
  * own favorite toggle, same self-contained pattern as `ProductCard`.
  *
- * Layout: DOM order is [main image, thumbnails] so a screen reader or
- * keyboard-only visitor meets the image first; `lg:flex-row-reverse`
- * flips that visually to "miniatures à gauche, grande image à droite" at
- * desktop widths without reordering the DOM. Below `lg`, thumbnails sit
- * in a plain horizontal row under the image — capped at `MAX_THUMBNAILS`
- * so it's never a container that scrolls (project rule: no list
- * container scrolls internally).
+ * Layout (2026-11-19 UAT): main image, then a horizontal thumbnail row
+ * underneath, at every breakpoint — desktop used to flip to a
+ * "miniatures a gauche, grande image a droite" split via
+ * `lg:flex-row-reverse`, dropped in favor of one consistent layout.
+ * Capped at `MAX_THUMBNAILS` so it's never a container that scrolls
+ * (project rule: no list container scrolls internally).
  */
 export function ProductGallery({
   productId,
@@ -244,7 +243,7 @@ export function ProductGallery({
       aria-label={`Galerie photo : ${productName}`}
       className="flex flex-col gap-3"
     >
-      <div className="flex flex-col gap-3 lg:flex-row-reverse">
+      <div className="flex flex-col gap-3">
         <div className="flex min-w-0 flex-1 flex-col gap-2">
           <div
             className="group relative"
@@ -291,7 +290,7 @@ export function ProductGallery({
                   </Chip>
                 )}
                 {discountPercent != null && (
-                  <Chip tone="danger" size="sm" className="font-bold">
+                  <Chip tone="promo" size="sm" className="font-bold">
                     -{discountPercent}%
                   </Chip>
                 )}
@@ -394,7 +393,7 @@ export function ProductGallery({
           <div
             role="group"
             aria-label="Autres vues du produit"
-            className="flex flex-row gap-2 lg:w-[72px] lg:flex-col"
+            className="flex flex-row gap-2"
           >
             {visibleThumbnails.map((entry, position) => {
               const { item, index } = entry;

@@ -1,5 +1,4 @@
 import { ButtonLink } from "@/src/components/atoms/Button/ButtonLink";
-import { LabeledDivider } from "@/src/components/atoms/LabeledDivider/LabeledDivider";
 import type { FullOrder } from "@/src/domain/orders";
 import { routes } from "@/src/lib/routing/routes";
 
@@ -13,7 +12,6 @@ import { TrackingStoreSection } from "./TrackingStoreSection";
 
 export interface OrderTrackingTemplateProps {
   order: FullOrder;
-  phoneVerified: boolean;
   now: Date;
 }
 
@@ -23,15 +21,12 @@ export interface OrderTrackingTemplateProps {
  * S7 full width below. DOM order (S4, S5, S6, S7) stays the natural
  * mobile reading order too.
  */
-export function OrderTrackingTemplate({ order, phoneVerified, now }: OrderTrackingTemplateProps) {
-  const postcode = order.store.city.match(/^\d+/)?.[0] ?? "";
-
+export function OrderTrackingTemplate({ order, now }: OrderTrackingTemplateProps) {
   return (
     <div className="mx-auto max-w-5xl space-y-6 px-4 py-6">
       <OrderUtilityBar order={order} />
-      <OrderStatusHero order={order} phoneVerified={phoneVerified} />
+      <OrderStatusHero order={order} now={now} />
       <PickupPassCard order={order} now={now} />
-      <LabeledDivider>★ L&apos;engagement Circuit Court {postcode}</LabeledDivider>
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-[2fr_1fr]">
         <div className="space-y-6 lg:col-start-1 lg:row-start-1">

@@ -23,7 +23,7 @@ export function CategoryTile({ category, isActive = false }: CategoryTileProps) 
         className="flex flex-col items-center gap-2 rounded-lg text-center focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground-strong"
       >
         {isDeals ? (
-          <span className="flex h-16 w-16 items-center justify-center rounded-full bg-catalog-danger text-white">
+          <span className="flex h-16 w-16 items-center justify-center rounded-full bg-promo-red text-white">
             <Icon name="zap" size={28} />
           </span>
         ) : (

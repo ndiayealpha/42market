@@ -58,14 +58,38 @@
   --color-store-promo-forest: var(--store-promo-forest);
   --color-store-accent-gold: var(--store-accent-gold);
   --shadow-card: var(--catalog-shadow-card);
-  --font-sans: var(--font-geist-sans);
+  --font-sans: var(--font-dm-sans);
+  --font-heading: var(--font-bricolage-grotesque);
   --font-mono: var(--font-geist-mono);
+
+  // B2 (2026-11-17 UAT): remove every scaled corner radius site-wide
+  // (rounded, rounded-md/lg/xl/2xl/3xl/4xl) — `rounded-full` is untouched,
+  // it's a fixed 9999px in Tailwind, never driven by these tokens, and
+  // stays for genuinely circular UI (avatars, dot indicators, round icon
+  // buttons). The add-to-cart CTA button is the one exception the brief
+  // calls out by name — it keeps its own radius via an inline style
+  // instead of a `rounded-*` class (see `AddToCartButton`).
+  --radius: 0px;
+  --radius-xs: 0px;
+  --radius-sm: 0px;
+  --radius-md: 0px;
+  --radius-lg: 0px;
+  --radius-xl: 0px;
+  --radius-2xl: 0px;
+  --radius-3xl: 0px;
+  --radius-4xl: 0px;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
+}
+
+// A1 (2026-11-17 UAT): every h1 site-wide gets Bricolage Grotesque — one
+// rule here instead of a utility class repeated across ~30 components.
+h1 {
+  font-family: var(--font-heading);
 }
 
 // Native <button> (and the custom radio/tab/switch widgets built on it)

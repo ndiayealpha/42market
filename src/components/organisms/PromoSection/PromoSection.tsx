@@ -15,7 +15,7 @@ export interface PromoSectionItem extends PromoCardProps {
 }
 
 export interface PromoSectionProps {
-  kicker: string;
+  kicker?: string;
   meta?: string;
   title: string;
   totalCount: number;

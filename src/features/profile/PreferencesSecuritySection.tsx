@@ -34,12 +34,12 @@ export function PreferencesSecuritySection({ userId, security, isSecurityLoading
           {security && preferences && (
             <ul className="flex flex-col divide-y divide-catalog-line">
               <li>
-                <SettingsListItem icon="bell" title="Notifications" description="SMS dès que la commande est prête" trailing="switch">
+                <SettingsListItem icon="bell" title="Notifications" description="E-mail dès que la commande est prête" trailing="switch">
                   <Switch
-                    checked={preferences.smsOnOrderReady}
-                    onChange={(checked) => toggleNotifications.mutate({ ...preferences, smsOnOrderReady: checked })}
+                    checked={preferences.emailOnOrderReady}
+                    onChange={(checked) => toggleNotifications.mutate({ ...preferences, emailOnOrderReady: checked })}
                     disabled={toggleNotifications.isPending}
-                    aria-label="Activer les notifications SMS dès que la commande est prête"
+                    aria-label="Activer les notifications e-mail dès que la commande est prête"
                   />
                 </SettingsListItem>
               </li>

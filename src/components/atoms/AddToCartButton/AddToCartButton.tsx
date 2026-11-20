@@ -77,8 +77,9 @@ export function AddToCartButton({
           : // Visible text ("Ajouter au cabas") kept as a literal prefix so the accessible name contains the visible label (WCAG 2.5.3 Label in Name) — the product name/total are appended context, not a replacement for it.
             `Ajouter au cabas : ${productName}${ctaLabel ? ` • ${ctaLabel}` : ""}`
       }
-      style={{ backgroundColor: bg, color: fg }}
-      className={`flex w-full items-center justify-center gap-2 rounded-xl px-4 py-3.5 text-base font-bold disabled:opacity-40 ${className}`}
+      // B2 (2026-11-17 UAT): the one button site-wide that keeps a real corner radius — an inline style rather than `rounded-xl`, since that class now resolves to 0px (see globals.scss).
+      style={{ backgroundColor: bg, color: fg, borderRadius: "0.75rem" }}
+      className={`flex w-full items-center justify-center gap-2 px-4 py-3.5 text-base font-bold disabled:opacity-40 ${className}`}
     >
       {unavailable ? (
         "Indisponible"

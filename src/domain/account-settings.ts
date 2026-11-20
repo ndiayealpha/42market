@@ -18,7 +18,7 @@ export interface SecuritySummary {
 }
 
 export interface NotificationPreferences {
-  smsOnOrderReady: boolean;
+  emailOnOrderReady: boolean;
   /** Browser push permission mirror — the actual subscription (service worker) is out of scope, see `WebPushGateway`. */
   webPushEnabled: boolean;
   terroirNewsletter: boolean;
@@ -28,7 +28,7 @@ export interface AccountSettingsSummary {
   email: string;
   /** Raw, unmasked — masking happens in the repository (the data-layer boundary), never in a component. */
   phone: string;
-  /** SMS notifications require a verified number — the Notifications page's "Alertes SMS Retrait" switch disables itself when this is `false`. */
+  /** N4 (2026-11-17 UAT): the Notifications page's "Alertes e-mail de retrait" switch still gates on phone verification (pre-existing rule, not asked to change) — flagged in the report as a wording/logic mismatch now that the channel is e-mail, not SMS. */
   isPhoneVerified: boolean;
   payment: PaymentMethodSummary;
   addresses: AddressesSummary;

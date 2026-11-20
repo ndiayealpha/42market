@@ -85,6 +85,7 @@ export function StorePageView({ slug }: StorePageViewProps) {
 
       <LimitedStockSection
         items={limitedStockQuery.items}
+        storeSlug={slug}
         isLoading={limitedStockQuery.isLoading}
         isError={limitedStockQuery.isError}
         onRetry={limitedStockQuery.refetch}
@@ -93,6 +94,7 @@ export function StorePageView({ slug }: StorePageViewProps) {
 
       <BestSellersSection
         bestSellers={bestSellersQuery.bestSellers}
+        storeSlug={slug}
         isLoading={bestSellersQuery.isLoading}
         isError={bestSellersQuery.isError}
         onRetry={bestSellersQuery.refetch}

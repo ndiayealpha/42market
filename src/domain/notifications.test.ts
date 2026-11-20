@@ -47,7 +47,7 @@ describe("getNotificationBadge", () => {
   });
 
   it("formats the flash-sale deadline via formatFlashDeadline (Europe/Paris, UTC+1 in November)", () => {
-    expect(getNotificationBadge(FLASH_SALE, NOW)).toEqual({ text: "Jusqu'à ce soir 20H", tone: "danger" });
+    expect(getNotificationBadge(FLASH_SALE, NOW)).toEqual({ text: "Jusqu'à ce soir 20H", tone: "promo" });
   });
 
   it("returns null for a type with no badge", () => {

@@ -9,7 +9,6 @@ import { useOrderTracking } from "./useOrderTracking";
 
 export interface OrderTrackingViewProps {
   initialOrder: FullOrder;
-  phoneVerified: boolean;
 }
 
 /**
@@ -18,7 +17,7 @@ export interface OrderTrackingViewProps {
  * server-known data (not `new Date()`) so the first client render matches
  * SSR exactly — a 30s interval keeps it current afterwards.
  */
-export function OrderTrackingView({ initialOrder, phoneVerified }: OrderTrackingViewProps) {
+export function OrderTrackingView({ initialOrder }: OrderTrackingViewProps) {
   const { order } = useOrderTracking(initialOrder.id, initialOrder);
   const [now, setNow] = useState(() => new Date(initialOrder.lastUpdatedIso));
 
@@ -27,5 +26,5 @@ export function OrderTrackingView({ initialOrder, phoneVerified }: OrderTracking
     return () => clearInterval(id);
   }, []);
 
-  return <OrderTrackingTemplate order={order} phoneVerified={phoneVerified} now={now} />;
+  return <OrderTrackingTemplate order={order} now={now} />;
 }

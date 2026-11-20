@@ -10,6 +10,7 @@ import { BestSellerCard } from "./BestSellerCard";
 
 export interface BestSellersSectionProps {
   bestSellers: BestSeller[];
+  storeSlug: string;
   isLoading: boolean;
   isError: boolean;
   onRetry: () => void;
@@ -18,7 +19,7 @@ export interface BestSellersSectionProps {
 
 const SKELETON_KEYS = ["skeleton-1", "skeleton-2", "skeleton-3", "skeleton-4"];
 
-export function BestSellersSection({ bestSellers, isLoading, isError, onRetry, onAdd }: BestSellersSectionProps) {
+export function BestSellersSection({ bestSellers, storeSlug, isLoading, isError, onRetry, onAdd }: BestSellersSectionProps) {
   return (
     <Section
       id="best-sellers"
@@ -49,7 +50,7 @@ export function BestSellersSection({ bestSellers, isLoading, isError, onRetry, o
         <CardGrid columns={4}>
           {bestSellers.map((bestSeller) => (
             <li key={bestSeller.id}>
-              <BestSellerCard bestSeller={bestSeller} onAdd={() => onAdd(bestSeller.id)} />
+              <BestSellerCard bestSeller={bestSeller} storeSlug={storeSlug} onAdd={() => onAdd(bestSeller.id)} />
             </li>
           ))}
         </CardGrid>

@@ -39,8 +39,6 @@ export interface FavoritesTemplateProps {
   storeOptions: { slug: string; name: string }[];
   selectedStoreSlugs: string[];
   onStoreSlugsChange: (slugs: string[]) => void;
-  query: string;
-  onQueryChange: (query: string) => void;
   onResetFilters: () => void;
   resetFiltersHref: string;
   products: FavoriteProduct[];
@@ -103,8 +101,6 @@ export function FavoritesTemplate(props: FavoritesTemplateProps) {
             storeOptions={props.storeOptions}
             selectedStoreSlugs={props.selectedStoreSlugs}
             onStoreSlugsChange={props.onStoreSlugsChange}
-            query={props.query}
-            onQueryChange={props.onQueryChange}
             onResetFilters={props.onResetFilters}
           />
 

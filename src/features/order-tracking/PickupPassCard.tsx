@@ -45,7 +45,7 @@ export function PickupPassCard({ order, now }: PickupPassCardProps) {
         </div>
         <div className="flex items-center justify-center">
           {showPass ? (
-            <PickupQrPanel orderReference={order.reference} pin={order.pin} />
+            <PickupQrPanel orderReference={order.reference} qrToken={order.qrToken} pin={order.pin} />
           ) : (
             <p className="rounded-xl bg-catalog-chip p-5 text-center text-sm text-muted-foreground">{STATUS_MESSAGE[order.status]}</p>
           )}

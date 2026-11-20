@@ -89,8 +89,16 @@ export function buildPickupSlots(params: BuildPickupSlotsParams): PickupSlot[] {
 
   const slots: PickupSlot[] = windows.map((w, index) => {
     const id = `slot-${new Date(w.start).toISOString()}`;
+    // A slot is disabled once it's over (`now >= w.end`) OR once there's no
+    // longer enough lead time left to prepare the order before it starts
+    // (`w.start < now + pickupDelayMinutes`) — the 2nd condition is the one
+    // that was missing: only the END was ever checked, so a slot could sit
+    // enabled indefinitely until it closed, with no floor on how soon
+    // "now" was allowed to be relative to its start.
     const isPast = now >= w.end;
-    const status: PickupSlotStatus = fullIds.has(id) || isPast ? "unavailable" : "available";
+    const startsTooSoon = w.start < recommendedCutoff;
+    const isUnavailable = fullIds.has(id) || isPast || startsTooSoon;
+    const status: PickupSlotStatus = isUnavailable ? "unavailable" : "available";
     return {
       kind: "window",
       id,
@@ -99,7 +107,13 @@ export function buildPickupSlots(params: BuildPickupSlotsParams): PickupSlot[] {
       status,
       isRecommended: index === recommendedIndex && status === "available",
       isLastSlot: index === windows.length - 1,
-      unavailableReason: status === "unavailable" ? (isPast ? "Créneau passé" : "Complet") : undefined,
+      unavailableReason: isUnavailable
+        ? fullIds.has(id)
+          ? "Complet"
+          : isPast
+            ? "Créneau passé"
+            : "Délai de préparation insuffisant"
+        : undefined,
     };
   });
 

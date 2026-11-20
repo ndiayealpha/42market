@@ -90,10 +90,11 @@ export function clampQuantity(value: number, stockCount: number, capPerOrder: nu
   return Math.min(Math.max(1, Math.round(value)), max);
 }
 
+/** H2 (2026-11-17 UAT): the "En stock local" fact is gone — a healthy stock level is the default, unremarkable case and no longer gets its own tile; only a noteworthy level (low or none) still does. */
 export function getStockFact(stockCount: number): ProductFact | null {
   if (stockCount <= 0) return { icon: "close", title: "Rupture de stock", subtitle: "Indisponible pour le moment", tone: "danger" };
   if (stockCount <= 3) return { icon: "store", title: "Stock bas", subtitle: `${stockCount} unités dispo`, tone: "warning" };
-  return { icon: "store", title: "En stock local", subtitle: `${stockCount} unités dispo`, tone: "success" };
+  return null;
 }
 
 /** Reuses `favorites.ts`'s stock status config — the one shared "in-stock/low-stock/out-of-stock" vocabulary in the app, not a second table. */

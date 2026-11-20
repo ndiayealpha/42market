@@ -10,23 +10,18 @@ export interface HeaderTopProps {
   location: HeaderLocation;
   actions: HeaderActionConfig[];
   user?: HeaderUser;
-  onLocationClick?: () => void;
   onSearch?: (query: string) => void;
+  onLocationClick: () => void;
 }
 
 /** The header's first row: brand, search, actions and the user menu. */
-export function HeaderTop({ location, actions, user, onLocationClick, onSearch }: HeaderTopProps) {
+export function HeaderTop({ location, actions, user, onSearch, onLocationClick }: HeaderTopProps) {
   return (
     <div className="flex flex-col gap-3 px-4 py-3 sm:flex-row sm:items-center sm:gap-6 sm:px-6">
       <Logo />
 
       <div className="order-3 w-full sm:order-none sm:flex-1">
-        <HeaderSearch
-          location={location.location}
-          radiusLabel={location.radiusLabel}
-          onLocationClick={onLocationClick}
-          onSearch={onSearch}
-        />
+        <HeaderSearch location={location.location} radiusLabel={location.radiusLabel} onSearch={onSearch} onLocationClick={onLocationClick} />
       </div>
 
       <div className="flex items-center justify-end gap-5">

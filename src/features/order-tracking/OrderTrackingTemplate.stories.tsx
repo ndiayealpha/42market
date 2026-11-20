@@ -9,7 +9,7 @@ const meta = {
   component: OrderTrackingTemplate,
   tags: ["autodocs"],
   parameters: { layout: "fullscreen" },
-  args: { order: REFERENCE_ORDER, phoneVerified: true, now: new Date() },
+  args: { order: REFERENCE_ORDER, now: new Date() },
 } satisfies Meta<typeof OrderTrackingTemplate>;
 
 export default meta;

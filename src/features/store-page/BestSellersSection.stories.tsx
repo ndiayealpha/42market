@@ -12,6 +12,7 @@ const meta = {
   parameters: { layout: "padded" },
   args: {
     bestSellers: BEST_SELLERS,
+    storeSlug: "loirivoire",
     isLoading: false,
     isError: false,
     onRetry: fn(),

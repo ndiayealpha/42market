@@ -89,7 +89,6 @@ export interface FullOrder {
   createdAtIso: string;
   lastUpdatedIso: string;
   isExpress: boolean;
-  reminderEnabled: boolean;
   store: FullOrderStore;
   pickupWindow: { startIso: string; endIso: string };
   lines: FullOrderLine[];
@@ -114,7 +113,7 @@ export const ORDER_STATUS_HERO_CONFIG: Record<OrderStatus, OrderStatusHeroConfig
     tone: "warning",
     title: "Commande validée ! Votre panier est en cours de préparation",
     description: (storeName) =>
-      `Merci pour votre commande chez ${storeName}. Vous recevrez une notification SMS dès que votre sac sera scellé au comptoir.`,
+      `Merci pour votre commande chez ${storeName}. Vous recevrez une notification e-mail dès que votre sac sera scellé au comptoir.`,
   },
   ready: {
     icon: "bell",
@@ -190,3 +189,23 @@ export function getTrackingSteps(order: FullOrder): TrackingStep[] {
 }
 
 export const TRACKING_POLL_INTERVAL_MS = 20_000;
+
+/** How long before the pickup window closes the automatic reminder is scheduled for. */
+export const REMINDER_LEAD_MINUTES = 30;
+
+/**
+ * N5 (2026-11-17 UAT): replaces the old manual "Activer le rappel" toggle —
+ * every active order now gets an automatic e-mail reminder, scheduled this
+ * long before the pickup window closes; no opt-in, nothing for the client
+ * to click. Returns `null` once the order is no longer active (nothing left
+ * to remind about) or once the reminder moment has already passed.
+ *
+ * Pure/presentational only: actually delivering the e-mail at this instant
+ * needs a real scheduled job (cron) on the server, which doesn't exist in
+ * this mock project — flagged in the compte-rendu (same gap as N1/N3).
+ */
+export function getAutomaticReminderTime(order: FullOrder, now: Date): Date | null {
+  if (order.status !== "preparing" && order.status !== "ready") return null;
+  const reminderAt = new Date(new Date(order.pickupWindow.endIso).getTime() - REMINDER_LEAD_MINUTES * 60_000);
+  return reminderAt > now ? reminderAt : null;
+}

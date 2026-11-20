@@ -121,7 +121,7 @@ function ProductCardAddToCart({ product }: { product: Product }) {
 function DealBadge({ product }: { product: DealProduct }) {
   if (product.badge) {
     return (
-      <Chip tone="danger" size="sm" className="font-bold">
+      <Chip tone="promo" size="sm" className="font-bold">
         {formatPromoBadge(product.badge)}
       </Chip>
     );
@@ -130,7 +130,7 @@ function DealBadge({ product }: { product: DealProduct }) {
   const percent = computeDiscountPercent(product.price, product.compareAtPrice);
   if (percent <= 0) return null;
   return (
-    <Chip tone="danger" size="sm" className="font-bold">
+    <Chip tone="promo" size="sm" className="font-bold">
       -{percent}%
     </Chip>
   );
@@ -438,7 +438,7 @@ export function ProductCard(props: ProductCardProps) {
         sizes="(min-width: 1280px) 16vw, (min-width: 640px) 33vw, 50vw"
         topLeft={
           props.variant === "promo" ? (
-            <Chip tone="danger" size="sm" className="font-bold">
+            <Chip tone="promo" size="sm" className="font-bold">
               {formatPromoBadge(props.product.badge)}
             </Chip>
           ) : undefined

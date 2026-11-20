@@ -13,7 +13,7 @@ const STEPS: { title: string; description: string }[] = [
   },
   {
     title: "Retirez en Click & Collect",
-    description: "Recevez une alerte SMS dès la livraison et le contrôle qualité dans votre boutique partenaire. Retrait gratuit et immédiat au comptoir.",
+    description: "Recevez une alerte e-mail dès la livraison et le contrôle qualité dans votre boutique partenaire. Retrait gratuit et immédiat au comptoir.",
   },
 ];
 

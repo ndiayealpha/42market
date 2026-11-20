@@ -14,7 +14,7 @@ import type { HeaderLocation, HeaderUser } from "./Header.types";
 export interface HeaderMobileProps {
   location: HeaderLocation;
   user?: HeaderUser;
-  onLocationClick?: () => void;
+  onLocationClick: () => void;
 }
 
 /**
@@ -33,7 +33,7 @@ export function HeaderMobile({ location, user, onLocationClick }: HeaderMobilePr
       <button
         type="button"
         onClick={onLocationClick}
-        className="flex h-11 min-w-0 flex-1 items-center justify-center gap-1 rounded-full bg-surface-subtle px-3 text-xs font-medium text-foreground-strong"
+        className="flex h-11 min-w-0 flex-1 items-center justify-center gap-1 bg-surface-subtle px-3 text-xs font-medium text-foreground-strong"
       >
         <Icon name="location" size={14} className="shrink-0" decorative />
         <span className="truncate">
@@ -50,7 +50,7 @@ export function HeaderMobile({ location, user, onLocationClick }: HeaderMobilePr
         <Icon name="basket" size={24} decorative />
         {cartCount > 0 && (
           <span className="absolute right-0.5 top-0.5">
-            <Badge variant="count" color="basket">
+            <Badge variant="count" color="brown">
               {cartCount}
             </Badge>
           </span>

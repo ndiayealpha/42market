@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 
+import { FEATURE_FLAGS } from "@/src/config/feature-flags";
 import { getStoreOptions, parseGroupPreorderCategory, parseGroupPreorderSort } from "@/src/domain/group-preorder";
 import { verifySession } from "@/src/features/auth/server";
 import { GroupPreordersView } from "@/src/features/group-preorders/GroupPreordersView";
@@ -17,6 +19,9 @@ interface PageProps {
 }
 
 export default async function GroupPreordersPage({ searchParams }: PageProps) {
+  // Précommandes is disabled (no real persistence/payment yet, see K2 in the mission report) — a clean 404 rather than leaving the route reachable.
+  if (!FEATURE_FLAGS.precommandesEnabled) notFound();
+
   await verifySession(routes.main.preorders);
 
   const { categorie, epicerie, tri } = await searchParams;

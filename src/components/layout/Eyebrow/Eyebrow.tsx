@@ -1,9 +1,7 @@
 import type { ReactNode } from "react";
 
-import { Icon } from "@/src/components/atoms/Icon/Icon";
-
 export interface EyebrowProps {
-  /** "accent": success-colored + a GPS icon ("MOINS DE 10 KM DE VOUS"). "default": plain ink, no icon ("CATALOGUE COMPLET"). */
+  /** "accent": success-colored ("MOINS DE 10 KM DE VOUS"). "default": plain ink ("CATALOGUE COMPLET"). */
   tone?: "accent" | "default";
   children: ReactNode;
   className?: string;
@@ -16,7 +14,6 @@ export function Eyebrow({ tone = "default", children, className = "" }: EyebrowP
         tone === "accent" ? "text-catalog-success" : "text-foreground-strong"
       } ${className}`}
     >
-      {tone === "accent" && <Icon name="gps" size={16} />}
       {children}
     </span>
   );

@@ -67,7 +67,6 @@ export const REFERENCE_ORDER: FullOrder = {
   createdAtIso: hoursAgo(2),
   lastUpdatedIso: minutesAgo(2),
   isExpress: true,
-  reminderEnabled: true,
   store: REFERENCE_STORE,
   pickupWindow: { startIso: minutesFromNow(30), endIso: minutesFromNow(90) },
   lines: REFERENCE_LINES,
@@ -92,7 +91,6 @@ export const COMPLETED_ORDER: FullOrder = {
   reference: "#CMD-2890",
   status: "completed",
   isExpress: false,
-  reminderEnabled: false,
   pickupWindow: { startIso: hoursAgo(1), endIso: minutesAgo(30) },
 };
 
@@ -102,7 +100,6 @@ export const CANCELLED_ORDER: FullOrder = {
   reference: "#CMD-2771",
   status: "cancelled",
   isExpress: false,
-  reminderEnabled: false,
   payment: { method: "online", cardLast4: "4242", isPaid: false },
 };
 

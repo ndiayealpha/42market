@@ -19,12 +19,11 @@ import { FULL_ORDERS } from "@/src/data/full-order.mock";
  */
 export interface OrderTrackingRepository {
   getOrderById(id: string): Promise<FullOrder | null>;
-  setReminderEnabled(id: string, enabled: boolean): Promise<FullOrder>;
   claimOrder(id: string, userId: string): Promise<FullOrder>;
 }
 
-// In-memory copy so the reminder toggle persists across refetches within a
-// session, without pretending this mock has real server-side state.
+// In-memory copy so order mutations (claim) persist across refetches within
+// a session, without pretending this mock has real server-side state.
 const orders = new Map<string, FullOrder>(Object.entries(FULL_ORDERS).map(([id, order]) => [id, { ...order }]));
 
 function delay(ms = 150): Promise<void> {
@@ -40,17 +39,6 @@ export const mockOrderTrackingRepository: OrderTrackingRepository = {
     const refreshed = { ...existing, lastUpdatedIso: new Date().toISOString() };
     orders.set(id, refreshed);
     return refreshed;
-  },
-
-  async setReminderEnabled(id, enabled) {
-    await delay();
-    const existing = orders.get(id);
-    if (!existing) {
-      throw new Error(`Unknown order: ${id}`);
-    }
-    const updated = { ...existing, reminderEnabled: enabled };
-    orders.set(id, updated);
-    return updated;
   },
 
   async claimOrder(id, userId) {

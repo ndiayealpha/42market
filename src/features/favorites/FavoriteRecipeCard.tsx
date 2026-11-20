@@ -21,7 +21,7 @@ export function FavoriteRecipeCard({ recipe }: FavoriteRecipeCardProps) {
   const isFavorite = favoriteIds.has(recipe.id);
 
   return (
-    <div className="flex h-full flex-col overflow-hidden rounded-2xl bg-surface shadow-card">
+    <div className="relative flex h-full flex-col overflow-hidden rounded-2xl bg-surface shadow-card">
       <ProductImage
         src={recipe.image.src}
         alt={recipe.image.alt}
@@ -34,11 +34,16 @@ export function FavoriteRecipeCard({ recipe }: FavoriteRecipeCardProps) {
             label={isFavorite ? `Retirer ${recipe.name} des favoris` : `Ajouter ${recipe.name} aux favoris`}
             kind="recipe"
             tone="surface"
+            className="relative z-10"
           />
         }
       />
       <div className="flex flex-1 flex-col gap-2 p-4">
-        <p className="line-clamp-2 text-base font-bold text-foreground-strong">{recipe.name}</p>
+        <p className="line-clamp-2 text-base font-bold text-foreground-strong">
+          <Link href={recipe.href} className="after:absolute after:inset-0">
+            {recipe.name}
+          </Link>
+        </p>
 
         <div className="flex items-center gap-2">
           <Link href={routes.main.epicerieDetail(recipe.storeSlug)} className="relative z-10">

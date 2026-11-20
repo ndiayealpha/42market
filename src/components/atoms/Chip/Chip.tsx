@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 
-export type ChipTone = "pink" | "gold" | "cream" | "orange" | "wine" | "danger" | "success" | "dark";
+export type ChipTone = "pink" | "gold" | "cream" | "orange" | "wine" | "danger" | "promo" | "success" | "dark";
 
 const TONE_CLASSES: Record<ChipTone, string> = {
   pink: "bg-catalog-badge-pink text-foreground-strong",
@@ -9,6 +9,8 @@ const TONE_CLASSES: Record<ChipTone, string> = {
   orange: "bg-catalog-badge-orange text-white",
   wine: "bg-catalog-badge-wine text-white",
   danger: "bg-catalog-danger text-white",
+  // The one true promo red (A2, 2026-11-17 UAT) — discount %/deal/flash-sale badges only, never a non-promo status (those stay "danger").
+  promo: "bg-promo-red text-white",
   success: "bg-catalog-success text-white",
   // "Click & Collect 42" / "Programme fidélité" solid dark pill — new tone, no existing one is a near-black fill.
   dark: "bg-foreground-strong text-white",

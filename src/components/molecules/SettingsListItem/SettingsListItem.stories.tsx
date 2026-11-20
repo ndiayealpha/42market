@@ -36,13 +36,13 @@ export const Action: Story = {
 };
 
 export const WithSwitch: Story = {
-  args: { icon: "bell", title: "Notifications", description: "SMS dès que la commande est prête", trailing: "switch", children: null },
+  args: { icon: "bell", title: "Notifications", description: "E-mail dès que la commande est prête", trailing: "switch", children: null },
   render: () => {
     function Demo() {
       const [checked, setChecked] = useState(true);
       return (
-        <SettingsListItem icon="bell" title="Notifications" description="SMS dès que la commande est prête" trailing="switch">
-          <Switch checked={checked} onChange={setChecked} aria-label="Notifications SMS" />
+        <SettingsListItem icon="bell" title="Notifications" description="E-mail dès que la commande est prête" trailing="switch">
+          <Switch checked={checked} onChange={setChecked} aria-label="Notifications e-mail" />
         </SettingsListItem>
       );
     }

@@ -11,19 +11,13 @@ import { LocationSelector } from "@/src/components/molecules/LocationSelector/Lo
 export interface HeaderSearchProps {
   location: string;
   radiusLabel: string;
+  onLocationClick: () => void;
   placeholder?: string;
-  onLocationClick?: () => void;
   onSearch?: (query: string) => void;
 }
 
 /** The header's main search pill: location + radius, then a free-text search. */
-export function HeaderSearch({
-  location,
-  radiusLabel,
-  placeholder = "Rechercher ...",
-  onLocationClick,
-  onSearch,
-}: HeaderSearchProps) {
+export function HeaderSearch({ location, radiusLabel, onLocationClick, placeholder = "Rechercher ...", onSearch }: HeaderSearchProps) {
   const [query, setQuery] = useState("");
 
   function submit() {

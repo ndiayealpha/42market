@@ -81,7 +81,7 @@ export function BottomNav() {
                 <Icon name={tab.icon} size={24} decorative />
                 {tab.key === "cart" && cartCount > 0 && (
                   <span className="absolute -right-2 -top-1.5">
-                    <Badge variant="count" color="basket">
+                    <Badge variant="count" color="brown">
                       {cartCount}
                     </Badge>
                   </span>

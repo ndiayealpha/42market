@@ -1,6 +1,7 @@
 "use client";
 
-import { TextLink } from "@/src/components/atoms/Link/Link";
+import { ButtonLink } from "@/src/components/atoms/Button/ButtonLink";
+import { Icon } from "@/src/components/atoms/Icon/Icon";
 import { SectionHeader } from "@/src/components/layout/SectionHeader/SectionHeader";
 import { Carousel } from "@/src/components/organisms/Carousel/Carousel";
 import { RailArrows } from "@/src/components/organisms/Carousel/RailArrows";
@@ -26,12 +27,11 @@ export function StoreDealsNavigator({ stores, getSectionAnchor }: StoreDealsNavi
         headingLevel="h1"
         headingId="bons-plans-heading"
         title="Bons plans par épiceries"
-        subtitle="Vos boutiques avec les réductions les plus fortes aujourd'hui"
         action={
           <div className="flex items-center gap-3">
-            <TextLink href={routes.main.epiceries} variant="default">
+            <ButtonLink href={routes.main.epiceries} variant="soft" icon={<Icon name="arrow-right" size={16} />}>
               Voir tout
-            </TextLink>
+            </ButtonLink>
             {hasOverflow && <RailArrows ariaLabel="Boutiques" onPrev={prev} onNext={next} canPrev={canPrev} canNext={canNext} />}
           </div>
         }

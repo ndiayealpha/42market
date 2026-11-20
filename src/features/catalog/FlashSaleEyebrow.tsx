@@ -10,7 +10,7 @@ export interface FlashSaleEyebrowProps {
 
 export function FlashSaleEyebrow({ flashSale, now }: FlashSaleEyebrowProps) {
   return (
-    <p className="inline-flex items-center gap-1.5 rounded-full bg-catalog-badge-pink/40 px-3 py-1 text-xs font-bold text-catalog-danger uppercase">
+    <p className="inline-flex items-center gap-1.5 rounded-full bg-catalog-badge-pink/40 px-3 py-1 text-xs font-bold text-promo-red uppercase">
       <Icon name="timer" size={14} decorative />
       Ventes flash clôture {formatFlashDeadline(flashSale.endsAtIso, now)}
     </p>

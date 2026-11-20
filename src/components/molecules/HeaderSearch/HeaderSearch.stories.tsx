@@ -11,8 +11,8 @@ const meta = {
   args: {
     location: "42000, FR",
     radiusLabel: "Rayon 3 km",
-    onLocationClick: fn(),
     onSearch: fn(),
+    onLocationClick: fn(),
   },
 } satisfies Meta<typeof HeaderSearch>;
 

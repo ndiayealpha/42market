@@ -1,13 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import {
-  formatMerchantPlanPrice,
-  getMerchantAnnualPrice,
-  getMerchantPlan,
-  hasMerchantApplicationErrors,
-  validateMerchantApplication,
-  type MerchantApplicationInput,
-} from "./merchant";
+import { hasMerchantApplicationErrors, validateMerchantApplication, type MerchantApplicationInput } from "./merchant";
 
 function makeInput(overrides: Partial<MerchantApplicationInput> = {}): MerchantApplicationInput {
   return {
@@ -47,20 +40,5 @@ describe("validateMerchantApplication", () => {
 
   it("flags a missing Kbis file", () => {
     expect(validateMerchantApplication(makeInput({ kbisFileName: "" })).kbisFileName).toBeDefined();
-  });
-});
-
-describe("plan pricing", () => {
-  it("prices the free plan at 0", () => {
-    expect(formatMerchantPlanPrice(getMerchantPlan("decouverte"), "monthly")).toBe("Gratuit");
-  });
-
-  it("computes the annual price as 10 months (2 offered)", () => {
-    expect(getMerchantAnnualPrice(getMerchantPlan("pro"))).toBe(290);
-  });
-
-  it("formats the annual monthly-equivalent price", () => {
-    // 290 / 12 rounded
-    expect(formatMerchantPlanPrice(getMerchantPlan("pro"), "annual")).toBe("24 €");
   });
 });

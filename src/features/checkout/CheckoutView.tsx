@@ -20,8 +20,6 @@ export interface CheckoutViewProps {
   now: Date;
   store: StoreDetailWithContact;
   isPhoneVerified: boolean;
-  supportPhone: string;
-  year: number;
 }
 
 function findSlotById(store: StoreDetail, now: Date, slotId: string | undefined): PickupSlot | undefined {
@@ -57,7 +55,7 @@ function hasExpressPromiseToday(store: StoreDetail, now: Date): boolean {
  * cart" toast mentioned as a nice-to-have is skipped for the same reason
  * `router.replace` already fires before the page would meaningfully paint.
  */
-export function CheckoutView({ now, store, isPhoneVerified, supportPhone, year }: CheckoutViewProps) {
+export function CheckoutView({ now, store, isPhoneVerified }: CheckoutViewProps) {
   const router = useRouter();
   const { storeSlug, storeName, lines } = useCartLinesState();
   const { clear } = useCartLinesActions();
@@ -124,8 +122,6 @@ export function CheckoutView({ now, store, isPhoneVerified, supportPhone, year }
       store={store}
       cartLines={lines}
       isPhoneVerified={isPhoneVerified}
-      supportPhone={supportPhone}
-      year={year}
       stepStates={stepStates}
       selectedSlotId={selectedSlotId}
       selectedSlotLabel={selectedSlotLabel}

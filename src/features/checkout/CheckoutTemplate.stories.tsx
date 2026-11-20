@@ -66,8 +66,6 @@ const meta = {
     store: STORE_DETAIL,
     cartLines: CART_LINES,
     isPhoneVerified: true,
-    supportPhone: STORE_DETAIL.phone,
-    year: 2026,
     stepStates: getCheckoutStepStates("slot", true),
     selectedSlotId: undefined,
     selectedSlotLabel: undefined,

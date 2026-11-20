@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 
 import { Section } from "@/src/components/layout/Section/Section";
-import { applySlotSelection } from "@/src/domain/checkout";
+import { applySlotSelection, type PickupSlot } from "@/src/domain/checkout";
 import type { StoreDetail } from "@/src/domain/store-detail";
 
 import { ConsigneNotice } from "./ConsigneNotice";
@@ -22,28 +22,43 @@ export interface PickupSlotPickerProps {
   initialDateIso?: string;
 }
 
+/** The next chronologically-available window slot on the same day, at or after `afterStartIso` — express slots aren't ordered against window slots, so they're not a candidate here (M3). */
+function findNextAvailableSlotId(daySlots: PickupSlot[], afterStartIso: string | undefined): string | undefined {
+  const afterStart = afterStartIso ? new Date(afterStartIso).getTime() : -Infinity;
+  const candidates = daySlots
+    .filter((slot): slot is Extract<PickupSlot, { kind: "window" }> => slot.kind === "window")
+    .filter((slot) => slot.status === "available" && new Date(slot.startIso).getTime() >= afterStart)
+    .sort((a, b) => new Date(a.startIso).getTime() - new Date(b.startIso).getTime());
+  return candidates[0]?.id;
+}
+
 /**
  * K4 (`id="moment-choisi"`) — `DayTabs` + `SlotGrid` composed together.
- * Re-validates the current selection on every render that could change it
- * (mount, `now`, or the selection itself) rather than running a polling
- * timer: per the brief, "recomputing on mount/interaction is enough" for a
- * demo — a slot that quietly expires mid-session without any interaction
- * won't self-correct until the next one, a deliberate, documented trim.
+ * `now` ticks every minute (M3: "recalcul automatique toutes les
+ * minutes") so a slot that quietly expires mid-session (its end passes,
+ * or there's no longer enough lead time to prepare it) is re-evaluated
+ * without the visitor having to reload or interact.
  */
 export function PickupSlotPicker({ now, store, selectedSlotId, onSelectSlot, initialDateIso }: PickupSlotPickerProps) {
-  const days = useMemo(() => buildPickupDays(now, store.openingHours), [now, store.openingHours]);
+  const [liveNow, setLiveNow] = useState(now);
+  useEffect(() => {
+    const id = setInterval(() => setLiveNow(new Date()), 60_000);
+    return () => clearInterval(id);
+  }, []);
+
+  const days = useMemo(() => buildPickupDays(liveNow, store.openingHours), [liveNow, store.openingHours]);
   const [selectedDateIso, setSelectedDateIso] = useState(() => initialDateIso ?? days[0]?.dateIso ?? "");
 
-  const slotsByDay = useMemo(() => buildSlotsByDay(store, now), [store, now]);
+  const slotsByDay = useMemo(() => buildSlotsByDay(store, liveNow), [store, liveNow]);
   const allSlots = useMemo(() => Array.from(slotsByDay.values()).flat(), [slotsByDay]);
   const selectedSlot = selectedSlotId ? allSlots.find((slot) => slot.id === selectedSlotId) : undefined;
-  // `now` never ticks in this app (no polling timer, per the brief's own
-  // trim), so in practice a slot can't spontaneously expire mid-session —
-  // this only guards the case where `selectedSlotId` itself changes to
-  // something that's no longer bookable (e.g. a future enhancement that
-  // does refresh `now`), kept for correctness rather than to cover a path
-  // that's reachable today.
   const isSelectionInvalid = selectedSlotId !== undefined && selectedSlot?.status !== "available";
+  const daySlotsOfSelection = selectedSlotId
+    ? (Array.from(slotsByDay.values()).find((daySlots) => daySlots.some((slot) => slot.id === selectedSlotId)) ?? [])
+    : [];
+  const nextAvailableSlotId = isSelectionInvalid
+    ? findNextAvailableSlotId(daySlotsOfSelection, selectedSlot?.kind === "window" ? selectedSlot.startIso : undefined)
+    : undefined;
 
   // Render-time state adjustment on the false→true transition (React's
   // documented pattern — see "You Might Not Need an Effect" — rather than a
@@ -51,23 +66,30 @@ export function PickupSlotPicker({ now, store, selectedSlotId, onSelectSlot, ini
   // cascading-render risk). The message is set once when the selection
   // becomes invalid and is otherwise only cleared by the user picking a new
   // slot (`onSelect` below) — it must NOT reset just because the effect
-  // below clears `selectedSlotId` back to `undefined`, which would also
-  // flip `isSelectionInvalid` back to `false` and erase the message before
+  // below changes `selectedSlotId`, which would also flip
+  // `isSelectionInvalid` back to `false` and erase the message before
   // anyone could read it.
   const [wasSelectionInvalid, setWasSelectionInvalid] = useState(false);
   const [invalidationMessage, setInvalidationMessage] = useState<string>();
   if (isSelectionInvalid !== wasSelectionInvalid) {
     setWasSelectionInvalid(isSelectionInvalid);
     if (isSelectionInvalid) {
-      setInvalidationMessage("Votre créneau n'est plus disponible, merci d'en choisir un autre.");
+      setInvalidationMessage(
+        nextAvailableSlotId
+          ? "Votre créneau n'est plus disponible : nous avons sélectionné le suivant pour vous."
+          : "Votre créneau n'est plus disponible, merci d'en choisir un autre."
+      );
     }
   }
 
+  // M3: deselect the expired/too-soon slot AND select the next available
+  // one on the same day, rather than leaving the visitor with nothing
+  // picked.
   useEffect(() => {
     if (isSelectionInvalid) {
-      onSelectSlot(undefined);
+      onSelectSlot(nextAvailableSlotId);
     }
-  }, [isSelectionInvalid, onSelectSlot]);
+  }, [isSelectionInvalid, nextAvailableSlotId, onSelectSlot]);
 
   const activeSlots = applySlotSelection(slotsByDay.get(selectedDateIso) ?? [], selectedSlotId);
 

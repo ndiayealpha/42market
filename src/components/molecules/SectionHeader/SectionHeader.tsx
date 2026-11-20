@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 
 export interface SectionHeaderProps {
-  kicker: string;
+  kicker?: string;
   /** Shows a small live-status dot before `meta`. */
   live?: boolean;
   meta?: string;
@@ -20,12 +20,12 @@ export function SectionHeader({ kicker, live, meta, title, actions, className = 
     <div className={`flex items-start justify-between gap-4 ${className}`}>
       <div className="min-w-0">
         <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs font-bold uppercase tracking-[0.06em] text-foreground-strong">
-          {live && (
+          {live && kicker && (
             <span className="flex items-center gap-1.5 normal-case">
               <span aria-hidden className="h-1.5 w-1.5 shrink-0 rounded-full bg-danger" />
             </span>
           )}
-          <span>{kicker}</span>
+          {kicker && <span>{kicker}</span>}
           {meta && <span className="font-normal normal-case tracking-normal text-ink-muted">{meta}</span>}
         </div>
         <h2 className="mt-1 text-[28px] font-bold leading-tight tracking-[-0.02em] text-foreground-strong">{title}</h2>

@@ -10,6 +10,7 @@ import { StockProductCard } from "./StockProductCard";
 
 export interface LimitedStockSectionProps {
   items: LimitedStockItem[];
+  storeSlug: string;
   isLoading: boolean;
   isError: boolean;
   onRetry: () => void;
@@ -18,7 +19,7 @@ export interface LimitedStockSectionProps {
 
 const SKELETON_KEYS = ["skeleton-1", "skeleton-2", "skeleton-3", "skeleton-4"];
 
-export function LimitedStockSection({ items, isLoading, isError, onRetry, onAdd }: LimitedStockSectionProps) {
+export function LimitedStockSection({ items, storeSlug, isLoading, isError, onRetry, onAdd }: LimitedStockSectionProps) {
   return (
     <Section
       id="limited-stock"
@@ -58,7 +59,7 @@ export function LimitedStockSection({ items, isLoading, isError, onRetry, onAdd 
         <CardGrid columns={4}>
           {items.map((item) => (
             <li key={item.id}>
-              <StockProductCard item={item} onAdd={() => onAdd(item.id)} />
+              <StockProductCard item={item} storeSlug={storeSlug} onAdd={() => onAdd(item.id)} />
             </li>
           ))}
         </CardGrid>

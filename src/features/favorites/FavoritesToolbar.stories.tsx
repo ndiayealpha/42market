@@ -22,8 +22,6 @@ const meta = {
     ],
     selectedStoreSlugs: [],
     onStoreSlugsChange: fn(),
-    query: "",
-    onQueryChange: fn(),
     onResetFilters: fn(),
   },
 } satisfies Meta<typeof FavoritesToolbar>;
@@ -33,4 +31,3 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {};
 export const ActiveFilters: Story = { args: { inStockOnly: true, selectedStoreSlugs: ["loirivoire"], terroirRegion: "afrique-ouest" } };
-export const WithSearchQuery: Story = { args: { query: "carottes" } };

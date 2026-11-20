@@ -9,7 +9,7 @@ const meta = {
   component: OrderStatusHero,
   tags: ["autodocs"],
   parameters: { layout: "padded" },
-  args: { order: REFERENCE_ORDER, phoneVerified: true },
+  args: { order: REFERENCE_ORDER, now: new Date() },
 } satisfies Meta<typeof OrderStatusHero>;
 
 export default meta;
@@ -19,4 +19,3 @@ export const Preparing: Story = {};
 export const Ready: Story = { args: { order: READY_ORDER } };
 export const Completed: Story = { args: { order: COMPLETED_ORDER } };
 export const Cancelled: Story = { args: { order: CANCELLED_ORDER } };
-export const PhoneNotVerified: Story = { args: { phoneVerified: false } };

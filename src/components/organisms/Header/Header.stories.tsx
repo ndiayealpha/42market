@@ -9,8 +9,8 @@ const meta = {
   tags: ["autodocs"],
   parameters: { layout: "fullscreen" },
   args: {
-    onLocationClick: fn(),
     onSearch: fn(),
+    onLocationClick: fn(),
   },
 } satisfies Meta<typeof Header>;
 

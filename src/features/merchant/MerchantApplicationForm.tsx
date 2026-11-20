@@ -13,7 +13,6 @@ import {
   MERCHANT_SPECIALTY_LABELS,
   validateMerchantApplication,
   type MerchantApplicationErrors,
-  type MerchantPlan,
   type MerchantService,
   type MerchantSpecialty,
 } from "@/src/domain/merchant";
@@ -22,6 +21,9 @@ import { useSubmitMerchantApplication } from "@/src/hooks/useSubmitMerchantAppli
 const KBIS_ACCEPT = "application/pdf,image/jpeg,image/png";
 const KBIS_MAX_SIZE_BYTES = 10 * 1024 * 1024;
 
+// F7 (2026-11-17 UAT): the pricing section (and its plan picker) is gone — every application now submits the one remaining "decouverte" plan rather than a UI-selected one.
+const DEFAULT_PLAN = "decouverte" as const;
+
 function toggleInSet<T>(set: ReadonlySet<T>, value: T): Set<T> {
   const next = new Set(set);
   if (next.has(value)) next.delete(value);
@@ -29,12 +31,7 @@ function toggleInSet<T>(set: ReadonlySet<T>, value: T): Set<T> {
   return next;
 }
 
-export interface MerchantApplicationFormProps {
-  /** Preselected from the pricing section above — the plan the "Commencer gratuitement" / "Passer au Pro" / "Passer au Business" buttons scrolled here for. */
-  selectedPlan: MerchantPlan;
-}
-
-export function MerchantApplicationForm({ selectedPlan }: MerchantApplicationFormProps) {
+export function MerchantApplicationForm() {
   const [managerName, setManagerName] = useState("");
   const [storeName, setStoreName] = useState("");
   const [siret, setSiret] = useState("");
@@ -63,7 +60,7 @@ export function MerchantApplicationForm({ selectedPlan }: MerchantApplicationFor
       specialties: Array.from(specialties),
       services: Array.from(services),
       estimatedReferenceCount: Number(estimatedReferenceCount) || 0,
-      plan: selectedPlan,
+      plan: DEFAULT_PLAN,
       kbisFileName: kbisFile?.name ?? "",
     };
     const nextErrors = validateMerchantApplication(input);

@@ -2,13 +2,11 @@ import type { CartLine } from "@/src/domain/cart";
 import type { CheckoutStepId, CheckoutStepState, PaymentMethodId, PlaceOrderError } from "@/src/domain/checkout";
 import type { StoreDetailWithContact } from "@/src/domain/store-detail";
 
-import { CheckoutFooter } from "./CheckoutFooter";
 import { CheckoutHeader } from "./CheckoutHeader";
 import { CheckoutReassuranceRow } from "./CheckoutReassuranceRow";
 import { CheckoutStepper } from "./CheckoutStepper";
 import { CheckoutStoreSection } from "./CheckoutStoreSection";
 import { ConfirmOrderButton } from "./ConfirmOrderButton";
-import { HelpCard } from "./HelpCard";
 import { OrderRecapSection } from "./OrderRecapSection";
 import { PaymentMethodSelector } from "./PaymentMethodSelector";
 import { PickupSlotPicker } from "./PickupSlotPicker";
@@ -26,8 +24,6 @@ export interface CheckoutTemplateProps {
   store: StoreDetailWithContact;
   cartLines: CartLine[];
   isPhoneVerified: boolean;
-  supportPhone: string;
-  year: number;
   stepStates: Record<CheckoutStepId, CheckoutStepState>;
   selectedSlotId: string | undefined;
   selectedSlotLabel: string | undefined;
@@ -51,8 +47,6 @@ export function CheckoutTemplate({
   store,
   cartLines,
   isPhoneVerified,
-  supportPhone,
-  year,
   stepStates,
   selectedSlotId,
   selectedSlotLabel,
@@ -79,11 +73,8 @@ export function CheckoutTemplate({
             <PaymentMethodSelector storeName={store.name} value={paymentMethod} onChange={onChangePaymentMethod} />
             <ConfirmOrderButton {...confirmOrder} />
           </OrderRecapSection>
-          <HelpCard supportPhone={supportPhone} />
         </div>
       </div>
-
-      <CheckoutFooter year={year} />
     </div>
   );
 }

@@ -36,7 +36,7 @@ export function OfferCard({ offer, onAdd }: OfferCardProps) {
         sizes="200px"
         topLeft={
           <span
-            className={`rounded-full px-2 py-1 text-[11px] font-bold text-white ${isBasket ? "bg-catalog-success" : "bg-catalog-danger"}`}
+            className={`rounded-full px-2 py-1 text-[11px] font-bold text-white ${isBasket ? "bg-catalog-success" : "bg-promo-red"}`}
           >
             {offer.badge}
           </span>

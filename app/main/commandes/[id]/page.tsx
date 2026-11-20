@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { cookies } from "next/headers";
 import { notFound } from "next/navigation";
 
-import { ACCOUNT_SETTINGS, ADMIN_ACCOUNT_SETTINGS } from "@/src/data/account-settings.mock";
 import { OrderTrackingView } from "@/src/features/order-tracking/OrderTrackingView";
 import { verifySession } from "@/src/features/auth/server";
 import { DEMO_CLAIMABLE_ORDER_ID, DEMO_ORDER_OWNER_COOKIE } from "@/src/lib/constants";
@@ -42,7 +41,5 @@ export default async function OrderTrackingPage({ params }: PageProps) {
     notFound();
   }
 
-  const phoneVerified = (user.id === "2" ? ADMIN_ACCOUNT_SETTINGS : ACCOUNT_SETTINGS).isPhoneVerified;
-
-  return <OrderTrackingView initialOrder={order} phoneVerified={phoneVerified} />;
+  return <OrderTrackingView initialOrder={order} />;
 }

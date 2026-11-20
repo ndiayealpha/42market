@@ -123,8 +123,8 @@ export interface NotificationTypeConfig {
   icon: IconName;
   /** Tone of the leading `IconTile`. */
   iconTone: "neutral" | "cream" | "success";
-  /** Left accent rail color when unread — only "danger" (urgent, e.g. flash sale) departs from the dark default. */
-  accentTone: "default" | "danger";
+  /** Left accent rail color when unread — only "promo" (flash sale) departs from the dark default (A2, 2026-11-17 UAT: the one true promo red, not the generic danger). */
+  accentTone: "default" | "promo";
   /** `Button` variant used for the primary action while unread. */
   unreadButtonVariant: "primary-md" | "accent";
 }
@@ -132,7 +132,7 @@ export interface NotificationTypeConfig {
 /** One table, no per-type `if`/`switch` elsewhere (rule O). Adding a 9th type means adding one line here. */
 export const NOTIFICATION_TYPE_CONFIG: Record<NotificationType, NotificationTypeConfig> = {
   "new-arrival": { category: "arrivages-stocks", icon: "archive", iconTone: "neutral", accentTone: "default", unreadButtonVariant: "primary-md" },
-  "flash-sale": { category: "ventes-flash", icon: "zap", iconTone: "cream", accentTone: "danger", unreadButtonVariant: "accent" },
+  "flash-sale": { category: "ventes-flash", icon: "zap", iconTone: "cream", accentTone: "promo", unreadButtonVariant: "accent" },
   "back-in-stock": { category: "arrivages-stocks", icon: "check-circle", iconTone: "success", accentTone: "default", unreadButtonVariant: "primary-md" },
   "recipe-inspiration": { category: "recettes", icon: "cooking", iconTone: "neutral", accentTone: "default", unreadButtonVariant: "primary-md" },
   "order-ready": { category: "avis-epiceries", icon: "basket", iconTone: "success", accentTone: "default", unreadButtonVariant: "primary-md" },
@@ -233,7 +233,7 @@ export function groupNotificationsByDay(notifications: Notification[], now: Date
 
 export interface NotificationBadge {
   text: string;
-  tone: "success" | "danger";
+  tone: "success" | "promo";
 }
 
 /** The small badge next to the title ("Fraîcheur garantie", the flash-sale deadline, "Retrait disponible") — exhaustive over `NotificationType`, `null` for the 5 types with none. Reuses `formatFlashDeadline` from the promotions domain (rule: "réutilise formatFlashDeadline de la Page B"). */
@@ -242,7 +242,7 @@ export function getNotificationBadge(notification: Notification, now: Date): Not
     case "new-arrival":
       return { text: "Fraîcheur garantie", tone: "success" };
     case "flash-sale":
-      return { text: `Jusqu'à ${formatFlashDeadline(notification.endsAtIso, now)}`, tone: "danger" };
+      return { text: `Jusqu'à ${formatFlashDeadline(notification.endsAtIso, now)}`, tone: "promo" };
     case "order-ready":
       return { text: "Retrait disponible", tone: "success" };
     case "back-in-stock":
